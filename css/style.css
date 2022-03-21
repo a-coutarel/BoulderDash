@@ -4,17 +4,18 @@
 
 body {
     margin: 0;
+    box-sizing: border-box;
     width: 100vw;
     height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
+    justify-content: space-around;
     background-image: url("../img/background.gif");
 }
 
 header > img {
-    margin-bottom: 140px;
-    width: 600px;
+    width: 35vw;
 }
 
 #buttons{
@@ -25,8 +26,8 @@ header > img {
     background-color: #6E2C00;
     padding-top: 20px;
     box-sizing: border-box;
-    margin-bottom: 140px;
-    border: dashed 2px #fff;
+    margin-bottom: 10vh;
+    border: dashed 8px rgba(0, 0, 0, 1);
 }
 
 button {
@@ -49,7 +50,6 @@ button:hover {
 }
 
 h4 {
-    text-align: center;
     color: #fff;
     font-family: 'Courier New', Courier, monospace;
 }
