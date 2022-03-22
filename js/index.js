@@ -1,3 +1,9 @@
 function volume() {
-    document.getElementById('audio').muted = !document.getElementById('audio').muted;
+    let audio = document.getElementById('audio');
+    if(audio.duration > 0 && !audio.paused) {
+        audio.muted = !audio.muted;
+    }
+    else {
+        audio.play();
+    }
 }
