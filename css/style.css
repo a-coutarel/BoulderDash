@@ -12,10 +12,11 @@ body {
     flex-direction: column;
     justify-content: space-around;
     background-image: url("../img/background.gif");
+    min-height: 600px;
 }
 
 header > img {
-    width: 35vw;
+    width: 600px;
 }
 
 #buttons{
@@ -49,7 +50,7 @@ button:hover {
     background-color: rgba(255, 255, 255, 0.7);
 }
 
-h4 {
+footer > p {
     color: #fff;
     font-family: 'Courier New', Courier, monospace;
 }
