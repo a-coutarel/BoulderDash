@@ -49,7 +49,28 @@ button:hover {
     background-color: rgba(255, 255, 255, 0.7);
 }
 
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 footer > p {
     color: #fff;
     font-family: 'Courier New', Courier, monospace;
 }
+
+#audio-control {
+    cursor:pointer;
+    padding: 10px 20px;
+    background:#000;
+    color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  #volume {
+      font-size: small;
+      width: 200px;
+      padding-bottom: 5px;
+  }
