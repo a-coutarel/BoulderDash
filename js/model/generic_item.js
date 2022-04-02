@@ -7,6 +7,8 @@ export const WALL = "wall";
 
 export const ROCKFORD = "rockford";
 
+export const unbreakable = [ROCK, WALL];
+
 export class Generic_item {
     // item type
     #type;
@@ -16,9 +18,6 @@ export class Generic_item {
 
     // coordinates of the item on the map
     #coordinates;
-
-    // is the item falling ?
-    #falling = false;
 
     /**
      * Constructor

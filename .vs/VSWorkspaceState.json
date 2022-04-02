@@ -4,8 +4,11 @@
     "\\defaultLevels",
     "\\html",
     "\\js",
-    "\\js\\model"
+    "\\js\\application",
+    "\\js\\controller",
+    "\\js\\model",
+    "\\js\\view"
   ],
-  "SelectedNode": "\\defaultLevels\\level1.txt",
+  "SelectedNode": "\\js\\view\\map_view.js",
   "PreviewInSolutionExplorer": false
 }
