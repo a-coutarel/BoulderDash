@@ -65,4 +65,5 @@ function printMap() {
             map.appendChild(cell).className = "grid-item";
         }
     }
+    document.querySelector("#nb_diams_present").innerText = "8";
 }
