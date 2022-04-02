@@ -10,6 +10,16 @@ export const MOVEUP = "move_up";
 export const MOVEDOWN = "move_down";
 export const MOVELEFT = "move_left";
 export const MOVERIGTH = "move_right";
+export const NOMOVE = "no_move";
+
+export const T = 'T';
+export const V = 'V';
+export const R = 'R';
+export const M = 'M';
+export const P = 'P';
+export const D = 'D';
+
+
 
 const refreshTime = 100;
 
@@ -34,6 +44,12 @@ export class map {
     // movement counter
     #moveCount;
 
+    // the game is over
+    #gameOver;
+
+    // last player entry
+    #nextMove;
+
     /**
      * Constructor
      */
@@ -47,6 +63,8 @@ export class map {
         this.#cdiamond = 0;
         this.#moveCount = 0;
 
+        this.#gameOver = false;
+        this.#nextMove = NONE;
 
         this.#initiateGrid();
     }
@@ -57,11 +75,11 @@ export class map {
     #initiateGrid() {
         this.#grid = [];
 
-        for (let y = 0; y < 16; ++y) {
+        for (const y = 0; y < 16; ++y) {
 
             let line = [];
 
-            for (let x = 0; x < 32; ++x) {
+            for (const x = 0; x < 32; ++x) {
                 line.push(null);
             }
 
@@ -76,6 +94,12 @@ export class map {
      */
     loadGame(layout, data) {
 
+        this.#gameOver = date[0];
+
+        this.#cdiamond = data[1];
+        this.#moveCount = data[2];
+
+
         this.#placeItems(layout);
     }
 
@@ -88,15 +112,43 @@ export class map {
 
     /**
      * Places the items on the map according to the given layout
-     * @param {} layout : disposition of the items on the map
+     * @param {Array} layout : disposition of the items on the map
      */
     #placeItems(layout) {
+        for (const y = 0; y < 16; ++y) {
+            for (const x = 0; x < 32; ++x) {
+                const itemType = layout[y][x];
+                switch (itemType) {
+                    case M:
+                        this.#grid[y][x] = new Wall(this, new Coordinates({ x: x, y: y }));
+                    case D:
+                        this.#grid[y][x] = new Diamond(this, new Coordinates({ x: x, y: y }));
+                        ++this.#rdiamond;
+                    case T:
+                        this.#grid[y][x] = new Dirt(this, new Coordinates({ x: x, y: y }));
+                    case R:
+                        this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }));
+                    case V:
+                        this.#grid[y][x] = null;
+                    case P:
+                        this.#playerLoc = new Rockford(this, new Coordinates({ x: x, y: y }));
+                        this.#grid[y][x] = new Rockford(this, new Coordinates({ x: x, y: y }));
 
+                }
+            }
+        }
     }
 
-    #getKeyPressed() {
-
+    /**
+     * Modify the next move of Rockford according to player's order
+     * @param {string} order : order given by player
+     */
+    playerOrder(order) {
+        this.#nextMove = order;
+        if (!this.#updatePlanned) this.#updatePlanned = true;
     }
+
+    get nextMove() { return this.#nextMove; }
 
     /**
      * runs the update of all items which need one
@@ -106,21 +158,20 @@ export class map {
 
         // actual update
 
-        let keyPressed = false;
-        // get keyboard entry /!\ TO DO
-        if (keyPressed) this.#nextUpdate.push(this.#playerLoc);
+        if (this.#nextMove != NOMOVE) this.#nextUpdate.push(this.#playerLoc);
 
         for (const coord of this.#update) if (!(this.#grid[coord.y()][coord.x()] == null)) this.#grid[coord.y()][coord.x()].update();
 
         // to do after the update
         this.#update = this.#nextUpdate.map((x) => x);
         this.#nextUpdate = [];
+        this.#nextMove = NOMOVE;
 
         if (this.#updatePlanned) setTimeout(this.#runUpdate, refreshTime);
     }
 
     /**
-     * way for the controller to trigger an update
+     * triggers an update if none is already planned
      */
     triggerUpdate() {
         if (!this.#updatePlanned) this.#runUpdate();
@@ -174,7 +225,9 @@ export class map {
      */
     moveItem(coordA, coordB) {
         this.#grid[coordB.y][coordB.x] = this.#grid[coordA.y][coordA.x];
-        this.#grid[coordB.y][coordB.x] = null;
+        this.#grid[coordA.y][coordA.x] = null;
+        this.#grid[coordB.y][coordB.x].coordinates(coordB);
+        if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y) this.#playerLoc = coordB;
     }
 
     /**
@@ -187,10 +240,17 @@ export class map {
     }
 
     /**
+     * Updates the counter
+     */
+    addMovement() {
+        ++this.#moveCount;
+    }
+
+    /**
      * When the player dies
      */
     death() {
-
+        this.#gameOver = true;
     }
 
 }

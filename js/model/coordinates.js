@@ -27,7 +27,8 @@ export class Coordinates {
      * @returns the coordinates located above the given coordinate
      */
     up(coord) {
-        const out = new coordinates({ x: coord.x(), y: coord.y() - 1})
+        const out = new Coordinates({ x: coord.x, y: coord.y - 1 })
+        return out;
     }
 
     /**
@@ -36,7 +37,8 @@ export class Coordinates {
      * @returns the coordinates located below the given coordinate
      */
     down(coord) {
-        const out = new coordinates({ x: coord.x(), y: coord.y() + 1 })
+        const out = new Coordinates({ x: coord.x, y: coord.y + 1 })
+        return out;
     }
 
     /**
@@ -45,7 +47,8 @@ export class Coordinates {
      * @returns the coordinates located left to the given coordinate
      */
     left(coord) {
-        const out = new coordinates({ x: coord.x() - 1, y: coord.y() })
+        const out = new Coordinates({ x: coord.x - 1, y: coord.y })
+        return out;
     }
 
     /**
@@ -54,6 +57,7 @@ export class Coordinates {
      * @returns the coordinates located right to the given coordinate
      */
     right(coord) {
-        const out = new coordinates({ x: coord.x() - 1, y: coord.y() })
+        const out = new Coordinates({ x: coord.x - 1, y: coord.y })
+        return out;
     }
 }

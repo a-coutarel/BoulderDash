@@ -1,5 +1,6 @@
 import { Coordinates } from "./coordinates.js";
 import { Generic_item, DIRT, ROCK, WALL, DIAMOND, unbreakable } from "./generic_item.js";
+import { MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGTH, NOMOVE} from "./map.js";
 
 export class Dirt extends Generic_item {
 
@@ -17,7 +18,19 @@ export class Dirt extends Generic_item {
      * Updates the item if one of its neighbors moved
      */
     update() {
-        throw "This method must be redefined!";
+        const order = this.#map.nextMove;
+
+        switch (order) {
+            case MOVEUP:
+                this.#moveUp;
+            case MOVEDOWN:
+                this.#moveDown;
+            case MOVELEFT:
+                this.#moveLeft;
+            case MOVERIGHT:
+                this.#moveRight;
+        }
+
     }
 
     /**
@@ -38,6 +51,7 @@ export class Dirt extends Generic_item {
 
         this.#map.moveItem(this.#coordinates, coordUp);
         this.#map.addNeighborsToUpdate(this.#coordinates);
+        this.#map.addMovement();
     }
 
     /**
@@ -58,6 +72,7 @@ export class Dirt extends Generic_item {
 
         this.#map.moveItem(this.#coordinates, coordDown);
         this.#map.addNeighborsToUpdate(this.#coordinates);
+        this.#map.addMovement();
     }
 
     /**
@@ -86,6 +101,7 @@ export class Dirt extends Generic_item {
 
         this.#map.moveItem(this.#coordinates, coordRight);
         this.#map.addNeighborsToUpdate(this.#coordinates);
+        this.#map.addMovement();
     }
 
     /** 
@@ -114,6 +130,7 @@ export class Dirt extends Generic_item {
 
         this.#map.moveItem(this.#coordinates, coordLeft);
         this.#map.addNeighborsToUpdate(this.#coordinates);
+        this.#map.addMovement();
     }
 
 }
