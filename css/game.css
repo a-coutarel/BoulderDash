@@ -1,14 +1,14 @@
 @font-face {
-    font-family: "Pixeled"; src: url("../font/Pixeled.ttf");
+    font-family: "Pixeled"; src: url("font/Pixeled.ttf");
 }
 
 body {
     margin: 0;
     width: 100vw;
     height: 100vh;
+    min-height: 900px;
     display: flex;
     background-image: url("../img/background.gif");
-    min-height: 600px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 

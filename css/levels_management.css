@@ -1,5 +1,5 @@
 @font-face {
-    font-family: "Pixeled"; src: url("../font/Pixeled.ttf");
+    font-family: "Pixeled"; src: url("font/Pixeled.ttf");
 }
 
 body {
@@ -11,7 +11,7 @@ body {
     flex-direction: column;
     justify-content: space-around;
     background-image: url("../img/background.gif");
-    min-height: 600px;
+    min-height: 900px;
 }
 
 header > img {
