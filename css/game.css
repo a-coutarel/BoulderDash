@@ -7,6 +7,7 @@ body {
     width: 100vw;
     height: 100vh;
     min-height: 900px;
+    min-width: 1200px;
     display: flex;
     background-image: url("../img/background.gif");
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,7 +21,7 @@ sidebar {
     box-sizing: border-box;
     width: 440px;
     flex-shrink: 0;
-    background-color: #9aaedf2b;
+    background-color: #8787874a;
     font-size: 20px;
 }
 
@@ -66,4 +67,15 @@ content {
     width: 100%;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+boulderdash {
+    display: grid;
+    grid-template-rows: repeat(var(--grid-rows), 2vw);
+    grid-template-columns: repeat(var(--grid-cols), 2vw);
+}
+
+.grid-item {
+    text-align: center;
 }
