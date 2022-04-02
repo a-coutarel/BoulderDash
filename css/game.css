@@ -75,7 +75,7 @@ boulderdash {
     grid-template-columns: repeat(var(--grid-cols), 2vw);
     background-color: rgba(0, 0, 0, 0.7);
     background-clip: padding-box;
-    border: double 25px #8787874a;
+    border: double 25px #6E2C00;
 }
 
 .grid-item {
