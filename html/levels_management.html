@@ -12,7 +12,8 @@
         <img src="../img/gestion_lvls.png" alt="logo"/>
     </header>
     <div id="buttons">
-        <button>Charger un nouveau niveau</button>
+        <button onclick="document.getElementById('file').click()">Charger un nouveau niveau</button>
+        <input type="file" name="file" id="file" style="display:none"/>
         <button>Supprimer un niveau</button>
         <button>Modifier la disposition des niveaux</button>
         <button onclick="window.location.href='../index.html';">Retour à l'accueil</button>
@@ -24,5 +25,6 @@
         </audio>
         <button id="volume" onclick="volume()">Mute / Unmute</button>
     </footer>
+    <script type="module" src="../js/view/map_view.js"></script>
 </body>
 </html>
