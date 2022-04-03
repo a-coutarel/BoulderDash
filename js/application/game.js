@@ -1,29 +1,55 @@
 import { MapController } from "../controller/map_controller.js";
 import { T, V, R, M, P, D } from "../model/map.js";
 
-function volume() {
-    let audio = document.getElementById('audio');
-    if(audio.duration > 0 && !audio.paused) {
-        audio.muted = !audio.muted;
+class Game {
+
+    #controller;
+
+    constructor(layout)
+    {
+        /*this.#controller = new MapController();
+        this.#controller.newGame(layout);*/
+        console.log(JSON.parse(window.localStorage.getItem('map')));
+        if(JSON.parse(window.localStorage.getItem('map'))!=null) {
+            this.#controller = new MapController();
+            this.#controller.loadGame(JSON.parse(window.localStorage.getItem('map'))); 
+        }
+        else {
+            this.#controller = new MapController();
+            this.#controller.newGame(layout);  
+        }
+        
     }
-    else {
-        audio.play();
+
+    volume() {
+        let audio = document.getElementById('audio');
+        if(audio.duration > 0 && !audio.paused) {
+            audio.muted = !audio.muted;
+        }
+        else {
+            audio.play();
+        }
     }
+    
+    retry(){
+        var r =confirm("Voulez-vous recommencer la partie ?");
+        if (r == true) {
+            location.reload();
+            window.localStorage.clear();
+        }
+    }
+    
+    return_menu(){
+        window.localStorage.clear();
+        window.localStorage.setItem('map', JSON.stringify(this.#controller.map.saveGame()));
+        var r =confirm("Voulez-vous retourner à l'accueil ?");
+        if (r == true) {
+            window.location.href='../index.html';
+        }
+    }
+
 }
 
-function retry(){
-    var r =confirm("Voulez-vous recommencer la partie ?");
-    if (r == true) {
-        location.reload();
-    }
-}
-
-function return_menu(){
-    var r =confirm("Voulez-vous retourner à l'accueil ?");
-    if (r == true) {
-        window.location.href='../index.html';
-    }
-}
 
 
 const layout = [
@@ -45,12 +71,20 @@ const layout = [
     [R, V, T, T, T, T, T, T, T, T, T, R, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T, R, T]
 ];
 
-
-function launchGame() {
-    let controller = new MapController();
-    controller.newGame(layout);
-}
+let game = null;
 
 window.addEventListener("load", () => {
-    launchGame();
-})
+    game = new Game(layout);
+});
+
+document.querySelector("#retry").addEventListener("click", () => {
+    game.retry();
+});
+
+document.querySelector("#volume").addEventListener("click", () => {
+    game.volume();
+});
+
+document.querySelector("#home").addEventListener("click", () => {
+    game.return_menu();
+});

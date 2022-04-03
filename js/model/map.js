@@ -126,6 +126,7 @@ export class Map {
         data.moveCount = this.#moveCount;
 
         data.layout = this.#exportLayout();
+        return data;
     }
 
     /**

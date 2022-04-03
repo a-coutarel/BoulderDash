@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link href="../css/game.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../img/favicon.png" />
-    <script type="module" src="../js/application/game.js"></script>
     <title>BOULDER DASH : Jeu</title>
 </head>
 <body>
@@ -14,16 +13,17 @@
         <p>Nombre de diamants collectés : <span id="nb_diams_collected">0</span></p>
         <p>Nombre de déplacements : <span id="nb_deplacements">0</span></p>
         <div id="buttons">
-            <button onclick="retry()">Recommencer</button>
-            <button onclick="return_menu()">Retour à l'accueil</button>
+            <button id="retry">Recommencer</button>
+            <button id="home">Retour à l'accueil</button>
             <audio id="audio" autoplay loop>
                 <source src="../sound/game_music.mp3">
             </audio>
-            <button id="volume" onclick="volume()">Mute / Unmute</button>
+            <button id="volume">Mute / Unmute</button>
         </div>
     </sidebar>
     <content>
         <boulderdash></boulderdash>
     </content>
+    <script type="module" src="../js/application/game.js"></script>
 </body>
 </html>
