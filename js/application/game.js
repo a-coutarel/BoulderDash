@@ -56,7 +56,7 @@ function printMap() {
             let cell = document.createElement("div");  
             switch (tab[i][j]) {
                 case T: cell.style.backgroundImage = "url('../img/textures/dirt.png')"; break;
-                case V: cell.innerHTML = ""; break;
+                case V: cell.style.backgroundImage = "url('../img/textures/background.png')"; break;
                 case R: cell.style.backgroundImage = "url('../img/textures/stone.png')"; break;
                 case M: cell.style.backgroundImage = "url('../img/textures/wall.png')"; break;
                 case P: cell.style.backgroundImage = "url('../img/textures/rockford.png')"; break;

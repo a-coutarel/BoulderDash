@@ -265,5 +265,5 @@ export class map {
 
 /**
  * utiliser deux listes : nextUpdate et update
- * toutes les 0.1 secondes, nextUpdate devient update et ce nouvel update est appliqué, remplissant le nextUpdate le cas échéant
+ * toutes les 0.1 secondes, nextUpdate devient update et ce nouvel update est applique, remplissant le nextUpdate le cas echeant
 */
