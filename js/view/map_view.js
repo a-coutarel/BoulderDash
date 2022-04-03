@@ -38,6 +38,8 @@ export class MapView {
             }
         }
         document.querySelector("#nb_diams_present").innerText = data.rDiamond;
+        document.querySelector("#nb_diams_collected").innerText = data.cDiamond;
+        document.querySelector("#nb_deplacements").innerText = data.moveCount;
     }
 
 
