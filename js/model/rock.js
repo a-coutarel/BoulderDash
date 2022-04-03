@@ -30,14 +30,14 @@ export class Rock extends Generic_item {
 
         if (downNeighbor == null) {
             this.#falling = true;
-            this.map.moveItem(this.coordinates, coordDown);
             this.map.addNeighborsToUpdate(this.coordinates);
+            this.map.moveItem(this.coordinates, coordDown);
             return
         }
 
         if (downNeighbor == ROCKFORD && this.#falling) {
-            this.map.moveItem(this.coordinates, coordDown);
             this.map.addNeighborsToUpdate(this.coordinates);
+            this.map.moveItem(this.coordinates, coordDown);
             this.map.death();
             return
         }
