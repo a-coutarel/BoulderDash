@@ -1,4 +1,4 @@
-import { Map } from "../model/map.js";
+import { Map, MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGHT, NOMOVE } from "../model/map.js";
 import { MapView } from "../view/map_view.js";
 
 
@@ -15,6 +15,9 @@ export class MapController {
     constructor() {
         this.#view = new MapView(this);
         this.#map = new Map(this);
+        document.controller = this;
+
+        this.#setupKeyListening();
     }
 
     get map() { return this.#map; };
@@ -52,7 +55,30 @@ export class MapController {
         this.#view.update(data);
     }
 
+    #setupKeyListening() {
+        document.addEventListener('keydown', function (event) {
+            let map = this.controller.map;
+            switch (event.keyCode) {
+                case 38:
+                case 90:
+                    map.playerOrder(MOVEUP);
+                    break;
+                case 40:
+                case 83:
+                    map.playerOrder(MOVEDOWN);
+                    break;
+                case 37:
+                case 81:
+                    map.playerOrder(MOVELEFT);
+                    break;
+                case 39:
+                case 68:
+                    map.playerOrder(MOVERIGHT);
+                    break;
 
+            }
+        });
+    }
 
 
 

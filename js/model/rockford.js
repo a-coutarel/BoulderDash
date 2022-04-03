@@ -1,6 +1,6 @@
 import { Coordinates } from "./coordinates.js";
-import { Generic_item, DIRT, ROCK, WALL, DIAMOND, unbreakable } from "./generic_item.js";
-import { MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGTH, NOMOVE} from "./map.js";
+import { Generic_item, DIRT, ROCK, WALL, DIAMOND, unbreakable, ROCKFORD } from "./generic_item.js";
+import { MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGHT, NOMOVE} from "./map.js";
 
 export class Rockford extends Generic_item {
 
@@ -11,7 +11,7 @@ export class Rockford extends Generic_item {
      */
     constructor(map, coordinates)
     {
-        super(DIRT, map, coordinates);
+        super(ROCKFORD, map, coordinates);
     }
 
     /**
@@ -22,16 +22,16 @@ export class Rockford extends Generic_item {
 
         switch (order) {
             case MOVEUP:
-                this.#moveUp;
+                this.#moveUp();
                 break;
             case MOVEDOWN:
-                this.#moveDown;
+                this.#moveDown();
                 break;
             case MOVELEFT:
-                this.#moveLeft;
+                this.#moveLeft();
                 break;
             case MOVERIGHT:
-                this.#moveRight;
+                this.#moveRight();
                 break;
         }
 
@@ -45,11 +45,11 @@ export class Rockford extends Generic_item {
 
         if (!this.map.isOnMap(coordUp)) return;
 
-        upNeighbor = this.map.getItemType(coordUp);
+        let upNeighbor = this.map.getItemType(coordUp);
 
-        if (!(upNeighbor == null) && (unbreakable.includes(upNeighbor.type()))) return;
+        if (!(upNeighbor == null) && (unbreakable.includes(upNeighbor.type))) return;
 
-        if (!(upNeighbor == null) && (upNeighbor.type() == DIAMOND)) {
+        if (!(upNeighbor == null) && (upNeighbor.type == DIAMOND)) {
             this.map.collectDiamond();
         }
 
@@ -66,11 +66,11 @@ export class Rockford extends Generic_item {
 
         if (!this.map.isOnMap(coordDown)) return;
 
-        downNeighbor = this.map.getItemType(coordDown);
+        let downNeighbor = this.map.getItemType(coordDown);
 
-        if (!(downNeighbor == null) && (unbreakable.includes(downNeighbor.type()))) return;
+        if (!(downNeighbor == null) && (unbreakable.includes(downNeighbor.type))) return;
 
-        if (!(downNeighbor == null) && (downNeighbor.type() == DIAMOND)) {
+        if (!(downNeighbor == null) && (downNeighbor.type == DIAMOND)) {
             this.map.collectDiamond();
         }
 
@@ -87,11 +87,11 @@ export class Rockford extends Generic_item {
 
         if (!this.map.isOnMap(coordRight)) return;
 
-        rightNeighbor = this.map.getItemType(coordRight);
+        let rightNeighbor = this.map.getItemType(coordRight);
 
-        if (!(rightNeighbor == null) && (rightNeighbor.type()) == WALL) return;
+        if (!(rightNeighbor == null) && (rightNeighbor.type) == WALL) return;
 
-        if (!(rightNeighbor == null) && (rightNeighbor.type()) == ROCK) {
+        if (!(rightNeighbor == null) && (rightNeighbor.type) == ROCK) {
             if (this.map.getItemType(coordRight.right() == null)) {
                 this.map.moveItem(coordRight, coordRight.right());
                 this.map.moveItem(this.coordinates, coordRight);
@@ -99,7 +99,7 @@ export class Rockford extends Generic_item {
             return
         }
 
-        if (!(rightNeighbor == null) && (rightNeighbor.type() == DIAMOND)) {
+        if (!(rightNeighbor == null) && (rightNeighbor.type == DIAMOND)) {
             this.map.collectDiamond();
         }
 
@@ -116,11 +116,11 @@ export class Rockford extends Generic_item {
 
         if (!this.map.isOnMap(coordLeft)) return;
 
-        leftNeighbor = this.map.getItemType(coordLeft);
+        let leftNeighbor = this.map.getItemType(coordLeft);
 
-        if (!(leftNeighbor == null) && (leftNeighbor.type()) == WALL) return;
+        if (!(leftNeighbor == null) && (leftNeighbor.type) == WALL) return;
 
-        if (!(leftNeighbor == null) && (leftNeighbor.type()) == ROCK) {
+        if (!(leftNeighbor == null) && (leftNeighbor.type) == ROCK) {
             if (this.map.getItemType(coordLeft.left() == null)) {
                 this.map.moveItem(coordLeft, coordLeft.left());
                 this.map.moveItem(this.coordinates, coordLeft);
@@ -128,7 +128,7 @@ export class Rockford extends Generic_item {
             return
         }
 
-        if (!(leftNeighbor == null) && (leftNeighbor.type() == DIAMOND)) {
+        if (!(leftNeighbor == null) && (leftNeighbor.type == DIAMOND)) {
             this.map.collectDiamond();
         }
 

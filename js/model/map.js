@@ -11,7 +11,7 @@ import { Wall } from "./wall.js";
 export const MOVEUP = "move_up";
 export const MOVEDOWN = "move_down";
 export const MOVELEFT = "move_left";
-export const MOVERIGTH = "move_right";
+export const MOVERIGHT = "move_right";
 export const NOMOVE = "no_move";
 
 export const T = 'T';
@@ -61,6 +61,7 @@ export class Map {
      */
     constructor(mapController) {
         this.#controller = mapController;
+        Window.map = this;
 
         this.#update = [];
         this.#nextUpdate = [];
@@ -75,7 +76,6 @@ export class Map {
         this.#nextMove = NOMOVE;
 
         this.#initiateGrid();
-        console.log(this.#grid);
     }
 
     /**
@@ -200,7 +200,7 @@ export class Map {
                         this.#grid[y][x] = null;
                         break;
                     case P:
-                        this.#playerLoc = new Rockford(this, new Coordinates({ x: x, y: y }));
+                        this.#playerLoc = new Coordinates({ x: x, y: y });
                         this.#grid[y][x] = new Rockford(this, new Coordinates({ x: x, y: y }));
                         break;
 
@@ -216,7 +216,7 @@ export class Map {
      */
     playerOrder(order) {
         this.#nextMove = order;
-        if (!this.#updatePlanned) this.#updatePlanned = true;
+        if (!this.#updatePlanned) this.#runUpdate();
     }
 
     get nextMove() { return this.#nextMove; }
@@ -225,32 +225,34 @@ export class Map {
      * runs the update of all items which need one
      */
     #runUpdate() {
-        this.#updatePlanned = false;
+        // the map needs to be referenced at by an absolute declaration as the function will be executed after a timeout sometimes
+        let map = document.controller.map;
+        map.#updatePlanned = false;
 
         // actual update
 
-        if (this.#nextMove != NOMOVE) {
-            this.#update.push(this.#playerLoc);
-            this.#updatePlanned = true;
+        if (map.#nextMove != NOMOVE) {
+            map.#update.push(map.#playerLoc);
+            map.#updatePlanned = true;
         }
 
-        for (let coord of this.#update) if (!(this.#grid[coord.y()][coord.x()] == null)) this.#grid[coord.y()][coord.x()].update();
+        for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
 
         // warns the controller of the update
         let data = {};
-        data.layout = this.#exportLayout();
-        data.gameOver = this.#gameOver;
-        data.cDiamond = this.#cdiamond;
-        data.rDiamond = this.#rdiamond;
-        data.moveCount = this.#moveCount;
-        this.#controller.notify(data);
+        data.layout = map.#exportLayout();
+        data.gameOver = map.#gameOver;
+        data.cDiamond = map.#cdiamond;
+        data.rDiamond = map.#rdiamond;
+        data.moveCount = map.#moveCount;
+        map.#controller.notify(data);
 
         // to do after the update
-        this.#update = this.#nextUpdate.map((x) => x);
-        this.#nextUpdate = [];
-        this.#nextMove = NOMOVE;
+        map.#update = map.#nextUpdate.map((x) => x);
+        map.#nextUpdate = [];
+        map.#nextMove = NOMOVE;
 
-        if (this.#updatePlanned) setTimeout(this.#runUpdate, refreshTime);
+        if (map.#updatePlanned) setTimeout(map.#runUpdate, refreshTime);
     }
 
     /**
@@ -299,7 +301,10 @@ export class Map {
      * @param {Coordinates} coord coordinates to check
      * @returns item type
      */
-    getItemType(coord) { return this.#grid[coord.y][coord.x].type; }
+    getItemType(coord) {
+        if (this.#grid[coord.y][coord.x] == null) return null;
+        return this.#grid[coord.y][coord.x].type;
+    }
 
     /**
      * Moves an item from coordA to coordB
@@ -309,7 +314,7 @@ export class Map {
     moveItem(coordA, coordB) {
         this.#grid[coordB.y][coordB.x] = this.#grid[coordA.y][coordA.x];
         this.#grid[coordA.y][coordA.x] = null;
-        this.#grid[coordB.y][coordB.x].coordinates(coordB);
+        this.#grid[coordB.y][coordB.x].coordinates = coordB;
         if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y) this.#playerLoc = coordB;
     }
 

@@ -26,7 +26,7 @@ export class Rock extends Generic_item {
             return;
         }
 
-        downNeighbor = this.map.getItemType(coordDown);
+        const downNeighbor = this.map.getItemType(coordDown);
 
         if (downNeighbor == null) {
             this.#falling = true;
