@@ -2,7 +2,7 @@ import { Coordinates } from "./coordinates.js";
 import { Generic_item, DIRT, ROCK, WALL, DIAMOND, unbreakable } from "./generic_item.js";
 import { MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGTH, NOMOVE} from "./map.js";
 
-export class Dirt extends Generic_item {
+export class Rockford extends Generic_item {
 
     /**
      * Constructor
@@ -18,17 +18,21 @@ export class Dirt extends Generic_item {
      * Updates the item if one of its neighbors moved
      */
     update() {
-        const order = this.#map.nextMove;
+        const order = this.map.nextMove;
 
         switch (order) {
             case MOVEUP:
                 this.#moveUp;
+                break;
             case MOVEDOWN:
                 this.#moveDown;
+                break;
             case MOVELEFT:
                 this.#moveLeft;
+                break;
             case MOVERIGHT:
                 this.#moveRight;
+                break;
         }
 
     }
@@ -37,100 +41,100 @@ export class Dirt extends Generic_item {
      * Moves Rockford upward, if possible
      */
     #moveUp() {
-        const coordUp = this.#coordinates.up();
+        const coordUp = this.coordinates.up();
 
-        if (!this.#map.isOnMap(coordUp)) return;
+        if (!this.map.isOnMap(coordUp)) return;
 
-        upNeighbor = this.#map.getItemType(coordUp);
+        upNeighbor = this.map.getItemType(coordUp);
 
         if (!(upNeighbor == null) && (unbreakable.includes(upNeighbor.type()))) return;
 
         if (!(upNeighbor == null) && (upNeighbor.type() == DIAMOND)) {
-            this.#map.collectDiamond();
+            this.map.collectDiamond();
         }
 
-        this.#map.moveItem(this.#coordinates, coordUp);
-        this.#map.addNeighborsToUpdate(this.#coordinates);
-        this.#map.addMovement();
+        this.map.moveItem(this.coordinates, coordUp);
+        this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.addMovement();
     }
 
     /**
      * Moves Rockford downward, if possible
      */
     #moveDown() {
-        const coordDown = this.#coordinates.down();
+        const coordDown = this.coordinates.down();
 
-        if (!this.#map.isOnMap(coordDown)) return;
+        if (!this.map.isOnMap(coordDown)) return;
 
-        downNeighbor = this.#map.getItemType(coordDown);
+        downNeighbor = this.map.getItemType(coordDown);
 
         if (!(downNeighbor == null) && (unbreakable.includes(downNeighbor.type()))) return;
 
         if (!(downNeighbor == null) && (downNeighbor.type() == DIAMOND)) {
-            this.#map.collectDiamond();
+            this.map.collectDiamond();
         }
 
-        this.#map.moveItem(this.#coordinates, coordDown);
-        this.#map.addNeighborsToUpdate(this.#coordinates);
-        this.#map.addMovement();
+        this.map.moveItem(this.coordinates, coordDown);
+        this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.addMovement();
     }
 
     /**
      * Moves Rockford rightward, if possible
      */
     #moveRight() {
-        const coordRight = this.#coordinates.right();
+        const coordRight = this.coordinates.right();
 
-        if (!this.#map.isOnMap(coordRight)) return;
+        if (!this.map.isOnMap(coordRight)) return;
 
-        rightNeighbor = this.#map.getItemType(coordRight);
+        rightNeighbor = this.map.getItemType(coordRight);
 
         if (!(rightNeighbor == null) && (rightNeighbor.type()) == WALL) return;
 
         if (!(rightNeighbor == null) && (rightNeighbor.type()) == ROCK) {
-            if (this.#map.getItemType(coordRight.right() == null)) {
-                this.#map.moveItem(coordRight, coordRight.right());
-                this.#map.moveItem(this.#coordinates, coordRight);
+            if (this.map.getItemType(coordRight.right() == null)) {
+                this.map.moveItem(coordRight, coordRight.right());
+                this.map.moveItem(this.coordinates, coordRight);
             }
             return
         }
 
         if (!(rightNeighbor == null) && (rightNeighbor.type() == DIAMOND)) {
-            this.#map.collectDiamond();
+            this.map.collectDiamond();
         }
 
-        this.#map.moveItem(this.#coordinates, coordRight);
-        this.#map.addNeighborsToUpdate(this.#coordinates);
-        this.#map.addMovement();
+        this.map.moveItem(this.coordinates, coordRight);
+        this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.addMovement();
     }
 
     /** 
      * Moves Rockford leftward, if possible
      * */
     #moveLeft() {
-        const coordLeft = this.#coordinates.left();
+        const coordLeft = this.coordinates.left();
 
-        if (!this.#map.isOnMap(coordLeft)) return;
+        if (!this.map.isOnMap(coordLeft)) return;
 
-        leftNeighbor = this.#map.getItemType(coordLeft);
+        leftNeighbor = this.map.getItemType(coordLeft);
 
         if (!(leftNeighbor == null) && (leftNeighbor.type()) == WALL) return;
 
         if (!(leftNeighbor == null) && (leftNeighbor.type()) == ROCK) {
-            if (this.#map.getItemType(coordLeft.left() == null)) {
-                this.#map.moveItem(coordLeft, coordLeft.left());
-                this.#map.moveItem(this.#coordinates, coordLeft);
+            if (this.map.getItemType(coordLeft.left() == null)) {
+                this.map.moveItem(coordLeft, coordLeft.left());
+                this.map.moveItem(this.coordinates, coordLeft);
             }
             return
         }
 
         if (!(leftNeighbor == null) && (leftNeighbor.type() == DIAMOND)) {
-            this.#map.collectDiamond();
+            this.map.collectDiamond();
         }
 
-        this.#map.moveItem(this.#coordinates, coordLeft);
-        this.#map.addNeighborsToUpdate(this.#coordinates);
-        this.#map.addMovement();
+        this.map.moveItem(this.coordinates, coordLeft);
+        this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.addMovement();
     }
 
 }

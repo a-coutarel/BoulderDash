@@ -1,4 +1,92 @@
+import { MapController } from "../controller/map_controller.js";
+import { T, V, R, M, P, D } from "../model/map.js";
 
+export class MapView {
+    // controller of the map
+    #controller;
+
+    /**
+     * Constructor
+     * @param {any} controller
+     */
+    constructor(controller) {
+        this.#controller = controller;
+    }
+
+    /**
+     * Update the view
+     * @param {any} data
+     */
+    update(data) {
+        let layout = data.layout;
+        const map = document.querySelector("boulderdash");
+        map.innerHTML = "";
+        map.style.setProperty('--grid-rows', 16);
+        map.style.setProperty('--grid-cols', 32);
+        for (let i = 0; i < 16; i++) {
+            for (let j = 0; j < 32; j++) {
+                let cell = document.createElement("div");
+                switch (layout[i][j]) {
+                    case T: cell.style.backgroundImage = "url('../img/textures/dirt.png')"; break;
+                    case V: cell.style.backgroundImage = "url('../img/textures/background.png')"; break;
+                    case R: cell.style.backgroundImage = "url('../img/textures/stone.png')"; break;
+                    case M: cell.style.backgroundImage = "url('../img/textures/wall.png')"; break;
+                    case P: cell.style.backgroundImage = "url('../img/textures/rockford.png')"; break;
+                    case D: cell.style.backgroundImage = "url('../img/textures/diamond.png')"; break;
+                }
+                map.appendChild(cell).className = "grid-item";
+            }
+        }
+        document.querySelector("#nb_diams_present").innerText = data.rDiamond;
+    }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 let inputElement = document.getElementById("file");
 inputElement.addEventListener("change", getLayout, false);
@@ -23,10 +111,6 @@ function getLayout() {
   return layout;
 }
 
-
-
-
-/*
 
 [T,T,T,T,T,T,V,T,T,D,T,R,V,T,T,T,T,T,R,T,R,T,T,T,T,T,T,T,V,T,T,T],
 [T,R,P,R,T,T,T,T,T,T,V,T,T,T,T,T,T,T,T,T,R,D,T,T,R,T,T,T,T,V,T,T],

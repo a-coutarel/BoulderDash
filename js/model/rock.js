@@ -19,26 +19,26 @@ export class Rock extends Generic_item {
      * Updates the item if one of its neighbors moved
      */
     update() {
-        const coordDown = this.#coordinates.down();
+        const coordDown = this.coordinates.down();
 
-        if (!this.#map.isOnMap(coordDown)) {
+        if (!this.map.isOnMap(coordDown)) {
             this.#falling = false;
             return;
         }
 
-        downNeighbor = this.#map.getItemType(coordDown);
+        downNeighbor = this.map.getItemType(coordDown);
 
         if (downNeighbor == null) {
             this.#falling = true;
-            this.#map.moveItem(this.#coordinates, coordDown);
-            this.#map.addNeighborsToUpdate(this.#coordinates);
+            this.map.moveItem(this.coordinates, coordDown);
+            this.map.addNeighborsToUpdate(this.coordinates);
             return
         }
 
         if (downNeighbor == ROCKFORD && this.#falling) {
-            this.#map.moveItem(this.#coordinates, coordDown);
-            this.#map.addNeighborsToUpdate(this.#coordinates);
-            this.#map.death();
+            this.map.moveItem(this.coordinates, coordDown);
+            this.map.addNeighborsToUpdate(this.coordinates);
+            this.map.death();
             return
         }
 

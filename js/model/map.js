@@ -1,6 +1,8 @@
+import { MapController } from "../controller/map_controller.js";
 import { Coordinates } from "./coordinates.js";
 import { Diamond } from "./diamond.js";
 import { Dirt } from "./dirt.js";
+import { DIRT, ROCK, DIAMOND, WALL, ROCKFORD } from "./generic_item.js";
 import { Rock } from "./rock.js";
 import { Rockford } from "./rockford.js";
 import { Wall } from "./wall.js";
@@ -23,7 +25,10 @@ export const D = 'D';
 
 const refreshTime = 100;
 
-export class map {
+export class Map {
+    // controller of the map
+    #controller;
+
     // grid used to place items
     #grid;
 
@@ -52,8 +57,11 @@ export class map {
 
     /**
      * Constructor
+     * @param {any} mapController associated with the map
      */
-    constructor() {
+    constructor(mapController) {
+        this.#controller = mapController;
+
         this.#update = [];
         this.#nextUpdate = [];
 
@@ -64,9 +72,10 @@ export class map {
         this.#moveCount = 0;
 
         this.#gameOver = false;
-        this.#nextMove = NONE;
+        this.#nextMove = NOMOVE;
 
         this.#initiateGrid();
+        console.log(this.#grid);
     }
 
     /**
@@ -75,11 +84,11 @@ export class map {
     #initiateGrid() {
         this.#grid = [];
 
-        for (const y = 0; y < 16; ++y) {
+        for (let y = 0; y < 16; ++y) {
 
             let line = [];
 
-            for (const x = 0; x < 32; ++x) {
+            for (let x = 0; x < 32; ++x) {
                 line.push(null);
             }
 
@@ -87,27 +96,82 @@ export class map {
         }
     }
 
+
     /**
      * Loads a game
-     * @param {*} layout : disposition of the items on the map
-     * @param {*} data : extra data from a saved game
+     * @param {Dictionnary} data : data from a saved game, including layout of the map, gameOver, cDiamond and moveCount
      */
-    loadGame(layout, data) {
+    loadGame(data) {
 
-        this.#gameOver = date[0];
+        this.#gameOver = data.gameOver;
 
-        this.#cdiamond = data[1];
-        this.#moveCount = data[2];
+        this.#cdiamond = data.cDiamond;
+        this.#moveCount = data.moveCount;
 
+        this.#placeItems(data.layout);
 
-        this.#placeItems(layout);
+        this.#runUpdate();
     }
 
     /**
      * Returns the current disposition and data
+     * @return a dictionnary containing data from the game, including layout of the map, gameOver, cDiamond and moveCount
      */
     saveGame() {
+        let data = {};
 
+        data.gameOver = this.#gameOver;
+
+        data.cDiamond = this.#cdiamond;
+        data.moveCount = this.#moveCount;
+
+        data.layout = this.#exportLayout();
+    }
+
+    /**
+     * Returns the current disposition
+     * @return an array containing the current disposition of the map
+     */
+    #exportLayout() {
+        let layout = [];
+        for (let y = 0; y < 16; ++y) {
+            let line = [];
+
+            for (let x = 0; x < 32; ++x) {
+                const VOID = "void";
+
+                const item = this.#grid[y][x];
+                let itemType = "";
+                if (item == null) {
+                    itemType = VOID;
+                } else {
+                    itemType = item.type;
+                }
+
+                switch (itemType) {
+                    case WALL:
+                        line.push(M);
+                        break;
+                    case DIAMOND:
+                        line.push(D);
+                        break;
+                    case DIRT:
+                        line.push(T);
+                        break;
+                    case ROCK:
+                        line.push(R);
+                        break;
+                    case VOID:
+                        line.push(V);
+                        break;
+                    case ROCKFORD:
+                        line.push(P);
+                        break;
+                }
+            }
+            layout.push(line);
+        }
+        return layout;
     }
 
     /**
@@ -115,26 +179,33 @@ export class map {
      * @param {Array} layout : disposition of the items on the map
      */
     #placeItems(layout) {
-        for (const y = 0; y < 16; ++y) {
-            for (const x = 0; x < 32; ++x) {
-                const itemType = layout[y][x];
+        for (let y = 0; y < 16; ++y) {
+            for (let x = 0; x < 32; ++x) {
+                let itemType = layout[y][x];
                 switch (itemType) {
                     case M:
                         this.#grid[y][x] = new Wall(this, new Coordinates({ x: x, y: y }));
+                        break;
                     case D:
                         this.#grid[y][x] = new Diamond(this, new Coordinates({ x: x, y: y }));
                         ++this.#rdiamond;
+                        break;
                     case T:
                         this.#grid[y][x] = new Dirt(this, new Coordinates({ x: x, y: y }));
+                        break;
                     case R:
                         this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }));
+                        break;
                     case V:
                         this.#grid[y][x] = null;
+                        break;
                     case P:
                         this.#playerLoc = new Rockford(this, new Coordinates({ x: x, y: y }));
                         this.#grid[y][x] = new Rockford(this, new Coordinates({ x: x, y: y }));
+                        break;
 
                 }
+                this.#addToUpdate(new Coordinates({ x: x, y: y }));
             }
         }
     }
@@ -158,9 +229,21 @@ export class map {
 
         // actual update
 
-        if (this.#nextMove != NOMOVE) this.#nextUpdate.push(this.#playerLoc);
+        if (this.#nextMove != NOMOVE) {
+            this.#update.push(this.#playerLoc);
+            this.#updatePlanned = true;
+        }
 
-        for (const coord of this.#update) if (!(this.#grid[coord.y()][coord.x()] == null)) this.#grid[coord.y()][coord.x()].update();
+        for (let coord of this.#update) if (!(this.#grid[coord.y()][coord.x()] == null)) this.#grid[coord.y()][coord.x()].update();
+
+        // warns the controller of the update
+        let data = {};
+        data.layout = this.#exportLayout();
+        data.gameOver = this.#gameOver;
+        data.cDiamond = this.#cdiamond;
+        data.rDiamond = this.#rdiamond;
+        data.moveCount = this.#moveCount;
+        this.#controller.notify(data);
 
         // to do after the update
         this.#update = this.#nextUpdate.map((x) => x);
@@ -197,9 +280,9 @@ export class map {
         const lx = [1, 0, -1, 0];
         const ly = [0, 1, 0, -1];
 
-        for (const n = 0; n < 4; ++n) {
+        for (let n = 0; n < 4; ++n) {
             const neighbor = new Coordinates({ x: coord_x + lx[n], y: coord_y + ly[n] });
-            if (this.#isOnMap(neighbor)) this.#addToUpdate(neighbor);
+            if (this.isOnMap(neighbor)) this.#addToUpdate(neighbor);
         }
 
     }
