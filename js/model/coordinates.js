@@ -57,7 +57,7 @@ export class Coordinates {
      * @returns the coordinates located right to the given coordinate
      */
     right(coord) {
-        const out = new Coordinates({ x: this.#x - 1, y: this.#y })
+        const out = new Coordinates({ x: this.#x + 1, y: this.#y })
         return out;
     }
 }

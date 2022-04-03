@@ -95,6 +95,7 @@ export class Rockford extends Generic_item {
             if (this.map.getItemType(coordRight.right() == null)) {
                 this.map.moveItem(coordRight, coordRight.right());
                 this.map.moveItem(this.coordinates, coordRight);
+                this.map.addMovement();
             }
             return
         }
@@ -124,6 +125,7 @@ export class Rockford extends Generic_item {
             if (this.map.getItemType(coordLeft.left() == null)) {
                 this.map.moveItem(coordLeft, coordLeft.left());
                 this.map.moveItem(this.coordinates, coordLeft);
+                this.map.addMovement();
             }
             return
         }
