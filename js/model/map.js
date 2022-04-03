@@ -216,7 +216,7 @@ export class Map {
      */
     playerOrder(order) {
         this.#nextMove = order;
-        if (!this.#updatePlanned) this.#runUpdate();
+        this.triggerUpdate();
     }
 
     get nextMove() { return this.#nextMove; }
@@ -225,16 +225,22 @@ export class Map {
      * runs the update of all items which need one
      */
     #runUpdate() {
+        console.log("update");
         // the map needs to be referenced at by an absolute declaration as the function will be executed after a timeout sometimes
         let map = document.controller.map;
         map.#updatePlanned = false;
 
+        map.#update = map.#nextUpdate.map((x) => x);
+        map.#nextUpdate = [];
+
         // actual update
 
-        if (map.#nextMove != NOMOVE) {
+        if (map.nextMove != NOMOVE) {
             map.#update.push(map.#playerLoc);
             map.#updatePlanned = true;
         }
+
+        console.log(map.#update);
 
         for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
 
@@ -248,8 +254,6 @@ export class Map {
         map.#controller.notify(data);
 
         // to do after the update
-        map.#update = map.#nextUpdate.map((x) => x);
-        map.#nextUpdate = [];
         map.#nextMove = NOMOVE;
 
         if (map.#updatePlanned) setTimeout(map.#runUpdate, refreshTime);
@@ -260,6 +264,7 @@ export class Map {
      */
     triggerUpdate() {
         if (!this.#updatePlanned) this.#runUpdate();
+        else this.#updatePlanned = true;
     }
 
     /**
@@ -312,9 +317,12 @@ export class Map {
      * @param {Coordinates} coordB coordinates where to move the item
      */
     moveItem(coordA, coordB) {
+        coordA = new Coordinates({ x: coordA.x, y: coordA.y });
+
         this.#grid[coordB.y][coordB.x] = this.#grid[coordA.y][coordA.x];
         this.#grid[coordA.y][coordA.x] = null;
         this.#grid[coordB.y][coordB.x].coordinates = coordB;
+
         if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y) this.#playerLoc = coordB;
     }
 

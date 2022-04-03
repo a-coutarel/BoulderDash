@@ -19,7 +19,7 @@ export class Rockford extends Generic_item {
      */
     update() {
         const order = this.map.nextMove;
-
+        console.log(order);
         switch (order) {
             case MOVEUP:
                 this.#moveUp();
@@ -47,14 +47,14 @@ export class Rockford extends Generic_item {
 
         let upNeighbor = this.map.getItemType(coordUp);
 
-        if (!(upNeighbor == null) && (unbreakable.includes(upNeighbor.type))) return;
+        if (upNeighbor != null && unbreakable.includes(upNeighbor)) return;
 
-        if (!(upNeighbor == null) && (upNeighbor.type == DIAMOND)) {
+        if (upNeighbor != null && upNeighbor == DIAMOND) {
             this.map.collectDiamond();
         }
 
-        this.map.moveItem(this.coordinates, coordUp);
         this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.moveItem(this.coordinates, coordUp);
         this.map.addMovement();
     }
 
@@ -68,14 +68,14 @@ export class Rockford extends Generic_item {
 
         let downNeighbor = this.map.getItemType(coordDown);
 
-        if (!(downNeighbor == null) && (unbreakable.includes(downNeighbor.type))) return;
+        if (!(downNeighbor == null) && (unbreakable.includes(downNeighbor))) return;
 
-        if (!(downNeighbor == null) && (downNeighbor.type == DIAMOND)) {
+        if (!(downNeighbor == null) && (downNeighbor == DIAMOND)) {
             this.map.collectDiamond();
         }
 
-        this.map.moveItem(this.coordinates, coordDown);
         this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.moveItem(this.coordinates, coordDown);
         this.map.addMovement();
     }
 
@@ -89,23 +89,25 @@ export class Rockford extends Generic_item {
 
         let rightNeighbor = this.map.getItemType(coordRight);
 
-        if (!(rightNeighbor == null) && (rightNeighbor.type) == WALL) return;
+        if (!(rightNeighbor == null) && (rightNeighbor) == WALL) return;
 
-        if (!(rightNeighbor == null) && (rightNeighbor.type) == ROCK) {
-            if (this.map.getItemType(coordRight.right() == null)) {
+        if (!(rightNeighbor == null) && (rightNeighbor) == ROCK) {
+            if (this.map.getItemType(coordRight.right()) == null) {
+                this.map.addNeighborsToUpdate(this.coordinates);
+                this.map.addNeighborsToUpdate(coordRight);
                 this.map.moveItem(coordRight, coordRight.right());
                 this.map.moveItem(this.coordinates, coordRight);
                 this.map.addMovement();
             }
-            return
+            return;
         }
 
-        if (!(rightNeighbor == null) && (rightNeighbor.type == DIAMOND)) {
+        if (!(rightNeighbor == null) && (rightNeighbor == DIAMOND)) {
             this.map.collectDiamond();
         }
 
-        this.map.moveItem(this.coordinates, coordRight);
         this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.moveItem(this.coordinates, coordRight);
         this.map.addMovement();
     }
 
@@ -119,10 +121,12 @@ export class Rockford extends Generic_item {
 
         let leftNeighbor = this.map.getItemType(coordLeft);
 
-        if (!(leftNeighbor == null) && (leftNeighbor.type) == WALL) return;
+        if (!(leftNeighbor == null) && (leftNeighbor) == WALL) return;
 
-        if (!(leftNeighbor == null) && (leftNeighbor.type) == ROCK) {
-            if (this.map.getItemType(coordLeft.left() == null)) {
+        if (!(leftNeighbor == null) && (leftNeighbor) == ROCK) {
+            if (this.map.getItemType(coordLeft.left()) == null) {
+                this.map.addNeighborsToUpdate(this.coordinates);
+                this.map.addNeighborsToUpdate(coordLeft);
                 this.map.moveItem(coordLeft, coordLeft.left());
                 this.map.moveItem(this.coordinates, coordLeft);
                 this.map.addMovement();
@@ -130,12 +134,12 @@ export class Rockford extends Generic_item {
             return
         }
 
-        if (!(leftNeighbor == null) && (leftNeighbor.type == DIAMOND)) {
+        if (!(leftNeighbor == null) && (leftNeighbor == DIAMOND)) {
             this.map.collectDiamond();
         }
 
-        this.map.moveItem(this.coordinates, coordLeft);
         this.map.addNeighborsToUpdate(this.coordinates);
+        this.map.moveItem(this.coordinates, coordLeft);
         this.map.addMovement();
     }
 
