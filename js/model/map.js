@@ -17,8 +17,10 @@ export const NOMOVE = "no_move";
 export const T = 'T'; // Dirt
 export const V = 'V'; // Void
 export const R = 'R'; // Rock
+export const BR = 'BR'; // Bloody Rock
 export const M = 'M'; // Wall
 export const P = 'P'; // Player
+export const DP = 'DP'; // Dead Player (when he is not under a rock)
 export const D = 'D'; // Diamond
 
 
@@ -51,6 +53,8 @@ export class Map {
 
     // the game is over
     #gameOver;
+    //the player is dead
+    #playerDead;
 
     // last player entry
     #nextMove;
@@ -78,6 +82,7 @@ export class Map {
         this.#moveCount = 0;
 
         this.#gameOver = false;
+        this.#playerDead = false;
         this.#nextMove = NOMOVE;
         this.#newKeyPressed = false;
         this.#noMoveCount = 0;
@@ -111,6 +116,7 @@ export class Map {
     loadGame(data) {
 
         this.#gameOver = data.gameOver;
+        this.#playerDead = data.playerDead;
 
         this.#cdiamond = data.cDiamond;
         this.#moveCount = data.moveCount;
@@ -128,6 +134,7 @@ export class Map {
         let data = {};
 
         data.gameOver = this.#gameOver;
+        data.playerDead = this.#playerDead;
 
         data.cDiamond = this.#cdiamond;
         data.moveCount = this.#moveCount;
@@ -142,6 +149,7 @@ export class Map {
      */
     #exportLayout() {
         let layout = [];
+
         for (let y = 0; y < 16; ++y) {
             let line = [];
 
@@ -167,10 +175,12 @@ export class Map {
                         line.push(T);
                         break;
                     case ROCK:
-                        line.push(R);
+                        if (item.bloody) line.push(BR);
+                        else line.push(R);
                         break;
                     case VOID:
-                        line.push(V);
+                        if (this.#playerDead && (this.#playerLoc.x == x) && (this.#playerLoc.y == y)) line.push(DP);
+                        else line.push(V);
                         break;
                     case ROCKFORD:
                         line.push(P);
@@ -204,8 +214,15 @@ export class Map {
                     case R:
                         this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }));
                         break;
+                    case BR:
+                        this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }), true);
+                        break;
                     case V:
                         this.#grid[y][x] = null;
+                        break;
+                    case DP:
+                        this.#grid[y][x] = null;
+                        this.#playerLoc = new Coordinates({ x: x, y: y });
                         break;
                     case P:
                         this.#playerLoc = new Coordinates({ x: x, y: y });
@@ -256,7 +273,6 @@ export class Map {
      * runs the update of all items which need one
      */
     #runUpdate() {
-        console.log("update");
         // the map needs to be referenced at by an absolute declaration as the function will be executed after a timeout sometimes
         let map = document.controller.map;
         map.#updatePlanned = false;
@@ -366,7 +382,7 @@ export class Map {
         this.#grid[coordA.y][coordA.x] = null;
         this.#grid[coordB.y][coordB.x].coordinates = coordB;
 
-        if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y) this.#playerLoc = coordB;
+        if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y && !this.#playerDead) this.#playerLoc = coordB;
     }
 
     /**
@@ -389,6 +405,7 @@ export class Map {
      * When the player dies
      */
     death() {
+        this.#playerDead = true;
         this.#gameOver = true;
     }
 

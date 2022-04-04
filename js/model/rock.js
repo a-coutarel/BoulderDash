@@ -6,14 +6,22 @@ export class Rock extends Generic_item {
     // is the item falling ?
     #falling = false;
 
+    // is the rock bloody ?
+    #bloody;
+
     /**
      * Constructor
      * @param {Map} map : map on which is placed the item
      * @param {Coordinates} coordinates : coordinates of the item on the map
      */
-    constructor(map, coordinates) {
+    constructor(map, coordinates, bloody=false) {
         super(ROCK, map, coordinates);
+
+        this.#falling = false;
+        this.#bloody = bloody;
     }
+
+    get bloody() { return this.#bloody; };
 
     /**
      * Updates the item if one of its neighbors moved
@@ -38,6 +46,7 @@ export class Rock extends Generic_item {
         if (downNeighbor == ROCKFORD && this.#falling) {
             this.map.addNeighborsToUpdate(this.coordinates);
             this.map.moveItem(this.coordinates, coordDown);
+            this.#bloody = true;
             this.map.death();
             return
         }

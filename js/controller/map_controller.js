@@ -30,6 +30,7 @@ export class MapController {
         let data = {};
 
         data.gameOver = false;
+        data.playerDead = false;
 
         data.cDiamond = 0;
         data.moveCount = 0;
