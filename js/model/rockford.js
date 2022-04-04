@@ -92,13 +92,17 @@ export class Rockford extends Generic_item {
         if (!(rightNeighbor == null) && (rightNeighbor) == WALL) return;
 
         if (!(rightNeighbor == null) && (rightNeighbor) == ROCK) {
-            if (this.map.getItemType(coordRight.right()) == null) {
+            let rightOfRight = coordRight.right();
+            if (!this.map.isOnMap(rightOfRight)) return;
+
+            if (this.map.getItemType(rightOfRight) == null) {
                 this.map.addNeighborsToUpdate(this.coordinates);
                 this.map.addNeighborsToUpdate(coordRight);
-                this.map.moveItem(coordRight, coordRight.right());
+                this.map.moveItem(coordRight, rightOfRight);
                 this.map.moveItem(this.coordinates, coordRight);
                 this.map.addMovement();
             }
+
             return;
         }
 
@@ -124,10 +128,13 @@ export class Rockford extends Generic_item {
         if (!(leftNeighbor == null) && (leftNeighbor) == WALL) return;
 
         if (!(leftNeighbor == null) && (leftNeighbor) == ROCK) {
-            if (this.map.getItemType(coordLeft.left()) == null) {
+            let leftOfLeft = coordLeft.left();
+            if (!this.map.isOnMap(leftOfLeft)) return;
+
+            if (this.map.getItemType(leftOfLeft) == null) {
                 this.map.addNeighborsToUpdate(this.coordinates);
                 this.map.addNeighborsToUpdate(coordLeft);
-                this.map.moveItem(coordLeft, coordLeft.left());
+                this.map.moveItem(coordLeft, leftOfLeft);
                 this.map.moveItem(this.coordinates, coordLeft);
                 this.map.addMovement();
             }

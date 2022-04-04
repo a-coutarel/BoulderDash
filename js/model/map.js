@@ -14,12 +14,12 @@ export const MOVELEFT = "move_left";
 export const MOVERIGHT = "move_right";
 export const NOMOVE = "no_move";
 
-export const T = 'T';
-export const V = 'V';
-export const R = 'R';
-export const M = 'M';
-export const P = 'P';
-export const D = 'D';
+export const T = 'T'; // Dirt
+export const V = 'V'; // Void
+export const R = 'R'; // Rock
+export const M = 'M'; // Wall
+export const P = 'P'; // Player
+export const D = 'D'; // Diamond
 
 
 
@@ -240,8 +240,6 @@ export class Map {
             map.#update.push(map.#playerLoc);
             map.#updatePlanned = true;
         }
-
-        console.log(map.#update);
 
         for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
 

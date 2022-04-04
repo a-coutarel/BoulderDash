@@ -1,7 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\defaultLevels",
     "\\html",
     "\\js",
     "\\js\\application",
@@ -9,6 +8,5 @@
     "\\js\\model",
     "\\js\\view"
   ],
-  "SelectedNode": "\\js\\model\\map.js",
   "PreviewInSolutionExplorer": false
 }
