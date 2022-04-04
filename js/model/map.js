@@ -23,7 +23,7 @@ export const D = 'D'; // Diamond
 
 
 
-const refreshTime = 100;
+const refreshTime = 150;
 
 export class Map {
     // controller of the map
@@ -55,6 +55,11 @@ export class Map {
     // last player entry
     #nextMove;
 
+    // used to detect if a new key has been pressed since the last update and prevent sending of a false NOMOVE
+    #newKeyPressed;
+    // used to detect if, just after a key was released, another key was realesed very shortly after being pressed
+    #noMoveCount;
+
     /**
      * Constructor
      * @param {any} mapController associated with the map
@@ -74,6 +79,8 @@ export class Map {
 
         this.#gameOver = false;
         this.#nextMove = NOMOVE;
+        this.#newKeyPressed = false;
+        this.#noMoveCount = 0;
 
         this.#initiateGrid();
     }
@@ -213,11 +220,34 @@ export class Map {
 
     /**
      * Modify the next move of Rockford according to player's order
+     * The function can seems a bit strange: that is to counter the fact
+     * that the events 'keyup' and 'keydown' are not phased (we can receive two keydow then two keyup)
+     * and to keep a smooth movement without any pause just after the key is pressed
+     * (you know, the pause after the first letter when you are maintaining a key down)
      * @param {string} order : order given by player
      */
     playerOrder(order) {
-        this.#nextMove = order;
-        this.triggerUpdate();
+
+        if (order == this.#nextMove) {
+            this.#nextMove = order;
+            this.triggerUpdate();
+            return;
+        }
+
+        if (order != NOMOVE) {
+            this.#nextMove = order;
+            this.#newKeyPressed = true;
+            this.triggerUpdate();
+            return;
+        }
+
+        ++this.#noMoveCount;
+
+        if (!this.#newKeyPressed) {
+            this.#nextMove = order;
+            return;
+        }
+
     }
 
     get nextMove() { return this.#nextMove; }
@@ -237,7 +267,7 @@ export class Map {
         // actual update
 
         if (map.nextMove != NOMOVE) {
-            map.#update.push(map.#playerLoc);
+            if (!map.#includesCoordinates(map.#update, map.#playerLoc)) map.#update.push(map.#playerLoc);
             map.#updatePlanned = true;
         }
 
@@ -253,8 +283,9 @@ export class Map {
         map.#controller.notify(data);
 
         // to do after the update
-        map.#nextMove = NOMOVE;
-
+        if (map.#noMoveCount > 1) map.#nextMove = NOMOVE;
+        map.#noMoveCount = 0;
+        map.#newKeyPressed = false;
         if (map.#updatePlanned) setTimeout(map.#runUpdate, refreshTime);
     }
 
@@ -271,8 +302,21 @@ export class Map {
      * @param {Coordinates} coord : coordinates of the item to update
      */
     #addToUpdate(coord) {
-        if (!this.#nextUpdate.includes(coord)) this.#nextUpdate.push(coord);
+        if (!this.#includesCoordinates(this.#nextUpdate, coord)) this.#nextUpdate.push(coord);
         this.#updatePlanned = true;
+    }
+
+
+    /**
+     * Checks if the given list includes the given coordinates
+     * (Array.includes isn't sufficiante as it checks if to coordinates are the same instance of Coordinates,
+     * not if they are equals)
+     * @param {any} list
+     * @param {any} coorda
+     */
+    #includesCoordinates(list, coorda) {
+        for (let coordb of list) if (coorda.x == coordb.x && coorda.y == coordb.y) return true;
+        return false;
     }
 
     /**

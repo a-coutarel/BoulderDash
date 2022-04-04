@@ -78,6 +78,10 @@ export class MapController {
 
             }
         });
+        document.addEventListener('keyup', function (event) {
+            let map = this.controller.map;
+            map.playerOrder(NOMOVE);
+        });
     }
 
 

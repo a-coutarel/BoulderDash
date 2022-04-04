@@ -3,6 +3,10 @@ import { Generic_item, DIRT, ROCK, WALL, DIAMOND, unbreakable, ROCKFORD } from "
 import { MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGHT, NOMOVE} from "./map.js";
 
 export class Rockford extends Generic_item {
+    // is Rockford pushing right
+    #pushingR;
+    // is Rockford pushing left
+    #pushingL;
 
     /**
      * Constructor
@@ -12,6 +16,9 @@ export class Rockford extends Generic_item {
     constructor(map, coordinates)
     {
         super(ROCKFORD, map, coordinates);
+
+        this.#pushingL = false;
+        this.#pushingR = false;
     }
 
     /**
@@ -19,19 +26,29 @@ export class Rockford extends Generic_item {
      */
     update() {
         const order = this.map.nextMove;
-        console.log(order);
+
         switch (order) {
             case MOVEUP:
                 this.#moveUp();
+                this.#pushingL = false;
+                this.#pushingR = false;
                 break;
             case MOVEDOWN:
                 this.#moveDown();
+                this.#pushingL = false;
+                this.#pushingR = false;
                 break;
             case MOVELEFT:
                 this.#moveLeft();
+                this.#pushingR = false;
                 break;
             case MOVERIGHT:
                 this.#moveRight();
+                this.#pushingL = false;
+                break;
+            case NOMOVE:
+                this.#pushingL = false;
+                this.#pushingR = false;
                 break;
         }
 
@@ -95,7 +112,13 @@ export class Rockford extends Generic_item {
             let rightOfRight = coordRight.right();
             if (!this.map.isOnMap(rightOfRight)) return;
 
+            if (!this.#pushingR) {
+                this.#pushingR = true;
+                return;
+            }
+
             if (this.map.getItemType(rightOfRight) == null) {
+                this.#pushingR = false;
                 this.map.addNeighborsToUpdate(this.coordinates);
                 this.map.addNeighborsToUpdate(coordRight);
                 this.map.moveItem(coordRight, rightOfRight);
@@ -103,8 +126,13 @@ export class Rockford extends Generic_item {
                 this.map.addMovement();
             }
 
+            
+
             return;
         }
+
+
+        this.#pushingR = false;
 
         if (!(rightNeighbor == null) && (rightNeighbor == DIAMOND)) {
             this.map.collectDiamond();
@@ -131,7 +159,13 @@ export class Rockford extends Generic_item {
             let leftOfLeft = coordLeft.left();
             if (!this.map.isOnMap(leftOfLeft)) return;
 
+            if (!this.#pushingL) {
+                this.#pushingL = true;
+                return;
+            }
+
             if (this.map.getItemType(leftOfLeft) == null) {
+                this.#pushingL = false;
                 this.map.addNeighborsToUpdate(this.coordinates);
                 this.map.addNeighborsToUpdate(coordLeft);
                 this.map.moveItem(coordLeft, leftOfLeft);
@@ -140,6 +174,8 @@ export class Rockford extends Generic_item {
             }
             return
         }
+
+        this.#pushingL = false;
 
         if (!(leftNeighbor == null) && (leftNeighbor == DIAMOND)) {
             this.map.collectDiamond();
