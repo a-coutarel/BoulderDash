@@ -5,76 +5,77 @@ class Game {
 
     #controller;
 
-    constructor(layout)
-    {
-        /*this.#controller = new MapController();
-        this.#controller.newGame(layout);*/
-        console.log(JSON.parse(window.localStorage.getItem('map')));
-        if(JSON.parse(window.localStorage.getItem('map'))!=null) {
-            this.#controller = new MapController();
-            this.#controller.loadGame(JSON.parse(window.localStorage.getItem('map'))); 
-        }
-        else {
-            this.#controller = new MapController();
-            this.#controller.newGame(layout);  
-        }
-        
+    #loadSavedGame;
+
+    constructor() {
+        this.#controller = new MapController();
+        this.#loadSavedGame = window.localStorage.getItem('loadSavedGame');
+        if(this.#loadSavedGame == 'true') { this.#loadSaveGame(); }
+        else { this.#createNewGame(); }
+    }
+
+    get controller() { return this.#controller; };
+
+    #loadSaveGame() {
+        this.#controller.loadGame(JSON.parse(window.localStorage.getItem('map')));
+        window.localStorage.setItem('loadSavedGame', 'false');
+        window.localStorage.removeItem('map');
+    }
+
+    #createNewGame() {
+        const layout = [
+            [T, T, T, T, T, T, V, T, T, D, T, R, V, T, T, T, T, T, R, T, R, T, T, T, T, T, T, T, V, T, T, T],
+            [T, R, P, R, T, T, T, T, T, T, V, T, T, T, T, T, T, T, T, T, R, D, T, T, R, T, T, T, T, V, T, T],
+            [T, T, T, T, T, T, T, T, T, T, V, T, T, V, T, T, T, T, T, R, T, R, T, T, R, T, T, T, T, T, T, T],
+            [R, T, R, V, T, T, T, T, T, T, T, T, T, R, T, T, T, T, T, T, R, T, T, R, T, T, T, T, R, T, T, T],
+            [R, T, V, R, T, T, T, T, T, T, T, T, T, R, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T],
+            [T, T, T, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T, R, T, V, R, T, T, T, T, T, T, T],
+            [M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, T, T],
+            [T, V, T, T, T, R, T, T, D, T, V, T, T, R, T, R, T, T, T, T, T, T, T, T, T, T, D, T, R, V, T, T],
+            [T, T, D, T, T, T, T, T, R, T, T, T, T, T, V, T, T, T, T, T, T, T, T, R, V, V, R, T, T, D, T, T],
+            [T, T, T, R, T, T, R, T, R, T, T, T, T, T, T, T, T, T, T, T, T, T, T, R, R, T, R, T, T, R, T, T],
+            [T, V, T, T, T, T, T, R, T, T, T, T, T, T, T, T, R, R, V, T, T, T, T, T, T, T, R, T, T, R, T, D],
+            [T, R, T, T, V, T, T, R, T, V, V, T, T, T, T, T, R, T, R, D, T, T, D, T, T, T, T, R, T, T, T, R],
+            [T, D, R, T, T, T, T, T, T, T, T, T, T, T, T, T, T, R, R, R, T, T, R, T, T, T, T, T, T, T, T, D],
+            [T, T, T, T, T, T, T, T, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M],
+            [V, V, T, T, T, T, T, T, T, T, T, V, T, T, T, D, T, T, T, T, R, T, T, T, T, R, V, T, T, R, V, D],
+            [R, V, T, T, T, T, T, T, T, T, T, R, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T, R, T]
+        ];
+        this.#controller.newGame(layout);  
+    }
+
+    saveGameInWeb() {
+        window.localStorage.setItem('map', JSON.stringify(this.controller.map.saveGame()));
     }
 
     volume() {
         let audio = document.getElementById('audio');
-        if(audio.duration > 0 && !audio.paused) {
-            audio.muted = !audio.muted;
-        }
-        else {
-            audio.play();
-        }
+        if(audio.duration > 0 && !audio.paused) { audio.muted = !audio.muted; }
+        else { audio.play(); }
     }
     
-    retry(){
+    retry() {
         var r =confirm("Voulez-vous recommencer la partie ?");
-        if (r == true) {
-            location.reload();
-            window.localStorage.clear();
-        }
+        if (r == true) { location.reload(); }
     }
     
-    return_menu(){
-        window.localStorage.clear();
-        window.localStorage.setItem('map', JSON.stringify(this.#controller.map.saveGame()));
-        var r =confirm("Voulez-vous retourner à l'accueil ?");
-        if (r == true) {
-            window.location.href='../index.html';
-        }
+    return_menu() {
+        var r =confirm("Voulez-vous retourner à l'accueil ? Votre partie sera sauvegardée.");
+        if (r == true) { window.location.href='../index.html'; }
     }
 
 }
 
 
 
-const layout = [
-    [T, T, T, T, T, T, V, T, T, D, T, R, V, T, T, T, T, T, R, T, R, T, T, T, T, T, T, T, V, T, T, T],
-    [T, R, P, R, T, T, T, T, T, T, V, T, T, T, T, T, T, T, T, T, R, D, T, T, R, T, T, T, T, V, T, T],
-    [T, T, T, T, T, T, T, T, T, T, V, T, T, V, T, T, T, T, T, R, T, R, T, T, R, T, T, T, T, T, T, T],
-    [R, T, R, V, T, T, T, T, T, T, T, T, T, R, T, T, T, T, T, T, R, T, T, R, T, T, T, T, R, T, T, T],
-    [R, T, V, R, T, T, T, T, T, T, T, T, T, R, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T],
-    [T, T, T, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T, R, T, V, R, T, T, T, T, T, T, T],
-    [M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, T, T],
-    [T, V, T, T, T, R, T, T, D, T, V, T, T, R, T, R, T, T, T, T, T, T, T, T, T, T, D, T, R, V, T, T],
-    [T, T, D, T, T, T, T, T, R, T, T, T, T, T, V, T, T, T, T, T, T, T, T, R, V, V, R, T, T, D, T, T],
-    [T, T, T, R, T, T, R, T, R, T, T, T, T, T, T, T, T, T, T, T, T, T, T, R, R, T, R, T, T, R, T, T],
-    [T, V, T, T, T, T, T, R, T, T, T, T, T, T, T, T, R, R, V, T, T, T, T, T, T, T, R, T, T, R, T, D],
-    [T, R, T, T, V, T, T, R, T, V, V, T, T, T, T, T, R, T, R, D, T, T, D, T, T, T, T, R, T, T, T, R],
-    [T, D, R, T, T, T, T, T, T, T, T, T, T, T, T, T, T, R, R, R, T, T, R, T, T, T, T, T, T, T, T, D],
-    [T, T, T, T, T, T, T, T, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M, M],
-    [V, V, T, T, T, T, T, T, T, T, T, V, T, T, T, D, T, T, T, T, R, T, T, T, T, R, V, T, T, R, V, D],
-    [R, V, T, T, T, T, T, T, T, T, T, R, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T, R, T]
-];
-
 let game = null;
 
 window.addEventListener("load", () => {
-    game = new Game(layout);
+    game = new Game();
+});
+
+window.addEventListener('beforeunload', () => {
+    game.saveGameInWeb();
 });
 
 document.querySelector("#retry").addEventListener("click", () => {

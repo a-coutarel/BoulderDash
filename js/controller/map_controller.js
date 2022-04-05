@@ -85,8 +85,4 @@ export class MapController {
         });
     }
 
-
-
 }
-
-
