@@ -2,6 +2,10 @@
     font-family: "Pixeled"; src: url("font/Pixeled.ttf");
 }
 
+@font-face {
+    font-family: "Pixelade"; src: url("font/PIXELADE.TTF");
+}
+
 body {
     margin: 0;
     width: 100vw;
@@ -26,6 +30,9 @@ sidebar {
 }
 
 sidebar > p {
+    font-family: Pixelade, Arial, Helvetica, sans-serif;
+    font-size: 31px;
+    line-height: 25px;
     text-align: center;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.7);
