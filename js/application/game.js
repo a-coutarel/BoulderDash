@@ -18,7 +18,6 @@ class Game {
 
     #loadSaveGame() {
         this.#controller.loadGame(JSON.parse(window.localStorage.getItem('map')));
-        window.localStorage.setItem('loadSavedGame', 'false');
     }
 
     #createNewGame() {
@@ -63,7 +62,10 @@ class Game {
     
     retry() {
         var r =confirm("Voulez-vous recommencer la partie ?");
-        if (r == true) { location.reload(); }
+        if (r == true) { 
+            window.localStorage.setItem('loadSavedGame', 'false');
+            location.reload();
+        }
     }
     
     return_menu() {
