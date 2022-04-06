@@ -19,7 +19,6 @@ class Game {
     #loadSaveGame() {
         this.#controller.loadGame(JSON.parse(window.localStorage.getItem('map')));
         window.localStorage.setItem('loadSavedGame', 'false');
-        window.localStorage.removeItem('map');
     }
 
     #createNewGame() {
@@ -48,10 +47,18 @@ class Game {
         window.localStorage.setItem('map', JSON.stringify(this.controller.map.saveGame()));
     }
 
-    volume() {
+    volume() 
+    {
         let audio = document.getElementById('audio');
-        if(audio.duration > 0 && !audio.paused) { audio.muted = !audio.muted; }
-        else { audio.play(); }
+        if(audio.duration > 0 && !audio.paused) { 
+            audio.muted = !audio.muted;
+            if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
+            else { window.sessionStorage.setItem('muted', 'false'); }
+        }
+        else { 
+            audio.play();
+            window.sessionStorage.setItem('muted', 'false');
+        }
     }
     
     retry() {
@@ -71,6 +78,7 @@ class Game {
 let game = null;
 
 window.addEventListener("load", () => {
+    if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; };
     game = new Game();
 });
 
