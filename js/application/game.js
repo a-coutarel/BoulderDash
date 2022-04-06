@@ -18,7 +18,6 @@ class Game {
 
     #loadSaveGame() {
         this.#controller.loadGame(JSON.parse(window.localStorage.getItem('map')));
-        window.localStorage.setItem('loadSavedGame', 'false');
     }
 
     #createNewGame() {
@@ -40,7 +39,8 @@ class Game {
             [V, V, T, T, T, T, T, T, T, T, T, V, T, T, T, D, T, T, T, T, R, T, T, T, T, R, V, T, T, R, V, D],
             [R, V, T, T, T, T, T, T, T, T, T, R, R, T, T, R, T, T, T, T, T, T, T, T, R, T, T, T, T, T, R, T]
         ];
-        this.#controller.newGame(layout);  
+        this.#controller.newGame(layout); 
+        window.localStorage.setItem('loadSavedGame', 'true');
     }
 
     saveGameInWeb() {
@@ -63,7 +63,10 @@ class Game {
     
     retry() {
         var r =confirm("Voulez-vous recommencer la partie ?");
-        if (r == true) { location.reload(); }
+        if (r == true) { 
+            window.localStorage.setItem('loadSavedGame', 'false');
+            location.reload();
+        }
     }
     
     return_menu() {
