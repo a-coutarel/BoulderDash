@@ -34,7 +34,7 @@ export class MapView {
                     case M: cell.style.backgroundImage = "url('../img/textures/wall.png')"; break;
                     case DP: cell.style.backgroundImage = "url('../img/textures/is_that...rockford.png')"; break;
                     case P: cell.style.backgroundImage = "url('../img/textures/rockford.png')"; break;
-                    case D: cell.style.backgroundImage = "url('../img/textures/diamond.png')"; break;
+                    case D: cell.style.backgroundImage = "url('../img/textures/diamond.gif')"; break;
                 }
                 map.appendChild(cell).className = "grid-item";
             }
