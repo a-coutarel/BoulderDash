@@ -71,9 +71,17 @@ button:hover {
 
 content {
     display: flex;
+    flex-direction: column;
     width: 100%;
     justify-content: center;
     align-items: center;
+}
+
+mapName {
+    color: #7a7a7a;
+    font-family: Pixeled, Arial, Helvetica, sans-serif;
+    font-size: 3vw;
+    text-transform: uppercase;
 }
 
 boulderdash {

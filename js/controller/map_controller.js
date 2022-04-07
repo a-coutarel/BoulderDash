@@ -1,5 +1,6 @@
 import { Map, MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGHT, NOMOVE } from "../model/map.js";
 import { MapView } from "../view/map_view.js";
+import { PlayableMaps } from "../model/playable_maps.js";
 
 
 export class MapController {
@@ -26,7 +27,7 @@ export class MapController {
      * Launch a new game with the given layout
      * @param {Array} layout representing the initial disposition of the items
      */
-    newGame(layout) {
+    newGame(name, layout) {
         let data = {};
 
         data.gameOver = false;
@@ -35,6 +36,7 @@ export class MapController {
         data.cDiamond = 0;
         data.moveCount = 0;
 
+        data.name = name;
         data.layout = layout;
 
         this.#map.loadGame(data);

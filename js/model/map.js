@@ -33,6 +33,9 @@ export class Map {
     // controller of the map
     #controller;
 
+    //name of the map
+    #name;
+
     // grid used to place items
     #grid;
 
@@ -77,6 +80,7 @@ export class Map {
 
         this.#updatePlanned = true;
 
+        this.#name = "";
         this.#rdiamond = 0;
         this.#cdiamond = 0;
         this.#moveCount = 0;
@@ -113,7 +117,7 @@ export class Map {
      * @param {Dictionnary} data : data from a saved game, including layout of the map, gameOver, cDiamond and moveCount
      */
     loadGame(data) {
-
+        this.#name = data.name;
         this.#gameOver = data.gameOver;
         this.#playerDead = data.playerDead;
 
@@ -138,6 +142,7 @@ export class Map {
         data.cDiamond = this.#cdiamond;
         data.moveCount = this.#moveCount;
 
+        data.name = this.#name;
         data.layout = this.#exportLayout();
         return data;
     }
@@ -246,7 +251,6 @@ export class Map {
      * @param {string} order : order given by player
      */
     playerOrder(order) {
-
         if (order == this.#nextMove) return;
 
         if (order != NOMOVE) {
@@ -260,7 +264,6 @@ export class Map {
         this.#nextMove = order;
         this.#updateController();
         return;
-
     }
 
     get nextMove() { return this.#nextMove; }
@@ -277,6 +280,7 @@ export class Map {
         data.cDiamond = this.#cdiamond;
         data.rDiamond = this.#rdiamond;
         data.moveCount = this.#moveCount;
+        data.name = this.#name;
         this.#controller.notify(data);
     }
 

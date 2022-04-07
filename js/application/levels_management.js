@@ -38,8 +38,6 @@ function getLayout() {
 
 
 window.addEventListener("load", () => {
-    document.getElementById("deleteLevel").style.display = "none";
-    document.getElementById("modifyLevelsOrder").style.display = "none";
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 });
