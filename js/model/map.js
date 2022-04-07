@@ -20,6 +20,8 @@ export const R = 'R'; // Rock
 export const BR = 'BR'; // Bloody Rock
 export const M = 'M'; // Wall
 export const P = 'P'; // Player
+export const PR = 'PR'; // Player moving Right
+export const PL = 'PL'; // Player moving left
 export const DP = 'DP'; // Dead Player (when he is not under a rock)
 export const D = 'D'; // Diamond
 
@@ -61,8 +63,6 @@ export class Map {
 
     // used to detect if a new key has been pressed since the last update and prevent sending of a false NOMOVE
     #newKeyPressed;
-    // used to detect if, just after a key was released, another key was realesed very shortly after being pressed
-    #noMoveCount;
 
     /**
      * Constructor
@@ -85,7 +85,6 @@ export class Map {
         this.#playerDead = false;
         this.#nextMove = NOMOVE;
         this.#newKeyPressed = false;
-        this.#noMoveCount = 0;
 
         this.#initiateGrid();
     }
@@ -183,7 +182,9 @@ export class Map {
                         else line.push(V);
                         break;
                     case ROCKFORD:
-                        line.push(P);
+                        if (this.#nextMove == NOMOVE) { line.push(P); break; }
+                        if (this.#nextMove == MOVELEFT) { line.push(PL); break; }
+                        line.push(PR);
                         break;
                 }
             }
@@ -237,37 +238,45 @@ export class Map {
 
     /**
      * Modify the next move of Rockford according to player's order
-     * The function can seems a bit strange: that is to counter the fact
-     * that the events 'keyup' and 'keydown' are not phased (we can receive two keydow then two keyup)
-     * and to keep a smooth movement without any pause just after the key is pressed
+     * The function can seems a bit strange: that is
+     * to keep a smooth movement without any pause just after the key is pressed
      * (you know, the pause after the first letter when you are maintaining a key down)
      * @param {string} order : order given by player
      */
     playerOrder(order) {
 
-        if (order == this.#nextMove) {
-            this.#nextMove = order;
-            this.triggerUpdate();
-            return;
-        }
+        if (order == this.#nextMove) return;
 
         if (order != NOMOVE) {
             this.#nextMove = order;
             this.#newKeyPressed = true;
             this.triggerUpdate();
+            this.#updateController();
             return;
         }
 
-        ++this.#noMoveCount;
-
         if (!this.#newKeyPressed) {
             this.#nextMove = order;
+            this.#updateController();
             return;
         }
 
     }
 
     get nextMove() { return this.#nextMove; }
+
+    /**
+     * Transmits data to controller to update view
+     * */
+    #updateController() {
+        let data = {};
+        data.layout = this.#exportLayout();
+        data.gameOver = this.#gameOver;
+        data.cDiamond = this.#cdiamond;
+        data.rDiamond = this.#rdiamond;
+        data.moveCount = this.#moveCount;
+        this.#controller.notify(data);
+    }
 
     /**
      * runs the update of all items which need one
@@ -290,17 +299,9 @@ export class Map {
         for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
 
         // warns the controller of the update
-        let data = {};
-        data.layout = map.#exportLayout();
-        data.gameOver = map.#gameOver;
-        data.cDiamond = map.#cdiamond;
-        data.rDiamond = map.#rdiamond;
-        data.moveCount = map.#moveCount;
-        map.#controller.notify(data);
+        map.#updateController();
 
         // to do after the update
-        if (map.#noMoveCount > 1) map.#nextMove = NOMOVE;
-        map.#noMoveCount = 0;
         map.#newKeyPressed = false;
         if (map.#updatePlanned) setTimeout(map.#runUpdate, refreshTime);
     }

@@ -9,6 +9,9 @@ export class MapController {
     // view showing game to the player
     #view;
 
+    // list key currently down
+    #keyDownList;
+
     /**
      * Constructor
      * */
@@ -16,11 +19,17 @@ export class MapController {
         this.#view = new MapView(this);
         this.#map = new Map(this);
         document.controller = this;
+        
+        this.#keyDownList = [];
 
         this.#setupKeyListening();
     }
 
     get map() { return this.#map; };
+
+    get keyDownList() { return this.#keyDownList; };
+
+    set keyDownList(value) { this.#keyDownList = value; };
 
     /**
      * Launch a new game with the given layout
@@ -56,32 +65,49 @@ export class MapController {
         this.#view.update(data);
     }
 
+    chooseOrder() {
+        let map = this.map;
+        const lastKey = this.keyDownList[this.keyDownList.length - 1];
+
+        switch (lastKey) {
+            case 38:
+            case 90:
+                map.playerOrder(MOVEUP);
+                break;
+            case 40:
+            case 83:
+                map.playerOrder(MOVEDOWN);
+                break;
+            case 37:
+            case 81:
+                map.playerOrder(MOVELEFT);
+                break;
+            case 39:
+            case 68:
+                map.playerOrder(MOVERIGHT);
+                break;
+            default:
+                map.playerOrder(NOMOVE);
+                break;
+        }
+    }
+
     #setupKeyListening() {
         document.addEventListener('keydown', function (event) {
-            let map = this.controller.map;
-            switch (event.keyCode) {
-                case 38:
-                case 90:
-                    map.playerOrder(MOVEUP);
-                    break;
-                case 40:
-                case 83:
-                    map.playerOrder(MOVEDOWN);
-                    break;
-                case 37:
-                case 81:
-                    map.playerOrder(MOVELEFT);
-                    break;
-                case 39:
-                case 68:
-                    map.playerOrder(MOVERIGHT);
-                    break;
+            let controller = this.controller;
 
-            }
+            controller.keyDownList.push(event.keyCode);
+
+            controller.chooseOrder();
         });
         document.addEventListener('keyup', function (event) {
-            let map = this.controller.map;
-            map.playerOrder(NOMOVE);
+            let controller = this.controller;
+
+            controller.keyDownList = controller.keyDownList.filter(function (value, index, arr) {
+                return value != event.keyCode;
+            });
+
+            controller.chooseOrder();
         });
     }
 
