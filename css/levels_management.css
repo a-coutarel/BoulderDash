@@ -73,3 +73,7 @@ footer > p {
       width: 200px;
       padding-bottom: 5px;
   }
+
+  #file {
+      display: none;
+  }

@@ -27,6 +27,6 @@ function loadSavedGame() {
 }
 
 window.addEventListener("load", () => {
+    document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
-    else { document.getElementById('audio').volume = 0.2; }
 });

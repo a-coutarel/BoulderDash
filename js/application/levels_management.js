@@ -12,7 +12,52 @@ function volume()
     }
 }
 
+
+//fct à changer => va devenir addMap et ajoutera une nouvelle map et mapsSelection en faisaint appel à sa méthode addMap 
+//qui gère le comptage des diamants...
+function getLayout() {
+    let layout = [];
+    let decomposed_line = [];
+    let file = this.files[0];
+    let reader = new FileReader();
+    reader.onload = function(progressEvent){
+    let lines = this.result.split('\n');
+    for(let line = 0; line < lines.length; line++){
+        for(let i = 0; i < lines[line].length; i++){
+            if(lines[line].charAt(i) != '\r')
+                decomposed_line[i] = lines[line].charAt(i);
+        }
+        layout[line] = decomposed_line;
+        decomposed_line = [];
+    }
+  };
+  reader.readAsText(file);
+  return layout;
+}
+
+
+
 window.addEventListener("load", () => {
+    document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
-    else { document.getElementById('audio').volume = 0.2; }
 });
+
+document.querySelector("#loadLevelButton").addEventListener("click", () => {
+    document.getElementById('file').click();
+});
+
+document.getElementById("file").addEventListener("change", getLayout, false);
+
+document.querySelector("#deleteLevelButton").addEventListener("click", () => {
+    window.location.href='../index.html';
+});
+
+document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => {
+    window.location.href='../index.html';
+});
+
+document.querySelector("#home").addEventListener("click", () => {
+    window.location.href='../index.html';
+});
+
+document.querySelector("#volume").addEventListener("click", volume);

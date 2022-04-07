@@ -92,29 +92,6 @@ export class MapView {
 
 /*
 
-let inputElement = document.getElementById("file");
-inputElement.addEventListener("change", getLayout, false);
-
-function getLayout() {
-    let layout = [];
-    let decomposed_line = [];
-    let file = this.files[0];
-    let reader = new FileReader();
-    reader.onload = function(progressEvent){
-    let lines = this.result.split('\n');
-    for(let line = 0; line < lines.length; line++){
-        for(let i = 0; i < lines[line].length; i++){
-            if(lines[line].charAt(i) != '\r')
-                decomposed_line[i] = lines[line].charAt(i);
-        }
-        layout[line] = decomposed_line;
-        decomposed_line = [];
-    }
-  };
-  reader.readAsText(file);
-  return layout;
-}
-
 
 [T,T,T,T,T,T,V,T,T,D,T,R,V,T,T,T,T,T,R,T,R,T,T,T,T,T,T,T,V,T,T,T],
 [T,R,P,R,T,T,T,T,T,T,V,T,T,T,T,T,T,T,T,T,R,D,T,T,R,T,T,T,T,V,T,T],

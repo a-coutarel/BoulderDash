@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link href="../css/levels_management.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../img/favicon.png" />
-    <script type="text/javascript" src="../js/application/levels_management.js"></script>
     <title>BOULDER DASH : Gestion des niveaux</title>
 </head>
 <body>
@@ -12,19 +11,22 @@
         <img src="../img/gestion_lvls.png" alt="logo"/>
     </header>
     <div id="buttons">
-        <button onclick="document.getElementById('file').click()">Charger un nouveau niveau</button>
-        <input type="file" name="file" id="file" style="display:none"/>
-        <button>Supprimer un niveau</button>
-        <button>Modifier la disposition des niveaux</button>
-        <button onclick="window.location.href='../index.html';">Retour à l'accueil</button>
+        <input type="file" name="file" id="file"/>
+        <button id="loadLevelButton">Charger un nouveau niveau</button>
+        <button id="deleteLevelButton">Supprimer un niveau</button>
+        <button id="modifyLevelsOrderButton">Modifier la disposition des niveaux</button>
+        <button id="home">Retour à l'accueil</button>
     </div>
     <footer>
         <p>Boulder Dash > Minecraft</p>
-        <audio id="audio" autoplay loop>
-            <source src="../sound/levels_management_music.mp3">
-        </audio>
-        <button id="volume" onclick="volume()">Mute / Unmute</button>
+        <audio id="audio" autoplay loop> <source src="../sound/levels_management_music.mp3"> </audio>
+        <button id="volume">Mute / Unmute</button>
     </footer>
-    <script type="module" src="../js/view/map_view.js"></script>
+
+    <div id="deleteLevel">
+
+    </div>
+
+    <script type="module" src="../js/application/levels_management.js"></script>
 </body>
 </html>
