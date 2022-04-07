@@ -14,4 +14,5 @@ function volume()
 
 window.addEventListener("load", () => {
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
+    else { document.getElementById('audio').volume = 0.2; }
 });
