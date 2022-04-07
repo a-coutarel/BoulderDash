@@ -5,13 +5,50 @@ export class MapView {
     // controller of the map
     #controller;
 
+    // dictonnary of images
+    #images;
+
     /**
      * Constructor
      * @param {any} controller
      */
     constructor(controller) {
         this.#controller = controller;
+
+        
+        this.#images = {};
+
+        this.#loadImages();
     }
+
+    /**
+     * Preloads the textures used in game
+     * */
+    #loadImages() {
+
+        let imagesPath = [
+            ["dirt",                "../img/textures/dirt.png"],
+            ["background",          "../img/textures/background.png"],
+            ["stone",               "../img/textures/stone.png"],
+            ["bloody_stone",        "../img/textures/bloody_stone.png"],
+            ["wall",                "../img/textures/wall.png"],
+            ["is_that_rf",          "../img/textures/is_that...rockford.png"],
+            ["rockford",            "../img/textures/rockford.gif"],
+            ["to_the_left",         "../img/textures/to_the_left.gif"],
+            ["to_the_right",        "../img/textures/to_the_right.gif"],
+            ["diamond",             "../img/textures/diamond.gif"]
+        ];
+
+
+
+        for (let k = 0; k < imagesPath.length; ++k) {
+            this.#images[imagesPath[k][0]] = new Image();
+            this.#images[imagesPath[k][0]].src = imagesPath[k][1];
+        }
+        console.log(this.#images);
+    }
+
+
 
     /**
      * Update the view
@@ -27,16 +64,16 @@ export class MapView {
             for (let j = 0; j < 32; j++) {
                 let cell = document.createElement("div");
                 switch (layout[i][j]) {
-                    case T: cell.style.backgroundImage = "url('../img/textures/dirt.png')"; break;
-                    case V: cell.style.backgroundImage = "url('../img/textures/background.png')"; break;
-                    case R: cell.style.backgroundImage = "url('../img/textures/stone.png')"; break;
-                    case BR: cell.style.backgroundImage = "url('../img/textures/bloody_stone.png')"; break;
-                    case M: cell.style.backgroundImage = "url('../img/textures/wall.png')"; break;
-                    case DP: cell.style.backgroundImage = "url('../img/textures/is_that...rockford.png')"; break;
-                    case P: cell.style.backgroundImage = "url('../img/textures/rockford.gif')"; break;
-                    case PL: cell.style.backgroundImage = "url('../img/textures/to_the_left.gif')"; break;
-                    case PR: cell.style.backgroundImage = "url('../img/textures/to_the_right.gif')"; break;
-                    case D: cell.style.backgroundImage = "url('../img/textures/diamond.gif')"; break;
+                    case T: cell.style.backgroundImage = "url(" + this.#images.dirt.src + ")"; break;
+                    case V: cell.style.backgroundImage = "url(" + this.#images.background.src + ")"; break;
+                    case R: cell.style.backgroundImage = "url(" + this.#images.stone.src + ")"; break;
+                    case BR: cell.style.backgroundImage = "url(" + this.#images.bloody_stone.src + ")"; break;
+                    case M: cell.style.backgroundImage = "url(" + this.#images.wall.src + ")"; break;
+                    case DP: cell.style.backgroundImage = "url(" + this.#images.is_that_rf.src + ")"; break;
+                    case P: cell.style.backgroundImage = "url(" + this.#images.rockford.src + ")"; break;
+                    case PL: cell.style.backgroundImage = "url(" + this.#images.to_the_left.src + ")"; break;
+                    case PR: cell.style.backgroundImage = "url(" + this.#images.to_the_right.src + ")"; break;
+                    case D: cell.style.backgroundImage = "url(" + this.#images.diamond.src + ")"; break;
                 }
                 map.appendChild(cell).className = "grid-item";
             }
