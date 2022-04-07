@@ -1,4 +1,5 @@
 import { MapController } from "../controller/map_controller.js";
+import { PlayableMaps } from "../model/playable_maps.js";
 import { T, V, R, M, P, D } from "../model/map.js";
 
 class Game {
