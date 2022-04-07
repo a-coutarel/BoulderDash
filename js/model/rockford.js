@@ -25,7 +25,8 @@ export class Rockford extends Generic_item {
      * Updates the item if one of its neighbors moved
      */
     update() {
-        const order = this.map.nextMove;
+        let order = this.map.lastOrderNotNull;
+        if (order == null) order = this.map.nextMove;
 
         switch (order) {
             case MOVEUP:
@@ -72,7 +73,6 @@ export class Rockford extends Generic_item {
 
         this.map.addNeighborsToUpdate(this.coordinates);
         this.map.moveItem(this.coordinates, coordUp);
-        this.map.addMovement();
     }
 
     /**
@@ -93,7 +93,6 @@ export class Rockford extends Generic_item {
 
         this.map.addNeighborsToUpdate(this.coordinates);
         this.map.moveItem(this.coordinates, coordDown);
-        this.map.addMovement();
     }
 
     /**
@@ -114,6 +113,7 @@ export class Rockford extends Generic_item {
 
             if (!this.#pushingR) {
                 this.#pushingR = true;
+                this.map.addToUpdate(this.coordinates);
                 return;
             }
 
@@ -123,7 +123,6 @@ export class Rockford extends Generic_item {
                 this.map.addNeighborsToUpdate(coordRight);
                 this.map.moveItem(coordRight, rightOfRight);
                 this.map.moveItem(this.coordinates, coordRight);
-                this.map.addMovement();
             }
 
             
@@ -140,7 +139,6 @@ export class Rockford extends Generic_item {
 
         this.map.addNeighborsToUpdate(this.coordinates);
         this.map.moveItem(this.coordinates, coordRight);
-        this.map.addMovement();
     }
 
     /** 
@@ -161,6 +159,7 @@ export class Rockford extends Generic_item {
 
             if (!this.#pushingL) {
                 this.#pushingL = true;
+                this.map.addToUpdate(this.coordinates);
                 return;
             }
 
@@ -170,7 +169,6 @@ export class Rockford extends Generic_item {
                 this.map.addNeighborsToUpdate(coordLeft);
                 this.map.moveItem(coordLeft, leftOfLeft);
                 this.map.moveItem(this.coordinates, coordLeft);
-                this.map.addMovement();
             }
             return
         }
@@ -183,7 +181,6 @@ export class Rockford extends Generic_item {
 
         this.map.addNeighborsToUpdate(this.coordinates);
         this.map.moveItem(this.coordinates, coordLeft);
-        this.map.addMovement();
     }
 
 }

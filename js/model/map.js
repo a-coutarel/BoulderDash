@@ -20,6 +20,8 @@ export const R = 'R'; // Rock
 export const BR = 'BR'; // Bloody Rock
 export const M = 'M'; // Wall
 export const P = 'P'; // Player
+export const PR = 'PR'; // Player moving Right
+export const PL = 'PL'; // Player moving left
 export const DP = 'DP'; // Dead Player (when he is not under a rock)
 export const D = 'D'; // Diamond
 
@@ -60,9 +62,7 @@ export class Map {
     #nextMove;
 
     // used to detect if a new key has been pressed since the last update and prevent sending of a false NOMOVE
-    #newKeyPressed;
-    // used to detect if, just after a key was released, another key was realesed very shortly after being pressed
-    #noMoveCount;
+    #lastOrderNotNull;
 
     /**
      * Constructor
@@ -84,8 +84,7 @@ export class Map {
         this.#gameOver = false;
         this.#playerDead = false;
         this.#nextMove = NOMOVE;
-        this.#newKeyPressed = false;
-        this.#noMoveCount = 0;
+        this.#lastOrderNotNull = null;
 
         this.#initiateGrid();
     }
@@ -183,7 +182,9 @@ export class Map {
                         else line.push(V);
                         break;
                     case ROCKFORD:
-                        line.push(P);
+                        if (this.#nextMove == NOMOVE) { line.push(P); break; }
+                        if (this.#nextMove == MOVELEFT) { line.push(PL); break; }
+                        line.push(PR);
                         break;
                 }
             }
@@ -224,50 +225,60 @@ export class Map {
                         this.#grid[y][x] = null;
                         this.#playerLoc = new Coordinates({ x: x, y: y });
                         break;
+                    case PR:
+                    case PL:
                     case P:
                         this.#playerLoc = new Coordinates({ x: x, y: y });
                         this.#grid[y][x] = new Rockford(this, new Coordinates({ x: x, y: y }));
                         break;
 
                 }
-                this.#addToUpdate(new Coordinates({ x: x, y: y }));
+                this.addToUpdate(new Coordinates({ x: x, y: y }));
             }
         }
     }
 
     /**
      * Modify the next move of Rockford according to player's order
-     * The function can seems a bit strange: that is to counter the fact
-     * that the events 'keyup' and 'keydown' are not phased (we can receive two keydow then two keyup)
-     * and to keep a smooth movement without any pause just after the key is pressed
+     * The function can seems a bit strange: that is
+     * to keep a smooth movement without any pause just after the key is pressed
      * (you know, the pause after the first letter when you are maintaining a key down)
      * @param {string} order : order given by player
      */
     playerOrder(order) {
 
-        if (order == this.#nextMove) {
-            this.#nextMove = order;
-            this.triggerUpdate();
-            return;
-        }
+        if (order == this.#nextMove) return;
 
         if (order != NOMOVE) {
             this.#nextMove = order;
-            this.#newKeyPressed = true;
+            this.#lastOrderNotNull = order;
             this.triggerUpdate();
+            this.#updateController();
             return;
         }
 
-        ++this.#noMoveCount;
-
-        if (!this.#newKeyPressed) {
-            this.#nextMove = order;
-            return;
-        }
+        this.#nextMove = order;
+        this.#updateController();
+        return;
 
     }
 
     get nextMove() { return this.#nextMove; }
+
+    get lastOrderNotNull() { return this.#lastOrderNotNull; }
+
+    /**
+     * Transmits data to controller to update view
+     * */
+    #updateController() {
+        let data = {};
+        data.layout = this.#exportLayout();
+        data.gameOver = this.#gameOver;
+        data.cDiamond = this.#cdiamond;
+        data.rDiamond = this.#rdiamond;
+        data.moveCount = this.#moveCount;
+        this.#controller.notify(data);
+    }
 
     /**
      * runs the update of all items which need one
@@ -282,6 +293,11 @@ export class Map {
 
         // actual update
 
+        if (map.lastOrderNotNull != null) {
+            if (!map.#includesCoordinates(map.#update, map.#playerLoc)) map.#update.push(map.#playerLoc);
+            map.#updatePlanned = true;
+        }
+
         if (map.nextMove != NOMOVE) {
             if (!map.#includesCoordinates(map.#update, map.#playerLoc)) map.#update.push(map.#playerLoc);
             map.#updatePlanned = true;
@@ -290,18 +306,10 @@ export class Map {
         for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
 
         // warns the controller of the update
-        let data = {};
-        data.layout = map.#exportLayout();
-        data.gameOver = map.#gameOver;
-        data.cDiamond = map.#cdiamond;
-        data.rDiamond = map.#rdiamond;
-        data.moveCount = map.#moveCount;
-        map.#controller.notify(data);
+        map.#updateController();
 
         // to do after the update
-        if (map.#noMoveCount > 1) map.#nextMove = NOMOVE;
-        map.#noMoveCount = 0;
-        map.#newKeyPressed = false;
+        map.#lastOrderNotNull = null;
         if (map.#updatePlanned) setTimeout(map.#runUpdate, refreshTime);
     }
 
@@ -317,7 +325,7 @@ export class Map {
      * adds an item to nextUpdate
      * @param {Coordinates} coord : coordinates of the item to update
      */
-    #addToUpdate(coord) {
+    addToUpdate(coord) {
         if (!this.#includesCoordinates(this.#nextUpdate, coord)) this.#nextUpdate.push(coord);
         this.#updatePlanned = true;
     }
@@ -348,7 +356,7 @@ export class Map {
 
         for (let n = 0; n < 4; ++n) {
             const neighbor = new Coordinates({ x: coord_x + lx[n], y: coord_y + ly[n] });
-            if (this.isOnMap(neighbor)) this.#addToUpdate(neighbor);
+            if (this.isOnMap(neighbor)) this.addToUpdate(neighbor);
         }
 
     }
@@ -382,7 +390,10 @@ export class Map {
         this.#grid[coordA.y][coordA.x] = null;
         this.#grid[coordB.y][coordB.x].coordinates = coordB;
 
-        if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y && !this.#playerDead) this.#playerLoc = coordB;
+        if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y && !this.#playerDead) {
+            this.#playerLoc = coordB;
+            this.#addMovement();
+        }
     }
 
     /**
@@ -397,7 +408,7 @@ export class Map {
     /**
      * Updates the counter
      */
-    addMovement() {
+    #addMovement() {
         ++this.#moveCount;
     }
 
