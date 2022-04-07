@@ -79,7 +79,7 @@ footer > p {
   }
 
   #deleteLevel{
-    width: 90vw;
+    width: 60vw;
     display: flex;
     align-items: center;
     flex-direction: column;
