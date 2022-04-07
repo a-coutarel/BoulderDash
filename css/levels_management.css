@@ -80,7 +80,7 @@ footer > p {
 
   #deleteLevel{
     width: 60vw;
-    display: flex;
+    display: none;
     align-items: center;
     flex-direction: column;
     background-color: #6E2C00;
@@ -91,7 +91,7 @@ footer > p {
 
 #modifyLevelsOrder{
     width: 90vw;
-    display: flex;
+    display: none;
     align-items: center;
     flex-direction: column;
     background-color: #6E2C00;
