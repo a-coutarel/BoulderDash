@@ -38,6 +38,8 @@ function getLayout() {
 
 
 window.addEventListener("load", () => {
+    document.getElementById("deleteLevel").style.display = "none";
+    document.getElementById("modifyLevelsOrder").style.display = "none";
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 });
@@ -45,15 +47,26 @@ window.addEventListener("load", () => {
 document.querySelector("#loadLevelButton").addEventListener("click", () => {
     document.getElementById('file').click();
 });
-
 document.getElementById("file").addEventListener("change", getLayout, false);
 
 document.querySelector("#deleteLevelButton").addEventListener("click", () => {
-    window.location.href='../index.html';
+    document.getElementById("deleteLevel").style.display = "flex";
+    document.getElementById("buttons").style.display = "none";
+});
+
+document.querySelector("#deleteBack").addEventListener("click", () => {
+    document.getElementById("deleteLevel").style.display = "none";
+    document.getElementById("buttons").style.display = "flex";
 });
 
 document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => {
-    window.location.href='../index.html';
+    document.getElementById("modifyLevelsOrder").style.display = "flex";
+    document.getElementById("buttons").style.display = "none";
+});
+
+document.querySelector("#modifyBack").addEventListener("click", () => {
+    document.getElementById("modifyLevelsOrder").style.display = "none";
+    document.getElementById("buttons").style.display = "flex";
 });
 
 document.querySelector("#home").addEventListener("click", () => {

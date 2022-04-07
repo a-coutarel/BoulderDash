@@ -77,3 +77,25 @@ footer > p {
   #file {
       display: none;
   }
+
+  #deleteLevel{
+    width: 90vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #6E2C00;
+    padding-top: 20px;
+    box-sizing: border-box;
+    border: dashed 8px rgba(0, 0, 0, 1);
+}
+
+#modifyLevelsOrder{
+    width: 90vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #6E2C00;
+    padding-top: 20px;
+    box-sizing: border-box;
+    border: dashed 8px rgba(0, 0, 0, 1);
+}
