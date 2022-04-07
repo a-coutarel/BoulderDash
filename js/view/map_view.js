@@ -1,5 +1,5 @@
 import { MapController } from "../controller/map_controller.js";
-import { T, V, R, BR, M, DP, P, PL, PR, D } from "../model/map.js";
+import { T, V, R, BR, M, DP, P, D } from "../model/map.js";
 
 export class MapView {
     // controller of the map
@@ -34,8 +34,6 @@ export class MapView {
                     case M: cell.style.backgroundImage = "url('../img/textures/wall.png')"; break;
                     case DP: cell.style.backgroundImage = "url('../img/textures/is_that...rockford.png')"; break;
                     case P: cell.style.backgroundImage = "url('../img/textures/rockford.gif')"; break;
-                    case PL: cell.style.backgroundImage = "url('../img/textures/to_the_left.gif')"; break;
-                    case PR: cell.style.backgroundImage = "url('../img/textures/to_the_right.gif')"; break;
                     case D: cell.style.backgroundImage = "url('../img/textures/diamond.gif')"; break;
                 }
                 map.appendChild(cell).className = "grid-item";
