@@ -45,7 +45,6 @@ export class MapView {
             this.#images[imagesPath[k][0]] = new Image();
             this.#images[imagesPath[k][0]].src = imagesPath[k][1];
         }
-        console.log(this.#images);
     }
 
 
@@ -84,7 +83,8 @@ export class MapView {
         document.querySelector("mapName").innerText = data.name;
     }
 
-
-
+    lose() {
+        document.querySelector("mapName").innerText = "Game Over";
+    }
 
 }

@@ -406,7 +406,8 @@ export class Map {
     collectDiamond() {
         ++this.#cdiamond;
         --this.#rdiamond;
-        // Check for victory /!\ TO DO
+        
+        if(this.#rdiamond == 0) { this.#controller.nextLevel() }
     }
 
     /**
@@ -424,6 +425,27 @@ export class Map {
         this.#gameOver = true;
     }
 
+    /**
+     * Reset the map with defalut values
+     */
+    resetMap() {
+        let data = {};
+        data.gameOver = false;
+        data.playerDead = false;
+        data.cDiamond = 0;
+        data.moveCount = 0;
+        data.name = "";
+        this.#initiateGrid();
+        this.#update = [];
+        this.#nextUpdate = [];
+        this.#updatePlanned = true;
+        this.#rdiamond = 0;
+        this.#gameOver = false;
+        this.#playerDead = false;
+        this.#nextMove = NOMOVE;
+        this.#lastOrderNotNull = null;
+        return data;
+    }
 }
 
 

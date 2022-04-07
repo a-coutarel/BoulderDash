@@ -5,10 +5,10 @@ export class PlayableMaps {
     //table of name and layout of maps available in the game
     #maps;
     //index of the played map
-    #currentMap;
+    #currentMapIndex;
 
     constructor() {
-        this.#currentMap = 0;
+        this.#currentMapIndex = 0;
         this.#maps = [ 
             { name : "Easy Map",
             layout : [ [T,T,T,T,T,T,V,T,T,D,T,R,V,T,T,T,T,T,R,T,R,T,T,T,T,T,T,T,V,T,T,T],
@@ -28,25 +28,7 @@ export class PlayableMaps {
             [V,V,T,T,T,T,T,T,T,T,T,V,T,T,T,D,T,T,T,T,R,T,T,T,T,R,V,T,T,R,V,D],
             [R,V,T,T,T,T,T,T,T,T,T,R,R,T,T,R,T,T,T,T,T,T,T,T,R,T,T,T,T,T,R,T] ] },
 
-            { name : "Medium Map",
-            layout : [ [V,T,V,R,T,T,V,T,V,T,T,V,T,T,V,T,T,R,T,V,T,T,P,V,T,T,V,T,V,V,T,T],
-            [T,R,T,R,V,T,T,T,T,T,T,V,T,T,R,T,T,T,V,T,T,T,T,R,T,T,T,R,T,T,T,T],
-            [V,R,T,T,R,T,T,T,V,V,T,T,T,R,T,T,R,T,R,T,T,R,T,R,T,T,T,M,M,M,M,M],
-            [T,T,T,D,R,T,T,R,T,V,V,T,T,T,T,T,R,T,T,T,T,T,V,T,T,T,T,T,T,T,T,R],
-            [M,M,M,M,M,M,M,M,M,M,M,M,T,T,R,T,R,T,T,T,T,V,T,V,V,T,T,T,T,T,T,R],
-            [T,V,V,T,T,T,V,T,T,V,T,V,V,T,T,V,T,V,V,T,T,T,T,V,R,R,V,T,T,T,T,T],
-            [T,T,T,V,V,T,T,T,V,V,V,T,V,T,T,V,T,V,V,T,T,T,T,T,R,T,V,R,T,T,V,T],
-            [T,T,R,T,R,T,T,R,V,V,V,T,T,T,T,R,T,T,T,T,T,D,T,T,T,V,R,R,T,T,R,T],
-            [T,T,T,T,T,R,V,T,D,R,V,T,T,V,T,R,D,V,R,V,T,V,T,T,T,R,R,R,T,T,R,T],
-            [R,T,R,T,T,T,V,T,R,T,V,T,T,T,T,T,V,T,T,R,T,T,T,V,T,T,T,T,R,T,D,R],
-            [T,T,T,T,T,T,R,T,R,V,T,T,T,T,T,T,R,R,T,T,R,T,T,T,M,M,M,M,M,M,M,M],
-            [T,R,R,T,T,T,T,T,T,R,T,T,R,T,V,T,T,T,V,T,R,V,T,R,T,T,R,T,V,V,T,T],
-            [M,M,M,M,M,M,M,M,M,M,M,M,R,T,T,T,T,T,T,T,R,T,T,T,T,T,T,V,T,T,T,T],
-            [T,T,V,T,T,T,V,V,T,T,T,D,T,T,R,T,V,T,T,R,T,R,R,R,T,T,T,T,T,T,T,T],
-            [T,T,R,T,T,R,T,V,T,V,T,T,T,M,M,M,M,M,M,M,M,T,T,D,R,T,T,T,R,R,R,T],
-            [V,T,T,V,V,T,T,T,T,R,T,T,R,V,R,T,T,T,D,V,T,T,R,T,T,T,T,T,T,T,T,T] ] },
-
-            { name : "Hard Map", 
+            { name : "Medium Map", 
             layout : [ [T,D,T,M,R,T,T,T,T,T,R,T,T,T,M,T,T,T,T,R,T,T,R,M,R,T,T,T,M,T,R,D],
             [R,M,T,M,T,T,T,R,T,R,T,T,R,T,T,T,T,R,T,M,T,T,M,M,M,T,T,T,M,T,R,T],
             [M,M,T,M,T,T,P,T,T,T,T,R,M,M,T,R,T,T,T,T,T,M,T,T,T,T,R,T,T,D,R,V],
@@ -62,23 +44,48 @@ export class PlayableMaps {
             [T,T,T,M,T,T,T,T,R,R,T,R,T,T,R,T,T,T,T,R,M,T,T,R,M,T,M,T,D,T,M,T],
             [D,T,M,M,T,M,T,T,T,T,T,T,M,R,T,M,T,T,T,D,T,T,T,M,T,T,T,T,R,T,T,R],
             [T,T,M,T,T,T,T,T,T,R,M,T,R,T,T,T,R,T,R,T,T,R,M,T,T,T,D,T,M,T,T,R],
-            [T,T,T,T,T,T,T,T,T,R,M,T,R,T,T,R,T,R,T,T,R,M,M,T,R,T,T,M,M,T,R,T] ] }
+            [T,T,T,T,T,T,T,T,T,R,M,T,R,T,T,R,T,R,T,T,R,M,M,T,R,T,T,M,M,T,R,T] ] },
+
+            { name : "Hard Map",
+            layout : [ [V,T,V,R,T,T,V,T,V,T,T,V,T,T,V,T,T,R,T,V,T,T,P,V,T,T,V,T,V,V,T,T],
+            [T,R,T,R,V,T,T,T,T,T,T,V,T,T,R,T,T,T,V,T,T,T,T,R,T,T,T,R,T,T,T,T],
+            [V,R,T,T,R,T,T,T,V,V,T,T,T,R,T,T,R,T,R,T,T,R,T,R,T,T,T,M,M,M,M,M],
+            [T,T,T,D,T,T,T,R,T,V,V,T,T,T,T,T,R,T,T,T,T,T,V,T,T,T,T,T,T,T,T,R],
+            [M,M,M,M,M,M,M,M,M,M,M,M,T,T,R,T,R,T,T,T,T,V,T,V,V,T,T,T,T,T,T,R],
+            [T,V,V,T,T,T,V,T,T,V,T,V,V,T,T,V,T,V,V,T,T,T,T,V,R,R,V,T,T,T,T,T],
+            [T,T,T,V,V,T,T,T,V,V,V,T,V,T,T,V,T,V,V,T,T,T,T,T,R,T,V,R,T,T,V,T],
+            [T,T,R,T,R,T,T,R,V,V,V,T,T,T,T,R,T,T,T,T,T,D,T,T,T,V,R,R,T,T,R,T],
+            [T,T,T,T,T,R,V,T,D,R,V,T,T,V,T,R,D,V,R,V,T,V,T,T,T,R,R,R,T,T,R,T],
+            [R,T,R,T,T,T,V,T,R,T,V,T,T,T,T,T,V,T,T,R,T,T,T,V,T,T,T,T,R,T,D,R],
+            [T,T,T,T,T,T,R,T,R,V,T,T,T,T,T,T,R,R,T,T,R,T,T,T,M,M,M,M,M,M,M,M],
+            [T,R,R,T,T,T,T,T,T,R,T,T,R,T,V,T,T,T,V,T,R,V,T,R,T,T,R,T,V,V,T,T],
+            [M,M,M,M,M,M,M,M,M,M,M,M,R,T,T,T,T,T,T,T,R,T,T,T,T,T,T,V,T,T,T,T],
+            [T,T,V,T,T,T,V,V,T,T,T,D,T,T,R,T,V,T,T,R,T,R,R,R,T,T,T,T,T,T,T,T],
+            [T,T,R,T,T,R,T,V,T,V,T,T,T,M,M,M,M,M,M,M,M,T,T,D,R,T,T,T,R,R,R,T],
+            [V,T,T,V,V,T,T,T,T,R,T,R,T,V,V,T,T,T,D,V,T,T,R,T,T,T,T,T,T,T,T,T] ] }
         ];
-    }    
+    } 
+    
 
-    //constructor(param)   newGame dans controller prend le par défaut
-                            //et load game celui là
+    set currentMapIndex(currentMapIndex) { this.#currentMapIndex = currentMapIndex; };
+    set maps(maps) { this.#maps = maps; };
 
+    get maps() { return this.#maps };
+    get currentMapIndex() { return this.#currentMapIndex };
 
-    getCurrentMap() {
-        return this.#maps[this.#currentMap];
+    getCurrentMapLayout() {
+        return this.#maps[this.#currentMapIndex].layout;
+    }
+
+    getCurrentMapName() {
+        return this.#maps[this.#currentMapIndex].name;
     }
 
     nextMap() {
-        this.#currentMap++;
+        this.#currentMapIndex++;
         let data = {};
-        data.name = this.#maps[this.#currentMap].name;
-        data.layout = this.#maps[this.#currentMap].layout;
+        data.name = this.#maps[this.#currentMapIndex].name;
+        data.layout = this.#maps[this.#currentMapIndex].layout;
         return data;
     }
 

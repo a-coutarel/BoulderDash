@@ -4,6 +4,9 @@ import { PlayableMaps } from "../model/playable_maps.js";
 
 
 export class MapController {
+    // list of maps available in the game
+    #mapsList
+    
     // map of the current game
     #map;
 
@@ -17,6 +20,7 @@ export class MapController {
      * Constructor
      * */
     constructor() {
+        this.#mapsList = new PlayableMaps();
         this.#view = new MapView(this);
         this.#map = new Map(this);
         document.controller = this;
@@ -32,11 +36,12 @@ export class MapController {
 
     set keyDownList(value) { this.#keyDownList = value; };
 
+    get mapsList() {return this.#mapsList};
+
     /**
-     * Launch a new game with the given layout
-     * @param {Array} layout representing the initial disposition of the items
+     * Launch a new game with the first map in the list of maps
      */
-    newGame(name, layout) {
+    newGame() {
         let data = {};
 
         data.gameOver = false;
@@ -44,10 +49,20 @@ export class MapController {
 
         data.cDiamond = 0;
         data.moveCount = 0;
+        data.name = this.#mapsList.maps[0].name;
+        data.layout = this.#mapsList.maps[0].layout;
 
-        data.name = name;
-        data.layout = layout;
+        this.#map.loadGame(data);
+    }
 
+    /**
+     * Launch the current level to try again
+     * @param {Array} layout representing the initial disposition of the items
+     */
+     retryGame() {
+        let data = this.#map.resetMap();
+        data.name = this.#mapsList.getCurrentMapName();
+        data.layout = this.#mapsList.getCurrentMapLayout();
         this.#map.loadGame(data);
     }
 
@@ -65,6 +80,20 @@ export class MapController {
      */
     notify(data) {
         this.#view.update(data);
+        if(data.gameOver) { 
+            this.#view.lose();
+            setTimeout(() => {this.retryGame()}, 2000);
+        }
+    }
+
+    nextLevel() {
+        setTimeout(() => {
+            let data = this.#map.resetMap();
+            let nextMap = this.#mapsList.nextMap();
+            data.name = nextMap.name;
+            data.layout = nextMap.layout;
+            this.#map.loadGame(data);
+        }, 1500); 
     }
 
     chooseOrder() {
