@@ -62,7 +62,7 @@ export class Map {
     #nextMove;
 
     // used to detect if a new key has been pressed since the last update and prevent sending of a false NOMOVE
-    #newKeyPressed;
+    #lastOrderNotNull;
 
     /**
      * Constructor
@@ -84,7 +84,7 @@ export class Map {
         this.#gameOver = false;
         this.#playerDead = false;
         this.#nextMove = NOMOVE;
-        this.#newKeyPressed = false;
+        this.#lastOrderNotNull = null;
 
         this.#initiateGrid();
     }
@@ -225,13 +225,15 @@ export class Map {
                         this.#grid[y][x] = null;
                         this.#playerLoc = new Coordinates({ x: x, y: y });
                         break;
+                    case PR:
+                    case PL:
                     case P:
                         this.#playerLoc = new Coordinates({ x: x, y: y });
                         this.#grid[y][x] = new Rockford(this, new Coordinates({ x: x, y: y }));
                         break;
 
                 }
-                this.#addToUpdate(new Coordinates({ x: x, y: y }));
+                this.addToUpdate(new Coordinates({ x: x, y: y }));
             }
         }
     }
@@ -249,21 +251,21 @@ export class Map {
 
         if (order != NOMOVE) {
             this.#nextMove = order;
-            this.#newKeyPressed = true;
+            this.#lastOrderNotNull = order;
             this.triggerUpdate();
             this.#updateController();
             return;
         }
 
-        if (!this.#newKeyPressed) {
-            this.#nextMove = order;
-            this.#updateController();
-            return;
-        }
+        this.#nextMove = order;
+        this.#updateController();
+        return;
 
     }
 
     get nextMove() { return this.#nextMove; }
+
+    get lastOrderNotNull() { return this.#lastOrderNotNull; }
 
     /**
      * Transmits data to controller to update view
@@ -291,6 +293,11 @@ export class Map {
 
         // actual update
 
+        if (map.lastOrderNotNull != null) {
+            if (!map.#includesCoordinates(map.#update, map.#playerLoc)) map.#update.push(map.#playerLoc);
+            map.#updatePlanned = true;
+        }
+
         if (map.nextMove != NOMOVE) {
             if (!map.#includesCoordinates(map.#update, map.#playerLoc)) map.#update.push(map.#playerLoc);
             map.#updatePlanned = true;
@@ -302,7 +309,7 @@ export class Map {
         map.#updateController();
 
         // to do after the update
-        map.#newKeyPressed = false;
+        map.#lastOrderNotNull = null;
         if (map.#updatePlanned) setTimeout(map.#runUpdate, refreshTime);
     }
 
@@ -318,7 +325,7 @@ export class Map {
      * adds an item to nextUpdate
      * @param {Coordinates} coord : coordinates of the item to update
      */
-    #addToUpdate(coord) {
+    addToUpdate(coord) {
         if (!this.#includesCoordinates(this.#nextUpdate, coord)) this.#nextUpdate.push(coord);
         this.#updatePlanned = true;
     }
@@ -349,7 +356,7 @@ export class Map {
 
         for (let n = 0; n < 4; ++n) {
             const neighbor = new Coordinates({ x: coord_x + lx[n], y: coord_y + ly[n] });
-            if (this.isOnMap(neighbor)) this.#addToUpdate(neighbor);
+            if (this.isOnMap(neighbor)) this.addToUpdate(neighbor);
         }
 
     }
@@ -383,7 +390,10 @@ export class Map {
         this.#grid[coordA.y][coordA.x] = null;
         this.#grid[coordB.y][coordB.x].coordinates = coordB;
 
-        if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y && !this.#playerDead) this.#playerLoc = coordB;
+        if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y && !this.#playerDead) {
+            this.#playerLoc = coordB;
+            this.#addMovement();
+        }
     }
 
     /**
@@ -398,7 +408,7 @@ export class Map {
     /**
      * Updates the counter
      */
-    addMovement() {
+    #addMovement() {
         ++this.#moveCount;
     }
 
