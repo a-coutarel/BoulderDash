@@ -15,48 +15,34 @@ function volume()
 }
 
 function addMap() {
-    let layout = [];
-    let decomposed_line = [];
     let file = this.files[0];
     let reader = new FileReader();
-    reader.onload = function(progressEvent){
-    let lines = this.result.split('\n');
-    for(let line = 0; line < lines.length; line++){
-        for(let i = 0; i < lines[line].length; i++){
-            if(lines[line].charAt(i) != '\r')
-                decomposed_line[i] = lines[line].charAt(i);
-        }
-        layout[line] = decomposed_line;
-        decomposed_line = [];
-    }
-    };
-    let name = this.files[0].name;
-    reader.readAsText(file);
-    console.log(layout.length)
-    mapsList.addMap(name, layout);
+    mapsList.addMap(file, reader);
 }
 
 
-
-
-
-
+function saveMapsList() {
+    window.localStorage.setItem('mapsList', JSON.stringify(mapsList.maps));
+    window.localStorage.setItem('currentMapIndex', JSON.stringify(mapsList.currentMapIndex));
+}
 
 let mapsList = new PlayableMaps();
 
 window.addEventListener("load", () => {
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
-    if((window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null) 
-    && (window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null)) {
+    if((window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null)) {
         mapsList.maps = JSON.parse(window.localStorage.getItem('mapsList'));
         mapsList.currentMapIndex = JSON.parse(window.localStorage.getItem('currentMapIndex'));
+    }
+    else { 
+        window.localStorage.setItem('mapsList', JSON.stringify(mapsList.maps));
+        window.localStorage.setItem('currentMapIndex', JSON.stringify(mapsList.currentMapIndex)); 
     }
 });
 
 window.addEventListener('beforeunload', () => {
-    window.localStorage.setItem('mapsList', JSON.stringify(mapsList.maps));
-    window.localStorage.setItem('currentMapIndex', JSON.stringify(mapsList.currentMapIndex));
+    saveMapsList();
 });
 
 document.querySelector("#loadLevelButton").addEventListener("click", () => {
@@ -65,13 +51,7 @@ document.querySelector("#loadLevelButton").addEventListener("click", () => {
 document.getElementById("file").addEventListener("change",addMap, false);
 
 document.querySelector("#deleteLevelButton").addEventListener("click", () => {
-    document.getElementById("deleteLevel").style.display = "flex";
-    document.getElementById("buttons").style.display = "none";
-});
-
-document.querySelector("#deleteBack").addEventListener("click", () => {
-    document.getElementById("deleteLevel").style.display = "none";
-    document.getElementById("buttons").style.display = "flex";
+    printDeleteMapDiv();
 });
 
 document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => {
@@ -89,3 +69,38 @@ document.querySelector("#home").addEventListener("click", () => {
 });
 
 document.querySelector("#volume").addEventListener("click", volume);
+
+
+function printDeleteMapDiv() {
+    const div = document.getElementById("deleteLevel");
+    div.innerHTML = "";
+    div.style.display = "flex";
+    document.getElementById("buttons").style.display = "none";
+
+    for(let i=0; i < mapsList.maps.length; i++) {
+        let mapName = document.createElement("h1");
+        mapName.innerText = mapsList.maps[i].name;
+
+        let button = document.createElement("button");
+        button.innerText = "Supprimer";
+        button.id = i.toString();
+        button.addEventListener("click", () => {
+            let bool =confirm("Êtes-vous sûr de vouloir supprimer cette map ?");
+            if (bool == true) { 
+                mapsList.deleteMap(parseInt(button.id));
+                printDeleteMapDiv();
+            }
+        });
+        div.appendChild(mapName);
+        div.appendChild(button);
+    }
+
+    let backButton = document.createElement("button");
+    backButton.innerText = "Retour";
+    backButton.addEventListener("click", () => {
+        document.getElementById("deleteLevel").style.display = "none";
+        document.getElementById("buttons").style.display = "flex";
+    });
+    div.appendChild(backButton);
+
+}

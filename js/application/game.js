@@ -21,7 +21,7 @@ class Game {
             this.#controller.mapsList.maps = JSON.parse(window.localStorage.getItem('mapsList'));
         }
         if(this.#loadSavedGame == 'true') { 
-            this.#controller.loadGame(JSON.parse(window.localStorage.getItem('map'))); 
+            this.#controller.loadGame(JSON.parse(window.localStorage.getItem('backup'))); 
             this.#controller.mapsList.currentMapIndex = JSON.parse(window.localStorage.getItem('currentMapIndex'));
         } else { 
             this.#controller.newGame(); 
@@ -30,7 +30,7 @@ class Game {
     }
 
     saveGameInWeb() {
-        window.localStorage.setItem('map', JSON.stringify(this.#controller.map.saveGame()));
+        window.localStorage.setItem('backup', JSON.stringify(this.#controller.map.saveGame()));
         window.localStorage.setItem('mapsList', JSON.stringify(this.#controller.mapsList.maps));
         window.localStorage.setItem('currentMapIndex', JSON.stringify(this.#controller.mapsList.currentMapIndex));
     }
@@ -50,15 +50,13 @@ class Game {
     }
     
     retry() {
-        var r =confirm("Voulez-vous recommencer la partie ?");
-        if (r == true) { 
-            this.#controller.retryLevel();
-        }
+        let bool =confirm("Voulez-vous recommencer la partie ?");
+        if (bool == true) { this.#controller.retryLevel(); }
     }
     
     return_menu() {
-        var r =confirm("Voulez-vous retourner à l'accueil ? Votre partie sera sauvegardée.");
-        if (r == true) { window.location.href='../index.html'; }
+        let bool =confirm("Voulez-vous retourner à l'accueil ? Votre partie sera sauvegardée.");
+        if (bool == true) { window.location.href='../index.html'; }
     }
 
 }

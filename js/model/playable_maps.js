@@ -94,23 +94,64 @@ export class PlayableMaps {
         return data;
     }
 
-    addMap(name, layout) {
-        if(name) {
-            name = name.replace(".txt", "");
-            let map = {
-                name : name,
-                layout : layout
-            }
+    addMap(file, reader) {
+        let data = {}
+        let name = file.name;
+        name = name.replace(".txt", "");
+        data.name = name;
+        getLayout(file, reader, data);
+        setTimeout( () => {this.pushMap(data)}, 500);
+    }
+
+    pushMap(data) {
+        if(data.isMap) {
+            let map = { name : data.name, layout : data.layout }
             this.#maps.push(map);
-            console.log(layout)
-        } else { alert("Erreur lors de l'importation du fichier. Le fichier doit avoir 16 lignes de 32 caractères"); }
+            alert("La map a bien été ajoutée au jeu.");
+        }
+        else { alert("Erreur lors de l'importation de la map :\nLa map doit être un fichier texte de 16 lignes composées de 32 caractères chacune (sans espace) avec uniquement les caractères suivants : \nM, D, T, R, V, P."); }
     }
 
     deleteMap(index) {
-        this.#maps.splice(index, 1);
+        if(this.#maps.length>1){ this.#maps.splice(index, 1); }
+        if(index == this.#currentMapIndex) { window.localStorage.removeItem('backup') }
+        else { alert("Impossible de supprimer la map, veuillez en ajouter au moins une autre d'abord."); }
     }
 
     changePostion() {
 
     }
+
+}
+
+
+function getLayout(file, reader, data) {
+    data.isMap = true;
+    let layout = []
+    let decomposed_line = [];
+    let char;
+
+    reader.onload = function(progressEvent) {
+
+        let lines = this.result.split('\n');
+        if(lines.length != 16) { data.isMap = false; }
+
+        for(let line = 0; line < lines.length; line++) {
+            lines[line].toUpperCase();
+
+            for(let i = 0; i < lines[line].length; i++) {
+                char = lines[line].charAt(i);
+                if(char != '\r' && char != '\n') { decomposed_line[i] = char }
+            }
+
+            if(decomposed_line.length != 32) { data.isMap = false; }
+            layout[line] = decomposed_line;
+            decomposed_line = [];
+
+        }
+        };
+
+    reader.readAsText(file);
+    data.layout = layout;
+    return data;
 }

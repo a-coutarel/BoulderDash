@@ -89,6 +89,12 @@ footer > p {
     border: dashed 8px rgba(0, 0, 0, 1);
 }
 
+#deleteLevel > h1 {
+    color: #fff;
+    font-family: Pixeled, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
 #modifyLevelsOrder{
     width: 90vw;
     display: none;
