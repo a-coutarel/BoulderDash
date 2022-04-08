@@ -5,7 +5,6 @@
 body {
     margin: 0;
     width: 100vw;
-    height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -104,4 +103,10 @@ footer > p {
     padding-top: 20px;
     box-sizing: border-box;
     border: dashed 8px rgba(0, 0, 0, 1);
+}
+
+.divMap > h1 {
+    color: #fff;
+    font-family: Pixeled, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
 }

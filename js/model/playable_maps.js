@@ -113,13 +113,20 @@ export class PlayableMaps {
     }
 
     deleteMap(index) {
-        if(this.#maps.length>1){ this.#maps.splice(index, 1); }
-        if(index == this.#currentMapIndex) { window.localStorage.removeItem('backup') }
+        if(this.#maps.length > 1){ 
+            this.#maps.splice(index, 1); 
+            window.localStorage.removeItem('backup');
+        }
         else { alert("Impossible de supprimer la map, veuillez en ajouter au moins une autre d'abord."); }
     }
 
-    changePostion() {
-
+    changePosition(fromIndex, toIndex) {
+        if(toIndex == this.#maps.length) { toIndex = 0; }
+        if(toIndex == -1) { toIndex = this.#maps.length-1; }
+        let element = this.#maps[fromIndex];
+        this.#maps.splice(fromIndex, 1);
+        this.#maps.splice(toIndex, 0, element);
+        window.localStorage.removeItem('backup');
     }
 
 }

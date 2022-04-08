@@ -55,13 +55,7 @@ document.querySelector("#deleteLevelButton").addEventListener("click", () => {
 });
 
 document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => {
-    document.getElementById("modifyLevelsOrder").style.display = "flex";
-    document.getElementById("buttons").style.display = "none";
-});
-
-document.querySelector("#modifyBack").addEventListener("click", () => {
-    document.getElementById("modifyLevelsOrder").style.display = "none";
-    document.getElementById("buttons").style.display = "flex";
+    printModifyOrderDiv();
 });
 
 document.querySelector("#home").addEventListener("click", () => {
@@ -78,6 +72,7 @@ function printDeleteMapDiv() {
     document.getElementById("buttons").style.display = "none";
 
     for(let i=0; i < mapsList.maps.length; i++) {
+
         let mapName = document.createElement("h1");
         mapName.innerText = mapsList.maps[i].name;
 
@@ -87,7 +82,7 @@ function printDeleteMapDiv() {
         button.addEventListener("click", () => {
             let bool =confirm("Êtes-vous sûr de vouloir supprimer cette map ?");
             if (bool == true) { 
-                mapsList.deleteMap(parseInt(button.id));
+                mapsList.deleteMap(i);
                 printDeleteMapDiv();
             }
         });
@@ -102,5 +97,52 @@ function printDeleteMapDiv() {
         document.getElementById("buttons").style.display = "flex";
     });
     div.appendChild(backButton);
+}
 
+
+function printModifyOrderDiv() {
+
+    const div = document.getElementById("modifyLevelsOrder");
+    div.innerHTML = "";
+    div.style.display = "flex";
+    document.getElementById("buttons").style.display = "none";
+
+    for(let i=0; i < mapsList.maps.length; i++) {
+
+        let divMap = document.createElement("div");
+        let divButton = document.createElement("div");
+
+        let mapName = document.createElement("h1");
+        mapName.innerText = (i+1).toString()+". "+mapsList.maps[i].name;
+
+        let minusButton = document.createElement("button");
+        minusButton.innerText = "↑";
+        minusButton.id = i.toString()+"-minus";
+        minusButton.addEventListener("click", () => {
+            mapsList.changePosition(i, i-1);
+            printModifyOrderDiv();
+        });
+
+        let plusButton = document.createElement("button");
+        plusButton.innerText = "↓";
+        plusButton.id = i.toString()+"-plus";
+        plusButton.addEventListener("click", () => {
+            mapsList.changePosition(i, i+1);
+            printModifyOrderDiv();
+        });
+
+        divMap.appendChild(mapName);
+        divButton.appendChild(minusButton);
+        divButton.appendChild(plusButton);
+        divMap.appendChild(divButton);
+        div.appendChild(divMap).className = "divMap";
+    }
+
+    let backButton = document.createElement("button");
+    backButton.innerText = "Retour";
+    backButton.addEventListener("click", () => {
+        document.getElementById("modifyLevelsOrder").style.display = "none";
+        document.getElementById("buttons").style.display = "flex";
+    });
+    div.appendChild(backButton);
 }
