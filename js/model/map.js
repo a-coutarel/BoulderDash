@@ -257,12 +257,10 @@ export class Map {
             this.#nextMove = order;
             this.#lastOrderNotNull = order;
             this.triggerUpdate();
-            this.#updateController();
             return;
         }
 
         this.#nextMove = order;
-        this.#updateController();
         return;
     }
 
@@ -288,6 +286,7 @@ export class Map {
      * runs the update of all items which need one
      */
     #runUpdate() {
+        console.log("update");
         // the map needs to be referenced at by an absolute declaration as the function will be executed after a timeout sometimes
         let map = document.controller.map;
         map.#updatePlanned = false;
@@ -307,6 +306,7 @@ export class Map {
             map.#updatePlanned = true;
         }
 
+        console.log(map.#update);
         for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
 
         // warns the controller of the update
