@@ -1,3 +1,5 @@
+import { PlayableMaps } from "../model/playable_maps.js";
+
 function volume() 
 {
     let audio = document.getElementById('audio');
@@ -12,10 +14,7 @@ function volume()
     }
 }
 
-
-//fct à changer => va devenir addMap et ajoutera une nouvelle map et mapsSelection en faisaint appel à sa méthode addMap 
-//qui gère le comptage des diamants...
-function getLayout() {
+function addMap() {
     let layout = [];
     let decomposed_line = [];
     let file = this.files[0];
@@ -30,22 +29,40 @@ function getLayout() {
         layout[line] = decomposed_line;
         decomposed_line = [];
     }
-  };
-  reader.readAsText(file);
-  return layout;
+    };
+    let name = this.files[0].name;
+    reader.readAsText(file);
+    console.log(layout.length)
+    mapsList.addMap(name, layout);
 }
 
 
 
+
+
+
+
+let mapsList = new PlayableMaps();
+
 window.addEventListener("load", () => {
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
+    if((window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null) 
+    && (window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null)) {
+        mapsList.maps = JSON.parse(window.localStorage.getItem('mapsList'));
+        mapsList.currentMapIndex = JSON.parse(window.localStorage.getItem('currentMapIndex'));
+    }
+});
+
+window.addEventListener('beforeunload', () => {
+    window.localStorage.setItem('mapsList', JSON.stringify(mapsList.maps));
+    window.localStorage.setItem('currentMapIndex', JSON.stringify(mapsList.currentMapIndex));
 });
 
 document.querySelector("#loadLevelButton").addEventListener("click", () => {
     document.getElementById('file').click();
 });
-document.getElementById("file").addEventListener("change", getLayout, false);
+document.getElementById("file").addEventListener("change",addMap, false);
 
 document.querySelector("#deleteLevelButton").addEventListener("click", () => {
     document.getElementById("deleteLevel").style.display = "flex";

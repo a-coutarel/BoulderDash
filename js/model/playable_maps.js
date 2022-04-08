@@ -95,11 +95,15 @@ export class PlayableMaps {
     }
 
     addMap(name, layout) {
-        let map = {
-            name : name,
-            layout : layout
-        }
-        this.#maps.push(map);
+        if(name) {
+            name = name.replace(".txt", "");
+            let map = {
+                name : name,
+                layout : layout
+            }
+            this.#maps.push(map);
+            console.log(layout)
+        } else { alert("Erreur lors de l'importation du fichier. Le fichier doit avoir 16 lignes de 32 caractères"); }
     }
 
     deleteMap(index) {
@@ -109,5 +113,4 @@ export class PlayableMaps {
     changePostion() {
 
     }
-
 }

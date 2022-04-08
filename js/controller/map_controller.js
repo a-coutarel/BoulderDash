@@ -80,10 +80,12 @@ export class MapController {
      */
     notify(data) {
         this.#view.update(data);
-        if(data.gameOver) { 
-            this.#view.lose();
-            setTimeout(() => {this.retryGame()}, 2500);
-        }
+        if(data.gameOver) { this.gameOver(); }
+    }
+
+    gameOver() {
+        this.#view.lose();
+        setTimeout(() => {this.retryGame()}, 2500);
     }
 
     nextLevel() {
