@@ -87,13 +87,18 @@ export class MapController {
     }
 
     nextLevel() {
-        setTimeout(() => {
-            let data = this.#map.resetMap();
-            let nextMap = this.#mapsList.nextMap();
-            data.name = nextMap.name;
-            data.layout = nextMap.layout;
-            this.#map.loadGame(data);
-        }, 1500); 
+        let nextMapData = this.#mapsList.nextMap();
+        if(nextMapData.win) { 
+            setTimeout(() => { this.#view.win(); }, 1500);
+        }
+        else {
+            setTimeout(() => {
+                let data = this.#map.resetMap();
+                data.name = nextMapData.name;
+                data.layout = nextMapData.layout;
+                this.#map.loadGame(data);
+            }, 1500);
+        }
     }
 
     chooseOrder() {

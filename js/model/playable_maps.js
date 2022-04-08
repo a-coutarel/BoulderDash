@@ -84,8 +84,13 @@ export class PlayableMaps {
     nextMap() {
         this.#currentMapIndex++;
         let data = {};
-        data.name = this.#maps[this.#currentMapIndex].name;
-        data.layout = this.#maps[this.#currentMapIndex].layout;
+        if(this.#currentMapIndex == this.#maps.length) {
+            data.win = true;
+        } else {
+            data.win = false;
+            data.name = this.#maps[this.#currentMapIndex].name;
+            data.layout = this.#maps[this.#currentMapIndex].layout;  
+        }
         return data;
     }
 
