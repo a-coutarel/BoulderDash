@@ -78,6 +78,13 @@ export class Map {
         this.initiateMap();
     }
 
+
+    get nextMove() { return this.#nextMove; }
+
+    get lastOrderNotNull() { return this.#lastOrderNotNull; }
+
+    get gameOver() { return this.#gameOver; }
+        
     /**
      * Initiates a new level
      * */
@@ -258,6 +265,8 @@ export class Map {
      * @param {string} order : order given by player
      */
     playerOrder(order) {
+        if (this.#gameOver) return;
+
         if (order == this.#nextMove) return;
 
         if (order != NOMOVE) {
@@ -270,10 +279,6 @@ export class Map {
         this.#nextMove = order;
         return;
     }
-
-    get nextMove() { return this.#nextMove; }
-
-    get lastOrderNotNull() { return this.#lastOrderNotNull; }
 
     /**
      * Transmits data to controller to update view
@@ -412,7 +417,10 @@ export class Map {
         ++this.#cdiamond;
         --this.#rdiamond;
         
-        if(this.#rdiamond == 0) { this.#controller.nextLevel() }
+        if (this.#rdiamond == 0) {
+            this.#gameOver = true;
+            this.#controller.nextLevel()
+        }
     }
 
     /**

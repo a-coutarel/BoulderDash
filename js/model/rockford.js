@@ -25,6 +25,8 @@ export class Rockford extends Generic_item {
      * Updates the item if one of its neighbors moved
      */
     update() {
+        if (this.map.gameOver) return;
+
         let order = this.map.lastOrderNotNull;
         if (order == null) order = this.map.nextMove;
 
