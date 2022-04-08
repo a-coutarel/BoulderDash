@@ -82,7 +82,7 @@ export class MapController {
         this.#view.update(data);
         if(data.gameOver) { 
             this.#view.lose();
-            setTimeout(() => {this.retryGame()}, 2000);
+            setTimeout(() => {this.retryGame()}, 2500);
         }
     }
 

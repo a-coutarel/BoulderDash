@@ -85,6 +85,9 @@ export class MapView {
 
     lose() {
         document.querySelector("mapName").innerText = "Game Over";
+        var audio = new Audio('../../sound/game_over.wav');
+        audio.volume = 0.5;
+        audio.play();
     }
 
 }
