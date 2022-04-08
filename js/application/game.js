@@ -52,7 +52,7 @@ class Game {
     retry() {
         var r =confirm("Voulez-vous recommencer la partie ?");
         if (r == true) { 
-            this.#controller.retryGame();
+            this.#controller.retryLevel();
         }
     }
     

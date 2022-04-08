@@ -75,6 +75,13 @@ export class Map {
         this.#controller = mapController;
         Window.map = this;
 
+        this.initiateMap();
+    }
+
+    /**
+     * Initiates a new level
+     * */
+    initiateMap() {
         this.#update = [];
         this.#nextUpdate = [];
 
@@ -245,7 +252,7 @@ export class Map {
 
     /**
      * Modify the next move of Rockford according to player's order
-     * The function can seems a bit strange: that is
+     * The function may seem a bit strange: that is
      * to keep a smooth movement without any pause just after the key is pressed
      * (you know, the pause after the first letter when you are maintaining a key down)
      * @param {string} order : order given by player
@@ -286,7 +293,6 @@ export class Map {
      * runs the update of all items which need one
      */
     #runUpdate() {
-        console.log("update");
         // the map needs to be referenced at by an absolute declaration as the function will be executed after a timeout sometimes
         let map = document.controller.map;
         map.#updatePlanned = false;
@@ -306,7 +312,6 @@ export class Map {
             map.#updatePlanned = true;
         }
 
-        console.log(map.#update);
         for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
 
         // warns the controller of the update
@@ -423,29 +428,9 @@ export class Map {
     death() {
         this.#playerDead = true;
         this.#gameOver = true;
+        this.#controller.gameOver();
     }
 
-    /**
-     * Reset the map with defalut values
-     */
-    resetMap() {
-        let data = {};
-        data.gameOver = false;
-        data.playerDead = false;
-        data.cDiamond = 0;
-        data.moveCount = 0;
-        data.name = "";
-        this.#initiateGrid();
-        this.#update = [];
-        this.#nextUpdate = [];
-        this.#updatePlanned = true;
-        this.#rdiamond = 0;
-        this.#gameOver = false;
-        this.#playerDead = false;
-        this.#nextMove = NOMOVE;
-        this.#lastOrderNotNull = null;
-        return data;
-    }
 }
 
 

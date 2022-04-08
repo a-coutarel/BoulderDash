@@ -45,6 +45,23 @@ export class MapController {
      * Launch a new game with the first map in the list of maps
      */
     newGame() {
+        this.#loadNewLevel(this.#mapsList.maps[0].name, this.#mapsList.maps[0].layout);
+    }
+
+    /**
+     * Launch the current level to try again
+     * @param {Array} layout representing the initial disposition of the items
+     */
+    retryLevel() {
+        this.#loadNewLevel(this.#mapsList.getCurrentMapName(), this.#mapsList.getCurrentMapLayout());
+    }
+
+    /**
+     * loads a new level (all data at 0)
+     * @param {any} name of the level
+     * @param {any} layout of the level
+     */
+    #loadNewLevel(name, layout) {
         let data = {};
 
         data.gameOver = false;
@@ -52,28 +69,21 @@ export class MapController {
 
         data.cDiamond = 0;
         data.moveCount = 0;
-        data.name = this.#mapsList.maps[0].name;
-        data.layout = this.#mapsList.maps[0].layout;
+        data.name = name;
+        data.layout = layout;
 
+        this.#view.updateName(name);
+
+        this.#map.initiateMap();
         this.#map.loadGame(data);
     }
 
     /**
-     * Launch the current level to try again
-     * @param {Array} layout representing the initial disposition of the items
-     */
-     retryGame() {
-        let data = this.#map.resetMap();
-        data.name = this.#mapsList.getCurrentMapName();
-        data.layout = this.#mapsList.getCurrentMapLayout();
-        this.#map.loadGame(data);
-    }
-
-    /**
-     * Load a game according to the given set of data
+     * Loads a game according to the given set of data
      * @param {any} data representing the initial disposition of the items and the saved game variables
      */
     loadGame(data) {
+        this.#view.updateName(data.name);
         this.#map.loadGame(data);
     }
 
@@ -83,27 +93,30 @@ export class MapController {
      */
     notify(data) {
         this.#view.update(data);
-        if(data.gameOver) { this.gameOver(); }
     }
 
+    /**
+     * Plans a reload of the level
+     * */
     gameOver() {
         this.#view.lose();
-        setTimeout(() => {this.retryGame()}, 2500);
+        setTimeout(() => {this.retryLevel()}, 2500);
     }
 
+    /**
+     * plans the load of the next level
+     * */
     nextLevel() {
         let nextMapData = this.#mapsList.nextMap();
         if(nextMapData.win) { 
             setTimeout(() => { this.#view.win(); }, 1500);
+            return;
         }
-        else {
-            setTimeout(() => {
-                let data = this.#map.resetMap();
-                data.name = nextMapData.name;
-                data.layout = nextMapData.layout;
-                this.#map.loadGame(data);
-            }, 1500);
-        }
+
+        setTimeout(() => {
+            this.#loadNewLevel(nextMapData.name, nextMapData.layout);
+        }, 1500);
+        
     }
 
     /**
@@ -111,8 +124,6 @@ export class MapController {
      * */
     chooseOrder() {
         const lastKey = this.keyDownList[this.keyDownList.length - 1];
-
-        console.log(this.keyDownList);
 
         switch (lastKey) {
             case 38:
@@ -143,8 +154,6 @@ export class MapController {
      */
     #sendOrder(order) {
         if (this.#lastOrder == order) return;
-
-        console.log(order);
 
         this.#lastOrder = order;
         this.map.playerOrder(order);
