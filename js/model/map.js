@@ -148,7 +148,7 @@ export class Map {
 
         this.#placeItems(data.layout);
 
-        if (this.#playerDead) this.death();
+        if (this.#playerDead) this.#controller.gameOver();
 
         this.#updateController();
         setTimeout(() => { this.triggerUpdate() }, refreshTime * 4);
