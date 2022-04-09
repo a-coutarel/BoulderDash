@@ -67,7 +67,7 @@ document.getElementById("volume").addEventListener("click", () => { soundPlayer.
  * play or not the background music
  */
 window.addEventListener("load", () => {
-    import { SoundPlayer, m_home } from "../view/soundPlayer.js";
+    import("../view/soundPlayer.js");
     soundPlayer = new SoundPlayer();
     soundPlayer.setMusic(m_home);
     soundPlayer.playOrNot();
