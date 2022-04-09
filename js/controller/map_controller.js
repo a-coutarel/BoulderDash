@@ -99,10 +99,10 @@ export class MapController {
      * Plans a reload of the level
      * */
     gameOver() {
-        let audio = new Audio('../../sound/player_death.wav');
+        let audio = new Audio('../../sound/player_death.mp3');
         audio.volume = 0.15;
         audio.play();
-        let audio2 = new Audio('../../sound/game_over.wav');
+        let audio2 = new Audio('../../sound/game_over.mp3');
         audio2.volume = 0.5;
         audio2.play();
 
@@ -114,7 +114,7 @@ export class MapController {
      * plans the load of the next level
      * */
     nextLevel() {
-        let audio = new Audio('../../sound/game_win.wav');
+        let audio = new Audio('../../sound/game_win.mp3');
         audio.volume = 0.5;
         audio.play();
         
