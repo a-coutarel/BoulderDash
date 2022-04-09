@@ -8,7 +8,7 @@ export class Game {
     // attribute which permite to know if the controller must start a new game or a saved game
     #loadSavedGame;
 
-    // attribute which permite to know if there is a list of maps available in the game in the localStorage
+    // attribute which permite to know if there is a list of available maps in the game in the localStorage
     #loadMapsList;
 
     /**
@@ -22,7 +22,7 @@ export class Game {
     }
 
     /**
-     * initiate the list of maps avalaible in the game from the localStorage data if there is
+     * initiate the list of avalaible maps in the game from the localStorage data if there is
      * if #loadSavedGame is equals to "true", load the saved game
      * if #loadSavedGame is equals to "false", load a new game
      */
@@ -40,7 +40,7 @@ export class Game {
     }
 
     /**
-     * save in localStorage the current map data, the list of maps and the index in this list of the map currently played
+     * save in localStorage the current map data, the list of maps and the index of the map currently played in this list 
      */
     saveGameInWeb() {
         window.localStorage.setItem('backup', JSON.stringify(this.#controller.map.saveGame()));

@@ -2,11 +2,15 @@ import { T, V, R, M, P, D } from "./map.js";
 
 export class PlayableMaps {
 
-    //table of name and layout of maps available in the game
+    //table of name and layout (grid of map elements) of available maps in the game
     #maps;
-    //index of the played map
+    //index of the currently played map
     #currentMapIndex;
 
+    /**
+     * Constructor
+     * make 3 default maps
+     */
     constructor() {
         this.#currentMapIndex = 0;
         this.#maps = [ 
@@ -67,20 +71,38 @@ export class PlayableMaps {
     } 
     
 
+    /**
+     * setters
+     */
     set currentMapIndex(currentMapIndex) { this.#currentMapIndex = currentMapIndex; };
+
     set maps(maps) { this.#maps = maps; };
 
+    /**
+     * getters
+     */
     get maps() { return this.#maps };
+
     get currentMapIndex() { return this.#currentMapIndex };
 
+    /**
+     * @returns layout of the currently played map
+     */
     getCurrentMapLayout() {
         return this.#maps[this.#currentMapIndex].layout;
     }
 
+    /**
+     * @returns name of the currently played map
+     */
     getCurrentMapName() {
         return this.#maps[this.#currentMapIndex].name;
     }
 
+    /**
+     * if there isn't next map, that means the player has finished the game and so this function will notify the MapControlle of the victory
+     * @returns data of the next map
+     */
     nextMap() {
         this.#currentMapIndex++;
         let data = {};
@@ -95,6 +117,11 @@ export class PlayableMaps {
         return data;
     }
 
+    /**
+     * prepare the data of the map file that have to be add to the list of maps
+     * @param {any.txt file} file 
+     * @param {FileReader} reader 
+     */
     addMap(file, reader) {
         let data = {}
         let name = file.name;
@@ -104,6 +131,11 @@ export class PlayableMaps {
         setTimeout( () => {this.pushMap(data)}, 500);
     }
 
+    /**
+     * add map to the list of avalaible maps
+     * and delete the game backup
+     * @param {any} data : data of the map
+     */
     pushMap(data) {
         if(data.isMap) {
             let map = { name : data.name, layout : data.layout }
@@ -114,6 +146,11 @@ export class PlayableMaps {
         else { alert("Erreur lors de l'importation de la map :\nLa map doit être un fichier texte de 16 lignes composées de 32 caractères chacune (sans espace) avec uniquement les caractères suivants : \nM, D, T, R, V, P."); }
     }
 
+    /**
+     * delete the map of the list of available maps
+     * and delete the game backup
+     * @param {int} index : index of the map that will be deleted
+     */
     deleteMap(index) {
         if(this.#maps.length > 1){ 
             this.#maps.splice(index, 1); 
@@ -122,9 +159,15 @@ export class PlayableMaps {
         else { alert("Impossible de supprimer la map, veuillez en ajouter au moins une autre d'abord."); }
     }
 
+    /**
+     * change the position of a map in the list of available maps
+     * and delete the game backup
+     * @param {int} fromIndex 
+     * @param {int} toIndex 
+     */
     changePosition(fromIndex, toIndex) {
         if(toIndex == this.#maps.length) { toIndex = 0; }
-        if(toIndex == -1) { toIndex = this.#maps.length-1; }
+        if(toIndex == -1) { toIndex = this.#maps.length - 1; }
         let element = this.#maps[fromIndex];
         this.#maps.splice(fromIndex, 1);
         this.#maps.splice(toIndex, 0, element);
@@ -133,7 +176,13 @@ export class PlayableMaps {
 
 }
 
-
+/**
+ * read the file and convert it to a table which layout is the same as map layout
+ * @param {any.txt file} file 
+ * @param {FileReader} reader 
+ * @param {any} data 
+ * @returns data
+ */
 function getLayout(file, reader, data) {
     data.isMap = true;
     let layout = []

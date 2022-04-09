@@ -2,19 +2,29 @@ import { PlayableMaps } from "../model/playable_maps.js";
 import { T, V, R, M, P, D } from "../model/map.js";
 
 export class LevelsManagement {
-
+    // dictonnary of images
     #textures;
 
+    // instance of PlayableMaps Object : list of available maps in the game 
     #mapsList;
 
+    /**
+     * Constructor
+     */
     constructor() {
         this.#mapsList = new PlayableMaps();
         this.#textures = {};
         this.#loadImages();
     }
 
+    /**
+     * getter of the attribute #mapsList
+     */
     get mapsList () { return this.#mapsList; }
 
+    /**
+     * Preloads the textures used to print maps
+     * */
     #loadImages() {
         let imagesPath = [
             ["dirt",                "../img/textures/dirt.png"],
@@ -35,6 +45,11 @@ export class LevelsManagement {
         }
     }
 
+    /**
+     * add the map representation in the div
+     * @param {div} map : div in which the map will be printed
+     * @param {[[any]]} layout : grid of map elements
+     */
     #getMap(map, layout) {
         map.innerHTML = "";
         map.style.setProperty('--grid-rows', 16);
@@ -55,37 +70,53 @@ export class LevelsManagement {
         }
     }
 
+    /**
+     * save in localStorage the list of maps and the index of the map currently played
+     */
     saveMapsList() {
         window.localStorage.setItem('mapsList', JSON.stringify(this.#mapsList.maps));
         window.localStorage.setItem('currentMapIndex', JSON.stringify(this.#mapsList.currentMapIndex));
     }
 
+    /**
+     * add the map file loaded to the list of available maps
+     */
     addMap() {
         let file = document.getElementById("file").files[0];
         let reader = new FileReader();
         this.#mapsList.addMap(file, reader);
     }
 
+    /**
+     * print the menu to delete map
+     */
     printDeleteMapDiv() {
+        //print the div menu
         const div = document.getElementById("deleteLevel");
         div.innerHTML = "";
         div.style.display = "flex";
         document.getElementById("buttons").style.display = "none";
         
+        //add a title for the menu
         let title = document.createElement("h1");
         title.innerText = "Supprimer un niveau";
         div.appendChild(title).className = "title";
     
+        //for each map in the list of avalaible maps #mapsList.maps
         for(let i=0; i < this.#mapsList.maps.length; i++) {
     
+            //create new div
             let divMapDelete = document.createElement("div");
     
+            //create a div which print the map
             let map = document.createElement("boulderdash");
             this.#getMap(map, this.#mapsList.maps[i].layout);
     
+            //get the map name
             let mapName = document.createElement("h1");
             mapName.innerText = "---- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ----";
     
+            //create delete button with the appropriate eventListener 
             let button = document.createElement("button");
             button.innerText = "Supprimer";
             button.id = i.toString();
@@ -96,6 +127,8 @@ export class LevelsManagement {
                     this.printDeleteMapDiv();
                 }
             });
+
+            //imbricate elements and add them to the div menu 
             divMapDelete.appendChild(mapName);
             divMapDelete.appendChild(map);
             div.appendChild(divMapDelete).className = "divMapDelete";
@@ -103,6 +136,7 @@ export class LevelsManagement {
             div.appendChild(document.createElement("hr"));
         }
     
+        //add a back button with with the appropriate eventListener to the div menu
         let backButton = document.createElement("button");
         backButton.innerText = "Retour";
         backButton.addEventListener("click", () => {
@@ -112,29 +146,38 @@ export class LevelsManagement {
         div.appendChild(backButton);
     }
 
+    /**
+     * print the menu to modify the order of the maps
+     */
     printModifyOrderDiv() {
-
+        //print the div menu
         const div = document.getElementById("modifyLevelsOrder");
         div.innerHTML = "";
         div.style.display = "flex";
         document.getElementById("buttons").style.display = "none";
     
+        //add a title for the menu
         let title = document.createElement("h1");
         title.innerText = "Disposition des niveaux";
         div.appendChild(title).className = "title";
     
+        //for each map in the list of avalaible maps #mapsList.maps
         for(let i=0; i < this.#mapsList.maps.length; i++) {
     
+            //create new divisions
             let divLevel = document.createElement("div");
             let divButton = document.createElement("div");
             let divMap = document.createElement("div");
     
+            //create a div which print the map
             let map = document.createElement("boulderdash");
             this.#getMap(map, this.#mapsList.maps[i].layout);
     
+            //get the map name
             let mapName = document.createElement("h1");
             mapName.innerText = "---- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ----";
     
+            //create - button with the appropriate eventListener 
             let minusButton = document.createElement("button");
             minusButton.innerHTML = '<img class="arrowImg" src="../img/up_arrow.png" />';
             minusButton.className = "arrowBtn";
@@ -143,6 +186,7 @@ export class LevelsManagement {
                 this.printModifyOrderDiv();
             });
     
+            //create + button with the appropriate eventListener 
             let plusButton = document.createElement("button");
             plusButton.innerHTML = '<img class="arrowImg" src="../img/down_arrow.png" />';
             plusButton.className = "arrowBtn";
@@ -151,6 +195,7 @@ export class LevelsManagement {
                 this.printModifyOrderDiv();
             });
     
+            //imbricate elements and add them to the div menu 
             divButton.appendChild(minusButton);
             divButton.appendChild(plusButton);
     
@@ -164,6 +209,7 @@ export class LevelsManagement {
             div.appendChild(document.createElement("hr"));
         }
     
+        //add a back button with with the appropriate eventListener to the div menu
         let backButton = document.createElement("button");
         backButton.innerText = "Retour";
         backButton.addEventListener("click", () => {
@@ -177,6 +223,9 @@ export class LevelsManagement {
 
 
 
+/**
+ * set the volume of the background music
+ */
 function volume() {
     let audio = document.getElementById('audio');
     if(audio.duration > 0 && !audio.paused) { 
@@ -193,11 +242,16 @@ function volume() {
 
 
 
+// declaration of the variable game which will be initialized after the loading of the page
 let levelsManagement = null;
 
 
 
 
+/**
+ * set the volume of the background music
+ * initialize the levelsManagement variable by created a new instance of LevelsManagement object
+ */
 window.addEventListener("load", () => {
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
@@ -213,7 +267,6 @@ window.addEventListener("load", () => {
         window.localStorage.setItem('currentMapIndex', JSON.stringify(levelsManagement.mapsList.currentMapIndex)); 
     }
 });
-
 
 /**
  * attach the saveMapsList function of LevelsManagement class called by the variable levelsManagement to the event beforeunload
