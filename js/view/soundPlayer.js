@@ -30,13 +30,13 @@ export class SoundPlayer {
 
         this.#music = new Audio();
 
-        this.#loadSounds();
+        //this.loadSounds();
     }
 
     /**
      * loads the sounds in this.#sounds
      * */
-    #loadSounds() {
+    loadSounds() {
         let soundPath = [
             [s_game_over, "../sound/game_over.mp3", 0.5],
             [s_game_win, "../sound/game_win.mp3", 0.5],
