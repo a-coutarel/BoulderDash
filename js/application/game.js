@@ -50,6 +50,7 @@ export class Game {
             window.localStorage.setItem('currentMapIndex', JSON.stringify(this.#controller.mapsList.currentMapIndex));
             window.localStorage.setItem('mapsList', JSON.stringify(this.#controller.mapsList.maps));
             window.localStorage.setItem('loadSavedGame', 'false');
+            window.localStorage.removeItem('backup');
             return; 
         }
         window.localStorage.setItem('backup', JSON.stringify(this.#controller.map.saveGame()));
