@@ -1,19 +1,13 @@
+import { home_music, mute, playOrNot } from "../view/soundPlayer.js";
+
+
 /**
- * set the volume of the background music
+ * if there is a saved game in localStorage, print the button #loadSavedGameB
  */
-function volume() 
-{
-    let audio = document.getElementById('audio');
-    if(audio.duration > 0 && !audio.paused) { 
-        audio.muted = !audio.muted;
-        if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
-        else { window.sessionStorage.setItem('muted', 'false'); }
-    }
-    else { 
-        audio.play();
-        window.sessionStorage.setItem('muted', 'false');
-    }
+if(window.localStorage.getItem('backup') !== null && JSON.parse(window.localStorage.getItem('backup')) != null) {
+    document.getElementById("loadSavedGameB").style.display = "block";
 }
+
 
 /**
  * set the localStorage variable 'loadSavedGame' to false in order to alert that the player wants to start a new game
@@ -50,18 +44,6 @@ function loadSavedGame() {
 
 
 /**
- * if there is a saved game in localStorage, print the button #loadSavedGameB
- * and set the volume of the background music
- */
-window.addEventListener("load", () => {
-    if(window.localStorage.getItem('backup') !== null && JSON.parse(window.localStorage.getItem('backup')) != null) {
-        document.getElementById("loadSavedGameB").style.display = "block";
-    }
-    document.getElementById('audio').volume = 0.2;
-    if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
-});
-
-/**
  * attach the newGame function to the button #newGameB
  */
 document.getElementById("newGameB").addEventListener("click", newGame);
@@ -77,6 +59,11 @@ document.getElementById("loadSavedGameB").addEventListener("click", loadSavedGam
 document.getElementById("levelsManagementB").addEventListener("click", () => { window.location.href='html/levels_management.html'; });
 
 /**
- * attach the volume function to the button #volume
+ * attach the mute function to the button #volume
  */
-document.getElementById("volume").addEventListener("click", volume);
+document.getElementById("volume").addEventListener("click", () => { mute(home_music) });
+
+/**
+ * play or not the background music
+ */
+ window.addEventListener("load", () => { playOrNot(home_music); });

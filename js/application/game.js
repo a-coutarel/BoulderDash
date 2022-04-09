@@ -1,5 +1,6 @@
 import { PlayableMaps } from "../model/playable_maps.js";
 import { MapController } from "../controller/map_controller.js";
+import { game_music, mute, playOrNot } from "../view/soundPlayer.js";
 
 export class Game {
     // instance of MapController object
@@ -71,22 +72,6 @@ export class Game {
 
 
 /**
- * set the volume of the background music
- */
-function volume() {
-    let audio = document.getElementById('audio');
-    if(audio.duration > 0 && !audio.paused) { 
-        audio.muted = !audio.muted;
-        if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
-        else { window.sessionStorage.setItem('muted', 'false'); }
-    }
-    else { 
-        audio.play();
-        window.sessionStorage.setItem('muted', 'false');
-    }
-}
-
-/**
  * return to the index page
  */
 function return_menu() {
@@ -98,25 +83,21 @@ function return_menu() {
 
 
 /**
- * attach the volume function to the button #volume
+ * attach the mute function to the button #volume
  */
- document.querySelector("#volume").addEventListener("click", volume);
+ document.querySelector("#volume").addEventListener("click", () => { mute(game_music) });
 
  /**
   * attach the return_menu function to the button #home
   */
  document.querySelector("#home").addEventListener("click", return_menu);
 
-
-
-
 /**
  * when the page is completely loaded
  */
 window.addEventListener("load", () => {
 
-    document.getElementById('audio').volume = 0.2;
-    if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
+    playOrNot(game_music);
     
     // declaration of an instance of Game, start of the game
     const game = new Game();

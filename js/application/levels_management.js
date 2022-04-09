@@ -1,5 +1,6 @@
 import { PlayableMaps } from "../model/playable_maps.js";
 import { T, V, R, M, P, D } from "../model/map.js";
+import { levels_management_music, mute, playOrNot } from "../view/soundPlayer.js";
 
 export class LevelsManagement {
     // dictonnary of images
@@ -237,25 +238,6 @@ export class LevelsManagement {
 
 
 /**
- * set the volume of the background music
- */
-function volume() {
-    let audio = document.getElementById('audio');
-    if(audio.duration > 0 && !audio.paused) { 
-        audio.muted = !audio.muted;
-        if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
-        else { window.sessionStorage.setItem('muted', 'false'); }
-    }
-    else { 
-        audio.play();
-        window.sessionStorage.setItem('muted', 'false');
-    }
-}
-
-
-
-
-/**
  * attach the click on the button #loadLevelButton with the click action of the input file #file
  */
  document.querySelector("#loadLevelButton").addEventListener("click", () => { document.getElementById('file').click(); });
@@ -265,20 +247,17 @@ function volume() {
  */
  document.querySelector("#home").addEventListener("click", () => { window.location.href='../index.html'; });
 
- /**
-  * attach the volume function to the button #volume
-  */
- document.querySelector("#volume").addEventListener("click", volume);
-
-
-
+/**
+ * attach the mute function to the button #volume
+ */
+ document.querySelector("#volume").addEventListener("click", () => { mute(levels_management_music) });
 
 /**
  * when the page is completely loaded
  */
 window.addEventListener("load", () => {
-    document.getElementById('audio').volume = 0.2;
-    if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
+    
+    playOrNot(levels_management_music);
 
     // declaration of an instance of LevelsManagement
     const levelsManagement = new LevelsManagement();

@@ -1,6 +1,3 @@
-
-
-
 export const s_game_over = "game_over_sound";
 export const s_game_win = "game_win_sound";
 export const s_player_death = "player_death_sound";
@@ -8,6 +5,17 @@ export const s_diamond = "diamond_sound";
 export const s_move = "move_sound";
 export const s_rock = "rock_sound";
 
+export const home_music = new Audio("../sound/home_music.mp3");
+home_music.volume = 0.2;
+home_music.loop = true;
+
+export const levels_management_music = new Audio("../sound/levels_management_music.mp3");
+levels_management_music.volume = 0.2;
+levels_management_music.loop = true;
+
+export const game_music = new Audio("../sound/game_music.mp3");
+game_music.volume = 0.2;
+game_music.loop = true;
 
 export class SoundPlayer {
 
@@ -58,3 +66,29 @@ export class SoundPlayer {
 
 
 
+/**
+ * play the audio or not in function of the value stored in the sessionStorage
+ * @param {Audio} audio 
+ */
+export function playOrNot(audio) {
+    if(window.sessionStorage.getItem('muted') == 'true') { return; }
+    audio.play();
+    window.sessionStorage.setItem('muted', 'false');
+}
+
+
+/**
+ *  mute or unmute the audio
+ * @param {Audio} audio
+ */
+ export function mute(audio) {
+     if(audio.duration > 0 && !audio.paused) { 
+         audio.muted = !audio.muted;
+         if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
+         else { window.sessionStorage.setItem('muted', 'false'); }
+     }
+     else { 
+         audio.play();
+         window.sessionStorage.setItem('muted', 'false');
+     }
+ }
