@@ -18,13 +18,14 @@ export class SoundPlayer {
      * Constructor
      */
     constructor() {
-
         this.#sounds = {};
 
         this.#loadSounds();
     }
 
-
+    /**
+     * loads the sounds in this.#sounds
+     * */
     #loadSounds() {
         let soundPath = [
             [s_game_over, "../sound/game_over.mp3", 0.5],
@@ -41,14 +42,16 @@ export class SoundPlayer {
         }
     }
 
+    /**
+     * plays the specified sound
+     * same sound can play mutliple times and overlap
+     * @param {String} sound
+     */
     playSound(sound) {
         let output = this.#sounds[sound].cloneNode();
         output.volume = this.#sounds[sound].volume;
         output.play();
     }
-
-
-
 
 }
 
