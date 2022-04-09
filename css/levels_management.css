@@ -90,6 +90,7 @@ hr {
     color: #6E2C00;
     font-family: Pixeled, Arial, Helvetica, sans-serif;
     text-transform: uppercase;
+    text-shadow: #fff -2px -2px;
     margin: 0;
     text-align: center;
     font-size: 45px;
@@ -98,8 +99,9 @@ hr {
     padding-bottom: 10px;
     box-sizing: border-box;
     margin-bottom: 25px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border: dashed #fff;
+    background-color: rgba(0, 0, 0, 0.85);
+    border: ridge #6E2C00 8px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.85);
 }
 
 #deleteLevel{
@@ -124,6 +126,7 @@ hr {
     margin-bottom: 40px;
     background-color: rgba(0, 0, 0, 0.7);
     overflow: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .divMapDelete > h1 {
@@ -157,6 +160,7 @@ hr {
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.7);
     overflow: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .divLevel > h1 {
