@@ -1,3 +1,6 @@
+/**
+ * set the volume of the background music
+ */
 function volume() 
 {
     let audio = document.getElementById('audio');
@@ -12,6 +15,10 @@ function volume()
     }
 }
 
+/**
+ * set the localStorage variable 'loadSavedGame' to false in order to alert that the player wants to start a new game
+ * after that launch the html game page
+ */
 function newGame() {
     if(window.localStorage.getItem('backup') !== null && JSON.parse(window.localStorage.getItem('backup')) != null) {
         let bool =confirm("Si vous démarrez une nouvelle partie, vous perdrez votre sauvegarde précédente.");
@@ -26,6 +33,10 @@ function newGame() {
     }
 }
 
+/**
+ * set the localStorage variable 'loadSavedGame' to true in order to alert that the player wants to load the saved game
+ * after that launch the html game page
+ */
 function loadSavedGame() {
     if(window.localStorage.getItem('backup') !== null && JSON.parse(window.localStorage.getItem('backup')) != null) 
     {
@@ -35,6 +46,10 @@ function loadSavedGame() {
     else { alert("Impossible de charger une partie... Commencez d'abord une nouvelle partie !"); }
 }
 
+/**
+ * if there is a saved game in localStorage, print the button 'loadSavedGameB'
+ * and set the volume of the background music
+ */
 window.addEventListener("load", () => {
     if(window.localStorage.getItem('backup') !== null && JSON.parse(window.localStorage.getItem('backup')) != null) {
         document.getElementById("loadSavedGameB").style.display = "block";
@@ -42,3 +57,13 @@ window.addEventListener("load", () => {
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 });
+
+document.getElementById("newGame").addEventListener("click", newGame);
+
+document.getElementById("loadSavedGameB").addEventListener("click", loadSavedGame);
+
+document.getElementById("levelsManagement").addEventListener("click", () => {
+    window.location.href='html/levels_management.html';
+});
+
+document.getElementById("volume").addEventListener("click", volume);

@@ -39,14 +39,11 @@ export class MapView {
             ["diamond",             "../img/textures/diamond.gif"]
         ];
 
-
-
         for (let k = 0; k < imagesPath.length; ++k) {
             this.#images[imagesPath[k][0]] = new Image();
             this.#images[imagesPath[k][0]].src = imagesPath[k][1];
         }
     }
-
 
 
     /**
@@ -82,14 +79,24 @@ export class MapView {
         document.querySelector("#nb_deplacements").innerText = data.moveCount;
     }
 
+    /**
+     * print the name of the map
+     * @param {name} name of the map
+     */
     updateName(name) {
         document.querySelector("mapName").innerText = name;
     }
 
+    /**
+     * print game over
+     */
     lose() {
         document.querySelector("mapName").innerText = "Game Over";
     }
 
+    /**
+     * remove the map view and print a message to alert of the victory
+     */
     win() {
         document.querySelector("boulderdash").style.display = "none";
         document.querySelector("#retry").style.display = "none";

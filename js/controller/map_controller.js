@@ -105,6 +105,7 @@ export class MapController {
         let audio2 = new Audio('../../sound/game_over.wav');
         audio2.volume = 0.5;
         audio2.play();
+
         this.#view.lose();
         setTimeout(() => {this.retryLevel()}, 2500);
     }
@@ -116,6 +117,7 @@ export class MapController {
         let audio = new Audio('../../sound/game_win.wav');
         audio.volume = 0.5;
         audio.play();
+        
         let nextMapData = this.#mapsList.nextMap();
         if(nextMapData.win) { 
             setTimeout(() => { this.#view.win(); }, 1500);
