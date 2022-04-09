@@ -1,4 +1,4 @@
-
+import { SoundPlayer, m_home } from "../view/soundPlayer.js";
 
 
 /**
@@ -41,7 +41,7 @@ function loadSavedGame() {
 }
 
 // creates a soundPlayer for the music
-let soundPlayer = 0;
+let soundPlayer = new SoundPlayer();
 
 /**
  * attach the newGame function to the button #newGameB
@@ -67,8 +67,6 @@ document.getElementById("volume").addEventListener("click", () => { soundPlayer.
  * play or not the background music
  */
 window.addEventListener("load", () => {
-    import("../view/soundPlayer.js");
-    soundPlayer = new SoundPlayer();
     soundPlayer.setMusic(m_home);
     soundPlayer.playOrNot();
 });
