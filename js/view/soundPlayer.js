@@ -30,7 +30,7 @@ export class SoundPlayer {
 
         this.#music = new Audio();
 
-        window.addEventListener("load", () => { this.#loadSounds(); });
+        this.#loadSounds();
     }
 
     /**
