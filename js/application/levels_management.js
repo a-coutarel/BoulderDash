@@ -255,73 +255,57 @@ function volume() {
 
 
 
-// declaration of the variable game which will be initialized after the loading of the page
-let levelsManagement = null;
+/**
+ * attach the click on the button #loadLevelButton with the click action of the input file #file
+ */
+ document.querySelector("#loadLevelButton").addEventListener("click", () => { document.getElementById('file').click(); });
+
+/**
+ * open the index page when click on the button #home
+ */
+ document.querySelector("#home").addEventListener("click", () => { window.location.href='../index.html'; });
+
+ /**
+  * attach the volume function to the button #volume
+  */
+ document.querySelector("#volume").addEventListener("click", volume);
 
 
 
 
 /**
- * set the volume of the background music
- * initialize the levelsManagement variable by created a new instance of LevelsManagement object
+ * when the page is completely loaded
  */
 window.addEventListener("load", () => {
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 
-    levelsManagement = new LevelsManagement();
+    // declaration of an instance of LevelsManagement
+    const levelsManagement = new LevelsManagement();
+
+    /**
+     * attach the saveMapsList function of LevelsManagement class called by the variable levelsManagement to the event beforeunload
+     */
+    window.addEventListener('beforeunload', () => { levelsManagement.saveMapsList(); });
+
+    /**
+     *when a new file is upload (not possible to load 2 times in a row the same file), call the addMap function of LevelsManagement class called by the variable levelsManagement
+    */
+    document.getElementById("file").addEventListener("change", () => { levelsManagement.addMap(); }, false);
+
+    /**
+     * attach the printDeleteMapDiv function of LevelsManagement class called by the variable levelsManagement to the button #deleteLevelButton
+     */
+    document.querySelector("#deleteLevelButton").addEventListener("click", () => { levelsManagement.printDeleteMapDiv(); });
+
+    /**
+     * attach the printModifyOrderDiv function of LevelsManagement class called by the variable levelsManagement to the button #modifyLevelsOrderButton
+     */
+    document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => { levelsManagement.printModifyOrderDiv(); });
+
+    /**
+     * attach the reloadDefaultMaps function of LevelsManagement class called by the variable levelsManagement to the button #reloadDefaultMaps
+     */
+    document.querySelector("#reloadDefaultMaps").addEventListener("click", () => { levelsManagement.reloadDefaultMaps(); });
+
 });
-
-/**
- * attach the saveMapsList function of LevelsManagement class called by the variable levelsManagement to the event beforeunload
- */
-window.addEventListener('beforeunload', () => {
-    levelsManagement.saveMapsList();
-});
-
-/**
- * attach the click on the button #loadLevelButton with the click action of the input file #file
- */
-document.querySelector("#loadLevelButton").addEventListener("click", () => {
-    document.getElementById('file').click();
-});
-
-/**
- *when a new file is upload (not possible to load 2 times in a row the same file), call the addMap function of LevelsManagement class called by the variable levelsManagement
- */
-document.getElementById("file").addEventListener("change", () => {
-    levelsManagement.addMap();
-}, false);
-
-/**
- * attach the printDeleteMapDiv function of LevelsManagement class called by the variable levelsManagement to the button #deleteLevelButton
- */
-document.querySelector("#deleteLevelButton").addEventListener("click", () => {
-    levelsManagement.printDeleteMapDiv();
-});
-
-/**
- * attach the printModifyOrderDiv function of LevelsManagement class called by the variable levelsManagement to the button #modifyLevelsOrderButton
- */
-document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => {
-    levelsManagement.printModifyOrderDiv();
-});
-
-/**
- * attach the reloadDefaultMaps function of LevelsManagement class called by the variable levelsManagement to the button #reloadDefaultMaps
- */
- document.querySelector("#reloadDefaultMaps").addEventListener("click", () => {
-    levelsManagement.reloadDefaultMaps();
-});
-
-/**
- * open the index page when click on the button #home
- */
-document.querySelector("#home").addEventListener("click", () => {
-    window.location.href='../index.html';
-});
-
-/**
- * attach the volume function to the button #volume
- */
-document.querySelector("#volume").addEventListener("click", volume);

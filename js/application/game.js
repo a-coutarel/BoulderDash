@@ -97,43 +97,38 @@ function return_menu() {
 
 
 
-// declaration of the variable game which will be initialized after the loading of the page
-let game = null;
-
-
-
-
-/**
- * set the volume of the background music
- * initialize the game variable by created a new instance of Game object
- */
-window.addEventListener("load", () => {
-    document.getElementById('audio').volume = 0.2;
-    if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
-    
-    game = new Game();
-});
-
-/**
- * attach the saveGameInWeb function of Game class called by the variable game to the event beforeunload
- */
-window.addEventListener('beforeunload', () => {
-    game.saveGameInWeb();
-});
-
-/**
- * attach the retry function of Game class called by the variable game to the button #retry
- */
-document.querySelector("#retry").addEventListener("click", () => {
-    game.retry();
-});
-
 /**
  * attach the volume function to the button #volume
  */
-document.querySelector("#volume").addEventListener("click", volume);
+ document.querySelector("#volume").addEventListener("click", volume);
+
+ /**
+  * attach the return_menu function to the button #home
+  */
+ document.querySelector("#home").addEventListener("click", return_menu);
+
+
+
 
 /**
- * attach the return_menu function to the button #home
+ * when the page is completely loaded
  */
-document.querySelector("#home").addEventListener("click", return_menu);
+window.addEventListener("load", () => {
+
+    document.getElementById('audio').volume = 0.2;
+    if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
+    
+    // declaration of an instance of Game, start of the game
+    const game = new Game();
+
+    /**
+     * attach the saveGameInWeb function of Game class called by the variable game to the event beforeunload
+     */
+    window.addEventListener('beforeunload', () => { game.saveGameInWeb(); });
+
+    /**
+     * attach the retry function of Game class called by the variable game to the button #retry
+     */
+    document.querySelector("#retry").addEventListener("click", () => { game.retry(); });
+    
+});

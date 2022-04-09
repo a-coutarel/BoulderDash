@@ -74,9 +74,7 @@ document.getElementById("loadSavedGameB").addEventListener("click", loadSavedGam
 /**
  * open the levels_management page when click on the button #levelsManagementB
  */
-document.getElementById("levelsManagementB").addEventListener("click", () => {
-    window.location.href='html/levels_management.html';
-});
+document.getElementById("levelsManagementB").addEventListener("click", () => { window.location.href='html/levels_management.html'; });
 
 /**
  * attach the volume function to the button #volume
