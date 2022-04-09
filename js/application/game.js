@@ -1,6 +1,6 @@
 import { PlayableMaps } from "../model/playable_maps.js";
 import { MapController } from "../controller/map_controller.js";
-import { game_music, mute, playOrNot } from "../view/soundPlayer.js";
+import { SoundPlayer, m_game } from "../view/soundPlayer.js";
 
 export class Game {
     // instance of MapController object
@@ -80,12 +80,14 @@ function return_menu() {
 }
 
 
+// creates a soundPlayer for the music
+let soundPlayer = new SoundPlayer();
 
 
 /**
  * attach the mute function to the button #volume
  */
- document.querySelector("#volume").addEventListener("click", () => { mute(game_music) });
+document.querySelector("#volume").addEventListener("click", () => { soundPlayer.mute(); });
 
  /**
   * attach the return_menu function to the button #home
@@ -97,8 +99,9 @@ function return_menu() {
  */
 window.addEventListener("load", () => {
 
-    playOrNot(game_music);
-    
+    soundPlayer.setMusic(m_game);
+    soundPlayer.playOrNot();
+
     // declaration of an instance of Game, start of the game
     const game = new Game();
 

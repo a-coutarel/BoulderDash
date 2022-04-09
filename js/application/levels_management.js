@@ -1,6 +1,6 @@
 import { PlayableMaps } from "../model/playable_maps.js";
 import { T, V, R, M, P, D } from "../model/map.js";
-import { levels_management_music, mute, playOrNot } from "../view/soundPlayer.js";
+import { SoundPlayer, m_levels_management } from "../view/soundPlayer.js";
 
 export class LevelsManagement {
     // dictonnary of images
@@ -235,7 +235,8 @@ export class LevelsManagement {
 }
 
 
-
+// creates a soundPlayer for the music
+let soundPlayer = new SoundPlayer();
 
 /**
  * attach the click on the button #loadLevelButton with the click action of the input file #file
@@ -250,14 +251,15 @@ export class LevelsManagement {
 /**
  * attach the mute function to the button #volume
  */
- document.querySelector("#volume").addEventListener("click", () => { mute(levels_management_music) });
+document.querySelector("#volume").addEventListener("click", () => { soundPlayer.mute(); });
 
 /**
  * when the page is completely loaded
  */
 window.addEventListener("load", () => {
     
-    playOrNot(levels_management_music);
+    soundPlayer.setMusic(m_levels_management);
+    soundPlayer.playOrNot();
 
     // declaration of an instance of LevelsManagement
     const levelsManagement = new LevelsManagement();

@@ -1,4 +1,4 @@
-import { home_music, mute, playOrNot } from "../view/soundPlayer.js";
+import { SoundPlayer, m_home } from "../view/soundPlayer.js";
 
 
 /**
@@ -40,8 +40,8 @@ function loadSavedGame() {
     else { alert("Impossible de charger une partie... Commencez d'abord une nouvelle partie !"); }
 }
 
-
-
+// creates a soundPlayer for the music
+let soundPlayer = new SoundPlayer();
 
 /**
  * attach the newGame function to the button #newGameB
@@ -59,11 +59,14 @@ document.getElementById("loadSavedGameB").addEventListener("click", loadSavedGam
 document.getElementById("levelsManagementB").addEventListener("click", () => { window.location.href='html/levels_management.html'; });
 
 /**
- * attach the mute function to the button #volume
+ * attach the mute function of the soundPlayer to the button #volume
  */
-document.getElementById("volume").addEventListener("click", () => { mute(home_music) });
+document.getElementById("volume").addEventListener("click", () => { soundPlayer.mute(); });
 
 /**
  * play or not the background music
  */
- window.addEventListener("load", () => { playOrNot(home_music); });
+window.addEventListener("load", () => {
+    soundPlayer.setMusic(m_home);
+    soundPlayer.playOrNot();
+});
