@@ -86,6 +86,7 @@ export class PlayableMaps {
         let data = {};
         if(this.#currentMapIndex == this.#maps.length) {
             data.win = true;
+            window.localStorage.removeItem('backup');
         } else {
             data.win = false;
             data.name = this.#maps[this.#currentMapIndex].name;
@@ -107,6 +108,7 @@ export class PlayableMaps {
         if(data.isMap) {
             let map = { name : data.name, layout : data.layout }
             this.#maps.push(map);
+            window.localStorage.removeItem('backup');
             alert("La map a bien été ajoutée au jeu.");
         }
         else { alert("Erreur lors de l'importation de la map :\nLa map doit être un fichier texte de 16 lignes composées de 32 caractères chacune (sans espace) avec uniquement les caractères suivants : \nM, D, T, R, V, P."); }

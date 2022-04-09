@@ -78,7 +78,7 @@ footer > p {
   }
 
   #deleteLevel{
-    width: 60vw;
+    width: 800px;
     display: none;
     align-items: center;
     flex-direction: column;
@@ -95,7 +95,7 @@ footer > p {
 }
 
 #modifyLevelsOrder{
-    width: 90vw;
+    width: 1100px;
     display: none;
     align-items: center;
     flex-direction: column;
@@ -105,8 +105,57 @@ footer > p {
     border: dashed 8px rgba(0, 0, 0, 1);
 }
 
+hr {
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    height: 2px;
+    border: none;
+}
+
+.divLevel {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 90%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
 .divMap > h1 {
     color: #fff;
     font-family: Pixeled, Arial, Helvetica, sans-serif;
     text-transform: uppercase;
+}
+
+.divButton {
+    display: flex;
+    flex-direction: column;
+}
+
+.arrowBtn {
+    width: 80px;
+    height: 60px;
+}
+
+.arrowImg {
+    width: 50px;
+}
+
+boulderdash {
+    display: grid;
+    grid-template-rows: repeat(var(--grid-rows), 20px);
+    grid-template-columns: repeat(var(--grid-cols), 20px);
+    border : 20px solid transparent;
+    border-image: url(../img/textures/border.png);
+    border-image-slice: 160;
+    border-image-repeat: round;
+}
+
+.grid-item {
+    background-size: cover;
 }

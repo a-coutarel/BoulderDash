@@ -1,4 +1,5 @@
 import { PlayableMaps } from "../model/playable_maps.js";
+import { T, V, R, M, P, D } from "../model/map.js";
 
 function volume() 
 {
@@ -39,6 +40,8 @@ window.addEventListener("load", () => {
         window.localStorage.setItem('mapsList', JSON.stringify(mapsList.maps));
         window.localStorage.setItem('currentMapIndex', JSON.stringify(mapsList.currentMapIndex)); 
     }
+    //à dégager quand sera attribut...
+    loadImage(images);
 });
 
 window.addEventListener('beforeunload', () => {
@@ -65,6 +68,38 @@ document.querySelector("#home").addEventListener("click", () => {
 document.querySelector("#volume").addEventListener("click", volume);
 
 
+
+
+
+
+//à mettre en attribut quand il y a aura la class
+let images = {};
+
+function loadImage(images) {
+    let imagesPath = [
+        ["dirt",                "../img/textures/dirt.png"],
+        ["background",          "../img/textures/background.png"],
+        ["stone",               "../img/textures/stone.png"],
+        ["bloody_stone",        "../img/textures/bloody_stone.png"],
+        ["wall",                "../img/textures/wall.png"],
+        ["is_that_rf",          "../img/textures/is_that...rockford.png"],
+        ["rockford",            "../img/textures/rockford.gif"],
+        ["to_the_left",         "../img/textures/to_the_left.gif"],
+        ["to_the_right",        "../img/textures/to_the_right.gif"],
+        ["diamond",             "../img/textures/diamond.gif"]
+    ];
+
+for (let k = 0; k < imagesPath.length; ++k) {
+        images[imagesPath[k][0]] = new Image();
+        images[imagesPath[k][0]].src = imagesPath[k][1];
+    }
+}
+
+
+
+
+
+
 function printDeleteMapDiv() {
     const div = document.getElementById("deleteLevel");
     div.innerHTML = "";
@@ -88,6 +123,7 @@ function printDeleteMapDiv() {
         });
         div.appendChild(mapName);
         div.appendChild(button);
+        div.appendChild(document.createElement("hr"));
     }
 
     let backButton = document.createElement("button");
@@ -100,6 +136,11 @@ function printDeleteMapDiv() {
 }
 
 
+
+
+
+
+
 function printModifyOrderDiv() {
 
     const div = document.getElementById("modifyLevelsOrder");
@@ -109,33 +150,43 @@ function printModifyOrderDiv() {
 
     for(let i=0; i < mapsList.maps.length; i++) {
 
-        let divMap = document.createElement("div");
+        let divLevel = document.createElement("div");
         let divButton = document.createElement("div");
+        let divMap = document.createElement("div");
+
+        let map = document.createElement("boulderdash");
+        getMap(map, mapsList.maps[i].layout);
 
         let mapName = document.createElement("h1");
-        mapName.innerText = (i+1).toString()+". "+mapsList.maps[i].name;
+        mapName.innerText = mapsList.maps[i].name;
 
         let minusButton = document.createElement("button");
-        minusButton.innerText = "↑";
-        minusButton.id = i.toString()+"-minus";
+        minusButton.innerHTML = '<img class="arrowImg" src="../img/up_arrow.png" />';
+        minusButton.className = "arrowBtn";
         minusButton.addEventListener("click", () => {
             mapsList.changePosition(i, i-1);
             printModifyOrderDiv();
         });
 
         let plusButton = document.createElement("button");
-        plusButton.innerText = "↓";
-        plusButton.id = i.toString()+"-plus";
+        plusButton.innerHTML = '<img class="arrowImg" src="../img/down_arrow.png" />';
+        plusButton.className = "arrowBtn";
         plusButton.addEventListener("click", () => {
             mapsList.changePosition(i, i+1);
             printModifyOrderDiv();
         });
 
-        divMap.appendChild(mapName);
         divButton.appendChild(minusButton);
         divButton.appendChild(plusButton);
-        divMap.appendChild(divButton);
-        div.appendChild(divMap).className = "divMap";
+
+        divMap.appendChild(map);
+        divMap.appendChild(mapName);
+        
+        divLevel.appendChild(divMap).className = "divMap";
+        divLevel.appendChild(divButton).className = "divButton";
+        
+        div.appendChild(divLevel).className = "divLevel";
+        div.appendChild(document.createElement("hr"));
     }
 
     let backButton = document.createElement("button");
@@ -145,4 +196,28 @@ function printModifyOrderDiv() {
         document.getElementById("buttons").style.display = "flex";
     });
     div.appendChild(backButton);
+}
+
+
+
+
+
+function getMap(map, layout) {
+    map.innerHTML = "";
+    map.style.setProperty('--grid-rows', 16);
+    map.style.setProperty('--grid-cols', 32);
+    for (let i = 0; i < 16; i++) {
+        for (let j = 0; j < 32; j++) {
+            let cell = document.createElement("div");
+            switch (layout[i][j]) {
+                case T: cell.style.backgroundImage = "url(" + images.dirt.src + ")"; break;
+                case V: cell.style.backgroundImage = "url(" + images.background.src + ")"; break;
+                case R: cell.style.backgroundImage = "url(" + images.stone.src + ")"; break;
+                case M: cell.style.backgroundImage = "url(" + images.wall.src + ")"; break;
+                case P: cell.style.backgroundImage = "url(" + images.rockford.src + ")"; break;
+                case D: cell.style.backgroundImage = "url(" + images.diamond.src + ")"; break;
+            }
+            map.appendChild(cell).className = "grid-item";
+        }
+    }
 }

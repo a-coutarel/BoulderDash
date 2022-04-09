@@ -36,6 +36,9 @@ function loadSavedGame() {
 }
 
 window.addEventListener("load", () => {
+    if(window.localStorage.getItem('backup') !== null && JSON.parse(window.localStorage.getItem('backup')) != null) {
+        document.getElementById("loadSavedGameB").style.display = "block";
+    }
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 });
