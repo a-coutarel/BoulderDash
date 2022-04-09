@@ -105,11 +105,20 @@ function printDeleteMapDiv() {
     div.innerHTML = "";
     div.style.display = "flex";
     document.getElementById("buttons").style.display = "none";
+    
+    let title = document.createElement("h1");
+    title.innerText = "Supprimer un niveau";
+    div.appendChild(title).className = "title";
 
     for(let i=0; i < mapsList.maps.length; i++) {
 
+        let divMapDelete = document.createElement("div");
+
+        let map = document.createElement("boulderdash");
+        getMap(map, mapsList.maps[i].layout);
+
         let mapName = document.createElement("h1");
-        mapName.innerText = mapsList.maps[i].name;
+        mapName.innerText = "---- Map " + (i+1).toString() + " : " + mapsList.maps[i].name + " ----";
 
         let button = document.createElement("button");
         button.innerText = "Supprimer";
@@ -121,7 +130,9 @@ function printDeleteMapDiv() {
                 printDeleteMapDiv();
             }
         });
-        div.appendChild(mapName);
+        divMapDelete.appendChild(mapName);
+        divMapDelete.appendChild(map);
+        div.appendChild(divMapDelete).className = "divMapDelete";
         div.appendChild(button);
         div.appendChild(document.createElement("hr"));
     }
@@ -140,13 +151,16 @@ function printDeleteMapDiv() {
 
 
 
-
 function printModifyOrderDiv() {
 
     const div = document.getElementById("modifyLevelsOrder");
     div.innerHTML = "";
     div.style.display = "flex";
     document.getElementById("buttons").style.display = "none";
+
+    let title = document.createElement("h1");
+    title.innerText = "Disposition des niveaux";
+    div.appendChild(title).className = "title";
 
     for(let i=0; i < mapsList.maps.length; i++) {
 
@@ -158,7 +172,7 @@ function printModifyOrderDiv() {
         getMap(map, mapsList.maps[i].layout);
 
         let mapName = document.createElement("h1");
-        mapName.innerText = mapsList.maps[i].name;
+        mapName.innerText = "---- Map " + (i+1).toString() + " : " + mapsList.maps[i].name + " ----";
 
         let minusButton = document.createElement("button");
         minusButton.innerHTML = '<img class="arrowImg" src="../img/up_arrow.png" />';
@@ -180,11 +194,11 @@ function printModifyOrderDiv() {
         divButton.appendChild(plusButton);
 
         divMap.appendChild(map);
-        divMap.appendChild(mapName);
+        divMap.appendChild(divButton).className = "divButton";
         
+        divLevel.appendChild(mapName);
         divLevel.appendChild(divMap).className = "divMap";
-        divLevel.appendChild(divButton).className = "divButton";
-        
+
         div.appendChild(divLevel).className = "divLevel";
         div.appendChild(document.createElement("hr"));
     }

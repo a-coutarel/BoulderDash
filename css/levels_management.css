@@ -65,20 +65,45 @@ footer > p {
     color: #fff;
     border-radius: 4px;
     display: inline-block;
-  }
+}
 
-  #volume {
-      font-size: small;
-      width: 200px;
-      padding-bottom: 5px;
-  }
+#volume {
+    font-size: small;
+    width: 200px;
+    padding-bottom: 5px;
+}
 
-  #file {
-      display: none;
-  }
+#file {
+    display: none;
+}
 
-  #deleteLevel{
-    width: 800px;
+hr {
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    height: 2px;
+    border: none;
+}
+
+.title {
+    color: #6E2C00;
+    font-family: Pixeled, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    margin: 0;
+    text-align: center;
+    font-size: 45px;
+    padding-left: 15px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: dashed #fff;
+}
+
+#deleteLevel{
+    width: 900px;
     display: none;
     align-items: center;
     flex-direction: column;
@@ -88,10 +113,27 @@ footer > p {
     border: dashed 8px rgba(0, 0, 0, 1);
 }
 
-#deleteLevel > h1 {
+.divMapDelete {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    padding-bottom: 25px;
+    box-sizing: border-box;
+    margin-bottom: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+}
+
+.divMapDelete > h1 {
     color: #fff;
     font-family: Pixeled, Arial, Helvetica, sans-serif;
     text-transform: uppercase;
+    margin: 0;
+    padding-bottom: 5px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 #modifyLevelsOrder{
@@ -105,31 +147,35 @@ footer > p {
     border: dashed 8px rgba(0, 0, 0, 1);
 }
 
-hr {
+.divLevel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 90%;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background-color: #fff;
-    height: 2px;
-    border: none;
+    padding-bottom: 25px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
 }
 
-.divLevel {
+.divLevel > h1 {
+    color: #fff;
+    font-family: Pixeled, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    margin: 0;
+    padding-bottom: 5px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.divMap {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    width: 90%;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-.divMap > h1 {
-    color: #fff;
-    font-family: Pixeled, Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
+    width: 100%;
+    margin: 0;
 }
 
 .divButton {
