@@ -46,8 +46,11 @@ function loadSavedGame() {
     else { alert("Impossible de charger une partie... Commencez d'abord une nouvelle partie !"); }
 }
 
+
+
+
 /**
- * if there is a saved game in localStorage, print the button 'loadSavedGameB'
+ * if there is a saved game in localStorage, print the button #loadSavedGameB
  * and set the volume of the background music
  */
 window.addEventListener("load", () => {
@@ -58,12 +61,24 @@ window.addEventListener("load", () => {
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 });
 
-document.getElementById("newGame").addEventListener("click", newGame);
+/**
+ * attach the newGame function to the button #newGameB
+ */
+document.getElementById("newGameB").addEventListener("click", newGame);
 
+/**
+ * attach the loadSavedGame function to the button #loadSavedGameB
+ */
 document.getElementById("loadSavedGameB").addEventListener("click", loadSavedGame);
 
-document.getElementById("levelsManagement").addEventListener("click", () => {
+/**
+ * open the levels_management page when click on the button #levelsManagementB
+ */
+document.getElementById("levelsManagementB").addEventListener("click", () => {
     window.location.href='html/levels_management.html';
 });
 
+/**
+ * attach the volume function to the button #volume
+ */
 document.getElementById("volume").addEventListener("click", volume);

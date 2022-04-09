@@ -1,7 +1,7 @@
 import { PlayableMaps } from "../model/playable_maps.js";
 import { T, V, R, M, P, D } from "../model/map.js";
 
-class Levels_Management {
+export class LevelsManagement {
 
     #textures;
 
@@ -35,25 +35,7 @@ class Levels_Management {
         }
     }
 
-    volume() {
-        let audio = document.getElementById('audio');
-        if(audio.duration > 0 && !audio.paused) { 
-            audio.muted = !audio.muted;
-            if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
-            else { window.sessionStorage.setItem('muted', 'false'); }
-        }
-        else { 
-            audio.play();
-            window.sessionStorage.setItem('muted', 'false');
-        }
-    }
-
-    saveMapsList() {
-        window.localStorage.setItem('mapsList', JSON.stringify(this.#mapsList.maps));
-        window.localStorage.setItem('currentMapIndex', JSON.stringify(this.#mapsList.currentMapIndex));
-    }
-
-    getMap(map, layout) {
+    #getMap(map, layout) {
         map.innerHTML = "";
         map.style.setProperty('--grid-rows', 16);
         map.style.setProperty('--grid-cols', 32);
@@ -73,6 +55,17 @@ class Levels_Management {
         }
     }
 
+    saveMapsList() {
+        window.localStorage.setItem('mapsList', JSON.stringify(this.#mapsList.maps));
+        window.localStorage.setItem('currentMapIndex', JSON.stringify(this.#mapsList.currentMapIndex));
+    }
+
+    addMap() {
+        let file = document.getElementById("file").files[0];
+        let reader = new FileReader();
+        this.#mapsList.addMap(file, reader);
+    }
+
     printDeleteMapDiv() {
         const div = document.getElementById("deleteLevel");
         div.innerHTML = "";
@@ -88,7 +81,7 @@ class Levels_Management {
             let divMapDelete = document.createElement("div");
     
             let map = document.createElement("boulderdash");
-            this.getMap(map, this.#mapsList.maps[i].layout);
+            this.#getMap(map, this.#mapsList.maps[i].layout);
     
             let mapName = document.createElement("h1");
             mapName.innerText = "---- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ----";
@@ -137,7 +130,7 @@ class Levels_Management {
             let divMap = document.createElement("div");
     
             let map = document.createElement("boulderdash");
-            this.getMap(map, this.#mapsList.maps[i].layout);
+            this.#getMap(map, this.#mapsList.maps[i].layout);
     
             let mapName = document.createElement("h1");
             mapName.innerText = "---- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ----";
@@ -182,18 +175,35 @@ class Levels_Management {
 }
 
 
-function addMap() {
-    let file = this.files[0];
-    let reader = new FileReader();
-    levelsManagement.mapsList.addMap(file, reader);
+
+
+function volume() {
+    let audio = document.getElementById('audio');
+    if(audio.duration > 0 && !audio.paused) { 
+        audio.muted = !audio.muted;
+        if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
+        else { window.sessionStorage.setItem('muted', 'false'); }
+    }
+    else { 
+        audio.play();
+        window.sessionStorage.setItem('muted', 'false');
+    }
 }
+
+
+
 
 let levelsManagement = null;
 
+
+
+
 window.addEventListener("load", () => {
-    levelsManagement = new Levels_Management();
     document.getElementById('audio').volume = 0.2;
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
+
+    levelsManagement = new LevelsManagement();
+
     if((window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null)) {
         levelsManagement.mapsList.maps = JSON.parse(window.localStorage.getItem('mapsList'));
         levelsManagement.mapsList.currentMapIndex = JSON.parse(window.localStorage.getItem('currentMapIndex'));
@@ -204,28 +214,50 @@ window.addEventListener("load", () => {
     }
 });
 
+
+/**
+ * attach the saveMapsList function of LevelsManagement class called by the variable levelsManagement to the event beforeunload
+ */
 window.addEventListener('beforeunload', () => {
     levelsManagement.saveMapsList();
 });
 
+/**
+ * attach the click on the button #loadLevelButton with the click action of the input file #file
+ */
 document.querySelector("#loadLevelButton").addEventListener("click", () => {
     document.getElementById('file').click();
 });
 
-document.getElementById("file").addEventListener("change", addMap, false);
+/**
+ *when a new file is upload (not possible to load 2 times in a row the same file), call the addMap function of LevelsManagement class called by the variable levelsManagement
+ */
+document.getElementById("file").addEventListener("change", () => {
+    levelsManagement.addMap();
+}, false);
 
+/**
+ * attach the printDeleteMapDiv function of LevelsManagement class called by the variable levelsManagement to the button #deleteLevelButton
+ */
 document.querySelector("#deleteLevelButton").addEventListener("click", () => {
     levelsManagement.printDeleteMapDiv();
 });
 
+/**
+ * attach the printModifyOrderDiv function of LevelsManagement class called by the variable levelsManagement to the button #modifyLevelsOrderButton
+ */
 document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => {
     levelsManagement.printModifyOrderDiv();
 });
 
+/**
+ * open the index page when click on the button #home
+ */
 document.querySelector("#home").addEventListener("click", () => {
     window.location.href='../index.html';
 });
 
-document.querySelector("#volume").addEventListener("click", () => {
-    levelsManagement.volume();
-});
+/**
+ * attach the volume function to the button #volume
+ */
+document.querySelector("#volume").addEventListener("click", volume);
