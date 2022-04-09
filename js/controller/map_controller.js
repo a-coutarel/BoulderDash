@@ -1,5 +1,6 @@
 import { Map, MOVEUP, MOVEDOWN, MOVELEFT, MOVERIGHT, NOMOVE } from "../model/map.js";
 import { MapView } from "../view/map_view.js";
+import { SoundPlayer, s_game_over, s_game_win, s_player_death } from "../view/soundPlayer.js";
 import { PlayableMaps } from "../model/playable_maps.js";
 
 
@@ -13,6 +14,9 @@ export class MapController {
     // view showing game to the player
     #view;
 
+    // sound player of the controller
+    #soundPlayer;
+
     // list key currently down
     #keyDownList;
     // stores last order sent
@@ -24,6 +28,7 @@ export class MapController {
     constructor() {
         this.#mapsList = new PlayableMaps();
         this.#view = new MapView(this);
+        this.#soundPlayer = new SoundPlayer();
         this.#map = new Map(this);
         document.controller = this;
         
@@ -99,12 +104,8 @@ export class MapController {
      * Plans a reload of the level
      * */
     gameOver() {
-        let audio = new Audio('../../sound/player_death.mp3');
-        audio.volume = 0.15;
-        audio.play();
-        let audio2 = new Audio('../../sound/game_over.mp3');
-        audio2.volume = 0.5;
-        audio2.play();
+        this.#soundPlayer.playSound(s_player_death);
+        this.#soundPlayer.playSound(s_game_over);
 
         this.#view.lose();
         setTimeout(() => {this.retryLevel()}, 2500);
@@ -114,9 +115,7 @@ export class MapController {
      * plans the load of the next level
      * */
     nextLevel() {
-        let audio = new Audio('../../sound/game_win.mp3');
-        audio.volume = 0.5;
-        audio.play();
+        this.#soundPlayer.playSound(s_game_win);
         
         let nextMapData = this.#mapsList.nextMap();
         if(nextMapData.win) { 
