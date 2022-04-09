@@ -19,6 +19,7 @@ export const T = 'T'; // Dirt
 export const V = 'V'; // Void
 export const R = 'R'; // Rock
 export const BR = 'BR'; // Bloody Rock
+export const BRP = 'BRP'; // Bloody Rock with dead player (in order to not crash when the game is saved and the player dead)
 export const M = 'M'; // Wall
 export const P = 'P'; // Player
 export const PR = 'PR'; // Player moving Right
@@ -45,6 +46,8 @@ export class Map {
 
     // stores what items need to be updated
     #update;
+    // stores coordinates where an item has been moved in the running update
+    #notReupdate;
     // stores what items need to be updated on ne next update
     #nextUpdate;
     // stores if an update is planned after the running update
@@ -94,8 +97,9 @@ export class Map {
     initiateMap() {
         this.#update = [];
         this.#nextUpdate = [];
+        this.#notReupdate = [];
 
-        this.#updatePlanned = true;
+        this.#updatePlanned = false;
 
         this.#name = "";
         this.#rdiamond = 0;
@@ -143,7 +147,8 @@ export class Map {
 
         this.#placeItems(data.layout);
 
-        this.#runUpdate();
+        this.#updateController();
+        setTimeout(() => { this.triggerUpdate() }, refreshTime * 4);
     }
 
     /**
@@ -196,8 +201,9 @@ export class Map {
                         line.push(T);
                         break;
                     case ROCK:
-                        if (item.bloody) line.push(BR);
-                        else line.push(R);
+                        if (this.#playerLoc.x == x && this.#playerLoc.y == y) { line.push(BRP); break; }
+                        if (item.bloody) { line.push(BR); break; }
+                        line.push(R);
                         break;
                     case VOID:
                         if (this.#playerDead && (this.#playerLoc.x == x) && (this.#playerLoc.y == y)) line.push(DP);
@@ -240,6 +246,10 @@ export class Map {
                     case BR:
                         this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }), true);
                         break;
+                    case BRP:
+                        this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }), true);
+                        this.#playerLoc = new Coordinates({ x: x, y: y });
+                        break;
                     case V:
                         this.#grid[y][x] = null;
                         break;
@@ -255,7 +265,8 @@ export class Map {
                         break;
 
                 }
-                this.addToUpdate(new Coordinates({ x: x, y: y }));
+                let coord = new Coordinates({ x: x, y: y });
+                if (!this.#includesCoordinates(this.#nextUpdate, coord)) this.#nextUpdate.push(coord);
             }
         }
     }
@@ -303,10 +314,12 @@ export class Map {
     #runUpdate() {
         // the map needs to be referenced at by an absolute declaration as the function will be executed after a timeout sometimes
         let map = document.controller.map;
+        if (!map.#updatePlanned) return;
         map.#updatePlanned = false;
 
         map.#update = map.#nextUpdate.map((x) => x);
         map.#nextUpdate = [];
+        map.#notReupdate = [];
 
         // actual update
 
@@ -320,7 +333,7 @@ export class Map {
             map.#updatePlanned = true;
         }
 
-        for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) map.#grid[coord.y][coord.x].update();
+        for (let coord of map.#update) if (!(map.#grid[coord.y][coord.x] == null)) if (!map.#includesCoordinates(map.#notReupdate, coord)) map.#grid[coord.y][coord.x].update();
 
         // warns the controller of the update
         map.#updateController();
@@ -334,7 +347,10 @@ export class Map {
      * triggers an update if none is already planned
      */
     triggerUpdate() {
-        if (!this.#updatePlanned) this.#runUpdate();
+        if (!this.#updatePlanned) {
+            this.#updatePlanned = true;
+            this.#runUpdate();
+        }
         else this.#updatePlanned = true;
     }
 
@@ -406,6 +422,10 @@ export class Map {
         this.#grid[coordB.y][coordB.x] = this.#grid[coordA.y][coordA.x];
         this.#grid[coordA.y][coordA.x] = null;
         this.#grid[coordB.y][coordB.x].coordinates = coordB;
+
+        if (this.#includesCoordinates(this.#update, coordB)) {
+            this.#notReupdate.push(coordB);
+        }
 
         if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y && !this.#playerDead) {
             this.#controller.soundPlayer.playSound(s_move);
