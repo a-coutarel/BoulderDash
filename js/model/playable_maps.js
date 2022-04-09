@@ -1,21 +1,6 @@
 import { T, V, R, M, P, D } from "./map.js";
 
-export class PlayableMaps {
-
-    //table of name and layout (grid of map elements) of available maps in the game
-    #maps;
-
-    //index of the currently played map
-    #currentMapIndex;
-
-    /**
-     * Constructor
-     * make 3 default maps
-     */
-    constructor() {
-        this.#currentMapIndex = 0;
-        this.#maps = [ 
-            { name : "Easy Map",
+const MAP1 = { name : "Easy Map",
             layout : [ [T,T,T,T,T,T,V,T,T,D,T,R,V,T,T,T,T,T,R,T,R,T,T,T,T,T,T,T,V,T,T,T],
             [T,R,P,R,T,T,T,T,T,T,V,T,T,T,T,T,T,T,T,T,R,D,T,T,R,T,T,T,T,V,T,T],
             [T,T,T,T,T,T,T,T,T,T,V,T,T,V,T,T,T,T,T,R,T,R,T,T,R,T,T,T,T,T,T,T],
@@ -31,9 +16,10 @@ export class PlayableMaps {
             [T,D,R,T,T,T,T,T,T,T,T,T,T,T,T,T,T,R,R,R,T,T,R,T,T,T,T,T,T,T,T,D],
             [T,T,T,T,T,T,T,T,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M,M],
             [V,V,T,T,T,T,T,T,T,T,T,V,T,T,T,D,T,T,T,T,R,T,T,T,T,R,V,T,T,R,V,D],
-            [R,V,T,T,T,T,T,T,T,T,T,R,R,T,T,R,T,T,T,T,T,T,T,T,R,T,T,T,T,T,R,T] ] },
+            [R,V,T,T,T,T,T,T,T,T,T,R,R,T,T,R,T,T,T,T,T,T,T,T,R,T,T,T,T,T,R,T] ],
+            idDefaultMap : 1 };
 
-            { name : "Medium Map", 
+const MAP2 = { name : "Medium Map", 
             layout : [ [T,D,T,M,R,T,T,T,T,T,R,T,T,T,M,T,T,T,T,R,T,T,R,M,R,T,T,T,M,T,R,D],
             [R,M,T,M,T,T,T,R,T,R,T,T,R,T,T,T,T,R,T,M,T,T,M,M,M,T,T,T,M,T,R,T],
             [M,M,T,M,T,T,P,T,T,T,T,R,M,M,T,R,T,T,T,T,T,M,T,T,T,T,R,T,T,D,R,V],
@@ -49,9 +35,10 @@ export class PlayableMaps {
             [T,T,T,M,T,T,T,T,R,R,T,R,T,T,R,T,T,T,T,R,M,T,T,R,M,T,M,T,D,T,M,T],
             [D,T,M,M,T,M,T,T,T,T,T,T,M,R,T,M,T,T,T,D,T,T,T,M,T,T,T,T,R,T,T,R],
             [T,T,M,T,T,T,T,T,T,R,M,T,R,T,T,T,R,T,R,T,T,R,M,T,T,T,D,T,M,T,T,R],
-            [T,T,T,T,T,T,T,T,T,R,M,T,R,T,T,R,T,R,T,T,R,M,M,T,R,T,T,M,M,T,R,T] ] },
+            [T,T,T,T,T,T,T,T,T,R,M,T,R,T,T,R,T,R,T,T,R,M,M,T,R,T,T,M,M,T,R,T] ], 
+            idDefaultMap : 2 };
 
-            { name : "Hard Map",
+const MAP3 = { name : "Hard Map",
             layout : [ [V,T,V,R,T,T,V,T,V,T,T,V,T,T,V,T,T,R,T,V,T,T,P,V,T,T,V,T,V,V,T,T],
             [T,R,T,R,V,T,T,T,T,T,T,V,T,T,R,T,T,T,V,T,T,T,T,R,T,T,T,R,T,T,T,T],
             [V,R,T,T,R,T,T,T,V,V,T,T,T,R,T,T,R,T,R,T,T,R,T,R,T,T,T,M,M,M,M,M],
@@ -67,8 +54,24 @@ export class PlayableMaps {
             [M,M,M,M,M,M,M,M,M,M,M,M,R,T,T,T,T,T,T,T,R,T,T,T,T,T,T,V,T,T,T,T],
             [T,T,V,T,T,T,V,V,T,T,T,D,T,T,R,T,V,T,T,R,T,R,R,R,T,T,T,T,T,T,T,T],
             [T,T,R,T,T,R,T,V,T,V,T,T,T,M,M,M,M,M,M,M,M,T,T,D,R,T,T,T,R,R,R,T],
-            [V,T,T,V,V,T,T,T,T,R,T,R,T,V,V,T,T,T,D,V,T,T,R,T,T,T,T,T,T,T,T,T] ] }
-        ];
+            [V,T,T,V,V,T,T,T,T,R,T,R,T,V,V,T,T,T,D,V,T,T,R,T,T,T,T,T,T,T,T,T] ],
+            idDefaultMap : 3 };
+
+export class PlayableMaps {
+
+    //table of name and layout (grid of map elements) of available maps in the game
+    #maps;
+
+    //index of the currently played map
+    #currentMapIndex;
+
+    /**
+     * Constructor
+     * make 3 default maps
+     */
+    constructor() {
+        this.#currentMapIndex = 0;
+        this.#maps = [ MAP1, MAP2, MAP3 ];
     } 
     
 
@@ -175,7 +178,35 @@ export class PlayableMaps {
         window.localStorage.removeItem('backup');
     }
 
+    /**
+     * add the default maps missing in the list of avalaible maps
+     */
+    reloadDefaultMaps() {
+        let bool = false;
+        let bool1 = false;
+        let bool2 = false;
+        let bool3 = false;
+
+        for(let i = 0; i < this.#maps.length; i++) {
+            if(this.#maps[i].idDefaultMap == 1) { bool1 = true; }
+            if(this.#maps[i].idDefaultMap == 2) { bool2 = true; }
+            if(this.#maps[i].idDefaultMap == 3) { bool3 = true; }
+        }
+
+        if(!bool1) { this.#maps.push(MAP1); bool = true; }
+        if(!bool2) { this.#maps.push(MAP2); bool = true; }
+        if(!bool3) { this.#maps.push(MAP3); bool = true; }
+
+        if(bool) { 
+            window.localStorage.removeItem('backup');
+            alert("Les maps par défaut manquantes ont bien été rajoutées.\nPensez à modifier l'odre des maps si vous le souhaitez.") 
+        } else { alert("Toutes les maps par défaut étaient déjà présentes.\nAucune modification n'a été apportée.") };
+    }
+
 }
+
+
+
 
 /**
  * read the file and convert it to a table which layout is the same as map layout
@@ -213,4 +244,4 @@ function getLayout(file, reader, data) {
     reader.readAsText(file);
     data.layout = layout;
     return data;
-}
+} 

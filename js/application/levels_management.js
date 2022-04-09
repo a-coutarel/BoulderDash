@@ -13,6 +13,12 @@ export class LevelsManagement {
      */
     constructor() {
         this.#mapsList = new PlayableMaps();
+
+        if((window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null)) {
+            this.#mapsList.maps = JSON.parse(window.localStorage.getItem('mapsList'));
+            this.#mapsList.currentMapIndex = JSON.parse(window.localStorage.getItem('currentMapIndex'));
+        }
+
         this.#textures = {};
         this.#loadImages();
     }
@@ -85,6 +91,13 @@ export class LevelsManagement {
         let file = document.getElementById("file").files[0];
         let reader = new FileReader();
         this.#mapsList.addMap(file, reader);
+    }
+
+    /**
+     * add the default maps missing in the list of avalaible maps
+     */
+    reloadDefaultMaps() {
+        this.#mapsList.reloadDefaultMaps();
     }
 
     /**
@@ -257,15 +270,6 @@ window.addEventListener("load", () => {
     if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 
     levelsManagement = new LevelsManagement();
-
-    if((window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null)) {
-        levelsManagement.mapsList.maps = JSON.parse(window.localStorage.getItem('mapsList'));
-        levelsManagement.mapsList.currentMapIndex = JSON.parse(window.localStorage.getItem('currentMapIndex'));
-    }
-    else { 
-        window.localStorage.setItem('mapsList', JSON.stringify(levelsManagement.mapsList.maps));
-        window.localStorage.setItem('currentMapIndex', JSON.stringify(levelsManagement.mapsList.currentMapIndex)); 
-    }
 });
 
 /**
@@ -301,6 +305,13 @@ document.querySelector("#deleteLevelButton").addEventListener("click", () => {
  */
 document.querySelector("#modifyLevelsOrderButton").addEventListener("click", () => {
     levelsManagement.printModifyOrderDiv();
+});
+
+/**
+ * attach the reloadDefaultMaps function of LevelsManagement class called by the variable levelsManagement to the button #reloadDefaultMaps
+ */
+ document.querySelector("#reloadDefaultMaps").addEventListener("click", () => {
+    levelsManagement.reloadDefaultMaps();
 });
 
 /**

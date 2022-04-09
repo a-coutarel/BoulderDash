@@ -33,7 +33,7 @@ export class SoundPlayer {
             [s_player_death, "../sound/player_death.mp3", 0.15],
             [s_diamond, "../sound/diamond.mp3", 0.3],
             [s_move, "../sound/move_2.mp3", 0.15],
-            [s_rock, "../sound/rock.mp3", 0.4]
+            [s_rock, "../sound/rock.mp3", 0.3]
         ];
 
         for (let k = 0; k < soundPath.length; ++k) {
