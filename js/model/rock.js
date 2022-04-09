@@ -1,5 +1,6 @@
 import { Coordinates } from "./coordinates.js";
 import { Generic_item, ROCK, ROCKFORD } from "./generic_item.js";
+import { s_rock } from "../view/soundPlayer.js";
 
 export class Rock extends Generic_item {
 
@@ -30,6 +31,7 @@ export class Rock extends Generic_item {
         const coordDown = this.coordinates.down();
 
         if (!this.map.isOnMap(coordDown)) {
+            if (this.#falling) this.map.controller.soundPlayer.playSound(s_rock);
             this.#falling = false;
             return;
         }
@@ -50,6 +52,8 @@ export class Rock extends Generic_item {
             this.map.death();
             return
         }
+
+        if (this.#falling) this.map.controller.soundPlayer.playSound(s_rock);
 
         this.#falling = false;
 

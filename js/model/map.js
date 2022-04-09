@@ -6,6 +6,7 @@ import { DIRT, ROCK, DIAMOND, WALL, ROCKFORD } from "./generic_item.js";
 import { Rock } from "./rock.js";
 import { Rockford } from "./rockford.js";
 import { Wall } from "./wall.js";
+import { s_move, s_diamond } from "../view/soundPlayer.js";
 
 
 export const MOVEUP = "move_up";
@@ -84,6 +85,8 @@ export class Map {
     get lastOrderNotNull() { return this.#lastOrderNotNull; }
 
     get gameOver() { return this.#gameOver; }
+
+    get controller() { return this.#controller;}
         
     /**
      * Initiates a new level
@@ -405,6 +408,7 @@ export class Map {
         this.#grid[coordB.y][coordB.x].coordinates = coordB;
 
         if (coordA.x == this.#playerLoc.x && coordA.y == this.#playerLoc.y && !this.#playerDead) {
+            this.#controller.soundPlayer.playSound(s_move);
             this.#playerLoc = coordB;
             this.#addMovement();
         }
@@ -416,6 +420,8 @@ export class Map {
     collectDiamond() {
         ++this.#cdiamond;
         --this.#rdiamond;
+
+        this.#controller.soundPlayer.playSound(s_diamond);
         
         if (this.#rdiamond == 0) {
             this.#gameOver = true;

@@ -44,7 +44,9 @@ export class MapController {
 
     set keyDownList(value) { this.#keyDownList = value; };
 
-    get mapsList() {return this.#mapsList};
+    get mapsList() { return this.#mapsList; };
+
+    get soundPlayer() { return this.#soundPlayer; };
 
     /**
      * Launch a new game with the first map in the list of maps
