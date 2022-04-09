@@ -1,5 +1,5 @@
 import { MapController } from "../controller/map_controller.js";
-import { T, V, R, BR, BRP, M, DP, P, PL, PR, D } from "../model/map.js";
+import { T, V, R, RP, BR, BRP, M, DP, P, PL, PR, D } from "../model/map.js";
 
 export class MapView {
     // controller of the map
@@ -62,6 +62,7 @@ export class MapView {
                 switch (layout[i][j]) {
                     case T: cell.style.backgroundImage = "url(" + this.#images.dirt.src + ")"; break;
                     case V: cell.style.backgroundImage = "url(" + this.#images.background.src + ")"; break;
+                    case RP:
                     case R: cell.style.backgroundImage = "url(" + this.#images.stone.src + ")"; break;
                     case BRP:
                     case BR: cell.style.backgroundImage = "url(" + this.#images.bloody_stone.src + ")"; break;

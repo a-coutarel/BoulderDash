@@ -18,6 +18,7 @@ export const NOMOVE = "no_move";
 export const T = 'T'; // Dirt
 export const V = 'V'; // Void
 export const R = 'R'; // Rock
+export const RP = 'RP' // Rock with dead player (in order to not crash when the game is saved and the player dead)
 export const BR = 'BR'; // Bloody Rock
 export const BRP = 'BRP'; // Bloody Rock with dead player (in order to not crash when the game is saved and the player dead)
 export const M = 'M'; // Wall
@@ -147,6 +148,8 @@ export class Map {
 
         this.#placeItems(data.layout);
 
+        if (this.#playerDead) this.death();
+
         this.#updateController();
         setTimeout(() => { this.triggerUpdate() }, refreshTime * 4);
     }
@@ -201,7 +204,10 @@ export class Map {
                         line.push(T);
                         break;
                     case ROCK:
-                        if (this.#playerLoc.x == x && this.#playerLoc.y == y) { line.push(BRP); break; }
+                        if (this.#playerLoc.x == x && this.#playerLoc.y == y) {
+                            if(item.bloody) { line.push(BRP); break; }
+                            line.push(RP); break;
+                        }
                         if (item.bloody) { line.push(BR); break; }
                         line.push(R);
                         break;
@@ -242,6 +248,10 @@ export class Map {
                         break;
                     case R:
                         this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }));
+                        break;
+                    case RP:
+                        this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }));
+                        this.#playerLoc = new Coordinates({ x: x, y: y });
                         break;
                     case BR:
                         this.#grid[y][x] = new Rock(this, new Coordinates({ x: x, y: y }), true);
