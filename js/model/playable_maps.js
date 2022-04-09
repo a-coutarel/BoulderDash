@@ -4,6 +4,7 @@ export class PlayableMaps {
 
     //table of name and layout (grid of map elements) of available maps in the game
     #maps;
+    
     //index of the currently played map
     #currentMapIndex;
 
@@ -108,7 +109,7 @@ export class PlayableMaps {
         let data = {};
         if(this.#currentMapIndex == this.#maps.length) {
             data.win = true;
-            window.localStorage.removeItem('backup');
+            window.sessionStorage.setItem('win', 'true');
         } else {
             data.win = false;
             data.name = this.#maps[this.#currentMapIndex].name;

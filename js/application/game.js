@@ -15,6 +15,7 @@ export class Game {
      * Constructor
      */
     constructor() {
+        window.sessionStorage.setItem('win', 'false');
         this.#loadMapsList = (window.localStorage.getItem('mapsList') !== null || window.localStorage.getItem('mapsList') != null);
         this.#loadSavedGame = window.localStorage.getItem('loadSavedGame');
         this.#controller = new MapController();  
@@ -41,8 +42,16 @@ export class Game {
 
     /**
      * save in localStorage the current map data, the list of maps and the index of the map currently played in this list 
+     * if the game is won, set loadSavedGame to false (if the page is close and re-open, or reload, permite to start a new game automatically )
      */
     saveGameInWeb() {
+        if(window.sessionStorage.getItem('win') == 'true') { 
+            this.#controller.mapsList.currentMapIndex = 0;
+            window.localStorage.setItem('currentMapIndex', JSON.stringify(this.#controller.mapsList.currentMapIndex));
+            window.localStorage.setItem('mapsList', JSON.stringify(this.#controller.mapsList.maps));
+            window.localStorage.setItem('loadSavedGame', 'false');
+            return; 
+        }
         window.localStorage.setItem('backup', JSON.stringify(this.#controller.map.saveGame()));
         window.localStorage.setItem('mapsList', JSON.stringify(this.#controller.mapsList.maps));
         window.localStorage.setItem('currentMapIndex', JSON.stringify(this.#controller.mapsList.currentMapIndex));
