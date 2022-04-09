@@ -41,7 +41,7 @@ function loadSavedGame() {
 }
 
 // creates a soundPlayer for the music
-let soundPlayer = new SoundPlayer();
+let soundPlayer = 0;
 
 /**
  * attach the newGame function to the button #newGameB
@@ -67,6 +67,7 @@ document.getElementById("volume").addEventListener("click", () => { soundPlayer.
  * play or not the background music
  */
 window.addEventListener("load", () => {
+    soundPlayer = new SoundPlayer();
     soundPlayer.setMusic(m_home);
     soundPlayer.playOrNot();
 });
