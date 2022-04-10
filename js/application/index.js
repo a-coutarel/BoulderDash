@@ -68,7 +68,7 @@ document.getElementById("volume").addEventListener("click", () => { soundPlayer.
  */
 window.addEventListener("load", () => {
     setTimeout( () => {
-        let soundPlayer = new SoundPlayer();
+        soundPlayer = new SoundPlayer();
         soundPlayer.setMusic(m_home);
         soundPlayer.playOrNot();
     }, 1000);
