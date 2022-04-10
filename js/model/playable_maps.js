@@ -57,6 +57,26 @@ const MAP3 = { name : "Hard Map",
             [V,T,T,V,V,T,T,T,T,R,T,R,T,V,V,T,T,T,D,V,T,T,R,T,T,T,T,T,T,T,T,T] ],
             idDefaultMap : 3 };
 
+const MAP4 = { name : "Rockford Run !",
+            layout : [ [D,R,D,R,T,R,T,T,R,R,T,R,R,M,M,M,M,T,T,D,R,R,R,V,T,T,R,R,R,R,T,T],
+            [R,R,R,R,R,D,T,T,R,R,T,T,M,M,M,M,M,D,R,R,T,R,T,T,T,T,T,T,T,T,M,M],
+            [T,T,T,R,M,R,T,T,R,D,R,D,T,R,V,D,M,T,T,T,T,D,R,R,R,T,T,T,T,T,T,T],
+            [D,R,R,T,T,T,T,M,D,T,T,R,T,T,R,R,R,R,R,T,T,R,T,T,T,T,T,T,R,R,R,R],
+            [R,R,R,T,R,R,R,M,V,V,V,T,T,T,T,T,T,T,T,T,R,R,M,M,M,M,R,T,T,T,T,T],
+            [R,V,R,R,R,R,R,M,V,V,V,T,M,M,M,M,M,M,M,T,T,T,M,M,M,M,R,T,T,R,M,M],
+            [V,V,R,R,V,V,R,M,V,V,V,T,M,M,M,M,M,M,M,R,R,T,M,D,R,T,T,T,T,T,T,D],
+            [V,V,V,R,V,V,V,T,V,V,V,T,M,T,R,R,R,T,M,T,T,T,M,R,R,T,T,T,M,M,M,M],
+            [V,V,V,V,V,V,V,T,V,V,V,T,M,D,T,T,T,D,M,T,R,R,M,R,T,T,T,R,R,D,M,M],
+            [V,V,V,V,V,V,V,R,V,V,V,T,M,M,M,T,M,M,M,T,T,T,M,T,T,T,T,T,T,R,T,T],
+            [V,V,V,V,V,V,V,T,T,R,R,T,T,T,T,T,T,T,T,T,T,T,M,M,T,T,T,R,T,T,T,T],
+            [V,V,V,V,V,V,V,M,T,T,R,T,T,T,T,R,M,M,M,T,T,R,T,T,T,M,M,M,M,M,M,M],
+            [V,V,V,V,V,V,V,M,D,T,D,R,T,T,T,T,T,D,M,T,R,R,R,T,T,M,M,M,M,M,M,M],
+            [V,V,V,V,V,T,V,M,M,M,M,M,M,M,M,M,M,M,M,M,M,T,R,T,R,V,M,M,M,M,M,M],
+            [V,V,V,V,T,T,V,M,T,T,T,T,T,R,D,T,T,R,V,T,V,R,D,M,T,T,R,T,R,V,V,D],
+            [V,P,V,V,V,V,V,V,V,V,T,V,T,R,V,T,R,T,T,T,T,T,R,M,T,T,R,V,M,T,D,D] ],
+            idDefaultMap : 4 };
+
+
 export class PlayableMaps {
 
     //table of name and layout (grid of map elements) of available maps in the game
@@ -71,7 +91,7 @@ export class PlayableMaps {
      */
     constructor() {
         this.#currentMapIndex = 0;
-        this.#maps = [ MAP1, MAP2, MAP3 ];
+        this.#maps = [ MAP1, MAP2, MAP3, MAP4 ];
     } 
     
 
@@ -186,16 +206,19 @@ export class PlayableMaps {
         let bool1 = false;
         let bool2 = false;
         let bool3 = false;
+        let bool4 = false;
 
         for(let i = 0; i < this.#maps.length; i++) {
             if(this.#maps[i].idDefaultMap == 1) { bool1 = true; }
             if(this.#maps[i].idDefaultMap == 2) { bool2 = true; }
             if(this.#maps[i].idDefaultMap == 3) { bool3 = true; }
+            if(this.#maps[i].idDefaultMap == 4) { bool4 = true; }
         }
 
         if(!bool1) { this.#maps.push(MAP1); bool = true; }
         if(!bool2) { this.#maps.push(MAP2); bool = true; }
         if(!bool3) { this.#maps.push(MAP3); bool = true; }
+        if(!bool4) { this.#maps.push(MAP4); bool = true; }
 
         if(bool) { 
             window.localStorage.removeItem('backup');

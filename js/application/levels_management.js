@@ -128,7 +128,7 @@ export class LevelsManagement {
     
             //get the map name
             let mapName = document.createElement("h1");
-            mapName.innerText = "---- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ----";
+            mapName.innerText = "--- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ---";
     
             //create delete button with the appropriate eventListener 
             let button = document.createElement("button");
@@ -189,7 +189,7 @@ export class LevelsManagement {
     
             //get the map name
             let mapName = document.createElement("h1");
-            mapName.innerText = "---- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ----";
+            mapName.innerText = "--- Map " + (i+1).toString() + " : " + this.#mapsList.maps[i].name + " ---";
     
             //create - button with the appropriate eventListener 
             let minusButton = document.createElement("button");
