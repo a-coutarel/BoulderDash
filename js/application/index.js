@@ -1,6 +1,3 @@
-import { SoundPlayer, m_home } from "../view/soundPlayer.js";
-
-
 /**
  * if there is a saved game in localStorage, print the button #loadSavedGameB
  */
@@ -41,7 +38,7 @@ function loadSavedGame() {
 }
 
 
-let soundPlayer = null;
+
 
 /**
  * attach the newGame function to the button #newGameB
@@ -59,17 +56,25 @@ document.getElementById("loadSavedGameB").addEventListener("click", loadSavedGam
 document.getElementById("levelsManagementB").addEventListener("click", () => { window.location.href='html/levels_management.html'; });
 
 /**
- * attach the mute function of the soundPlayer to the button #volume
+ * attach the function of to the button #volume
  */
-document.getElementById("volume").addEventListener("click", () => { soundPlayer.mute(); });
+document.getElementById("volume").addEventListener("click", () => { 
+    let audio = document.getElementById('audio');
+    if(audio.duration > 0 && !audio.paused) { 
+        audio.muted = !audio.muted;
+        if(audio.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
+        else { window.sessionStorage.setItem('muted', 'false'); }
+    }
+    else { 
+        audio.play();
+        window.sessionStorage.setItem('muted', 'false');
+    }
+ });
 
 /**
  * play or not the background music
  */
 window.addEventListener("load", () => {
-    setTimeout( () => {
-        soundPlayer = new SoundPlayer();
-        soundPlayer.setMusic(m_home);
-        soundPlayer.playOrNot();
-    }, 1000);
+    document.getElementById('audio').volume = 0.2;
+    if(window.sessionStorage.getItem('muted') == 'true') { document.getElementById('audio').muted = true; }
 });

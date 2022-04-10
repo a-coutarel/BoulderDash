@@ -96,7 +96,7 @@ export class SoundPlayer {
      * mutes the music
      * */
     mute() {
-        if (this.#music.paused) {
+        if (this.#music.duration == 0 || this.#music.paused) {
             this.playMusic();
             window.sessionStorage.setItem('muted', 'false');
             return;
