@@ -81,14 +81,21 @@ export class SoundPlayer {
      * plays the music defined in this.#music
      * */
     playMusic() {
-        this.#music.play();
+        let promise = this.#music.play();
+        if (promise !== undefined) {
+            promise.then( () => {
+                document.getElementById("volume").innerText = "Mute Music";
+            }).catch(error => {
+                document.getElementById("volume").innerText = "Play Music";
+            });
+          }
     }
 
     /**
      * starts or not the playing of the music according to sessionStorage item 'muted'
      * */
     playOrNot() {
-        if (window.sessionStorage.getItem('muted') == 'true') { return; }
+        if (window.sessionStorage.getItem('muted') == 'true') { document.getElementById("volume").innerText = "Play Music"; return; }
         this.playMusic();
     }
 
@@ -103,12 +110,14 @@ export class SoundPlayer {
         }
 
         this.#music.muted = !this.#music.muted;
-        if (this.#music.muted == true) { window.sessionStorage.setItem('muted', 'true'); }
-        else { window.sessionStorage.setItem('muted', 'false'); }
+        if (this.#music.muted == true) { 
+            window.sessionStorage.setItem('muted', 'true');
+            document.getElementById("volume").innerText = "Play Music";
+        }
+        else { 
+            window.sessionStorage.setItem('muted', 'false');
+            document.getElementById("volume").innerText = "Mute Music";
+        }
     }
 
 }
-
-
-
-
