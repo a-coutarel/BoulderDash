@@ -57,7 +57,7 @@ const MAP3 = { name : "Hard Map",
             [V,T,T,V,V,T,T,T,T,R,T,R,T,V,V,T,T,T,D,V,T,T,R,T,T,T,T,T,T,T,T,T] ],
             idDefaultMap : 3 };
 
-const MAP4 = { name : "Rockford Run !",
+const MAP4 = { name : "Run Rockford !",
             layout : [ [D,R,D,R,T,R,T,T,R,R,T,R,R,M,M,M,M,T,T,D,R,R,R,V,T,T,R,R,R,R,T,T],
             [R,R,R,R,R,D,T,T,R,R,T,T,M,M,M,M,M,D,R,R,T,R,T,T,T,T,T,T,T,T,M,M],
             [T,T,T,R,M,R,T,T,R,D,R,D,T,R,V,D,M,T,T,T,T,D,R,R,R,T,T,T,T,T,T,T],
