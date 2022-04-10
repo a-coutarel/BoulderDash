@@ -40,8 +40,8 @@ function loadSavedGame() {
     else { alert("Impossible de charger une partie... Commencez d'abord une nouvelle partie !"); }
 }
 
-// creates a soundPlayer for the music
-let soundPlayer = new SoundPlayer();
+
+let soundPlayer = null;
 
 /**
  * attach the newGame function to the button #newGameB
@@ -67,6 +67,9 @@ document.getElementById("volume").addEventListener("click", () => { soundPlayer.
  * play or not the background music
  */
 window.addEventListener("load", () => {
-    soundPlayer.setMusic(m_home);
-    soundPlayer.playOrNot();
+    setTimeout( () => {
+        let soundPlayer = new SoundPlayer();
+        soundPlayer.setMusic(m_home);
+        soundPlayer.playOrNot();
+    }, 1000);
 });
