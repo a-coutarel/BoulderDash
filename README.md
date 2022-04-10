@@ -20,4 +20,4 @@ Le message :
 "❌ Uncaught (in promise) DOMException: play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
 est dû au navigateur chrome (et d'autres) qui bloque la lecture de fichier audio tant que l'utilisateur n'a pas interagi avec la page (on a tout essayé mais on n'y peut rien). Opera ou Edge par exemple ne semblent pas avoir ce problème...
 
-Si la musique ne se lance pas dû à cette erreur, un clic sur le bouton Mute/Unmute permet alors de la lancer.
+Si la musique ne se lance automatiquement pas dû à cette erreur, un clic sur le bouton Mute/Unmute permet alors de la lancer.
