@@ -38,16 +38,16 @@ export class SoundPlayer {
      * */
     #loadSounds() {
         let soundPath = [
-            [s_game_over, "../sound/game_over.mp3", 0.5],
-            [s_game_win, "../sound/game_win.mp3", 0.5],
-            [s_player_death, "../sound/player_death.mp3", 0.15],
-            [s_diamond, "../sound/diamond.mp3", 0.3],
-            [s_move, "../sound/move.mp3", 0.15],
-            [s_rock, "../sound/rock.mp3", 0.3],
+            [s_game_over, "/sound/game_over.mp3", 0.5],
+            [s_game_win, "/sound/game_win.mp3", 0.5],
+            [s_player_death, "/sound/player_death.mp3", 0.15],
+            [s_diamond, "/sound/diamond.mp3", 0.3],
+            [s_move, "/sound/move.mp3", 0.15],
+            [s_rock, "/sound/rock.mp3", 0.3],
 
-            [m_home, "../sound/home_music.mp3", 0.2],
-            [m_levels_management, "../sound/levels_management_music.mp3", 0.2],
-            [m_game, "../sound/game_music.mp3", 0.2],
+            [m_home, "/sound/home_music.mp3", 0.2],
+            [m_levels_management, "/sound/levels_management_music.mp3", 0.2],
+            [m_game, "/sound/game_music.mp3", 0.2],
         ];
 
         for (let k = 0; k < soundPath.length; ++k) {
@@ -108,3 +108,7 @@ export class SoundPlayer {
     }
 
 }
+
+
+
+
