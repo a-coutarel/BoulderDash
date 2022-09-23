@@ -4,7 +4,7 @@ Projet de développement web
 
 • Sujet complet : https://www.lamarmotte.info/wp-content/uploads/2022/03/Projet-Boulder-Dash.pdf
 
-• Lancer le projet directement depuis GitHub : https://devnemoo.github.io/BoulderDash/
+• Lancer le projet directement depuis GitHub : https://a-coutarel.github.io/BoulderDash/
 
 
 ⚠ IMPORTANT ⚠
