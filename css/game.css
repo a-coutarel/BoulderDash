@@ -6,6 +6,17 @@
     font-family: "Pixelade"; src: url("font/PIXELADE.TTF");
 }
 
+blackscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 500;
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
 body {
     margin: 0;
     width: 100vw;
