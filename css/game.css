@@ -17,6 +17,34 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+loading_screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-image: url("../img/background.gif");
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+loading_screen > img {
+    width: 10%;
+    margin: 0 auto;
+}
+
+#loading_text{
+    text-align: center;
+    font-size: 2vw;
+    color: #fff;
+    font-family: Pixeled, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    margin: 0;
+}
+
 sidebar {
     display: flex;
     flex-direction: column;
@@ -98,32 +126,4 @@ boulderdash {
 
 .grid-item {
     background-size: cover;
-}
-
-loading_screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    background-image: url("../img/background.gif");
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-loading_screen > img {
-    width: 10%;
-    margin: 0 auto;
-}
-
-#loading_text{
-    text-align: center;
-    font-size: 2vw;
-    color: #fff;
-    font-family: Pixeled, Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
-    margin: 0;
 }
