@@ -89,15 +89,34 @@ let soundPlayer = new SoundPlayer();
  */
 document.querySelector("#volume").addEventListener("click", () => { soundPlayer.mute(); });
 
- /**
-  * attach the return_menu function to the button #home
-  */
- document.querySelector("#home").addEventListener("click", return_menu);
+/**
+* attach the return_menu function to the button #home
+*/
+document.querySelector("#home").addEventListener("click", return_menu);
+
+/**
+ * dynamic loading text
+ */
+let  reload = true;
+
+function loadingText(relaod) {
+    switch (document.querySelector("#loading_text").innerText) {
+        case "LOADING." : document.querySelector("#loading_text").innerHTML = "LOADING.."; break;
+        case "LOADING.." : document.querySelector("#loading_text").innerHTML = "LOADING..."; break;
+        case "LOADING..." : document.querySelector("#loading_text").innerHTML = "LOADING."; break;
+    }
+    if(reload) { setTimeout(() => {loadingText()}, 400); }
+}
+loadingText(true);
+
 
 /**
  * when the page is completely loaded
  */
 window.addEventListener("load", () => {
+
+    document.querySelector("loading_screen").style.visibility = "hidden";
+    reload = false;
 
     soundPlayer.setMusic(m_game);
     soundPlayer.playOrNot();
