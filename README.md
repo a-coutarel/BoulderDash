@@ -1,4 +1,4 @@
-Web Game project - ESIREM engineering school project
+# Web Game project - ESIREM engineering school project
 
 • Goal : recreate the game Boulder Dash in html/css/js
 
@@ -9,7 +9,7 @@ Web Game project - ESIREM engineering school project
 
 ***
 
-Projet de développement web
+# Projet de développement web
 
 • Objectif : recréer le jeu "Boulder Dash" qui a bercé l'enfance de M. Meunier
 
