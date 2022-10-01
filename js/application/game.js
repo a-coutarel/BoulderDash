@@ -97,9 +97,8 @@ document.querySelector("#home").addEventListener("click", return_menu);
 /**
  * dynamic loading text
  */
-let  reload = true;
 
-function loadingText(relaod) {
+function loadingText() {
     switch (document.querySelector("#loading_text").innerText) {
         case "LOADING." : document.querySelector("#loading_text").innerHTML = "LOADING.."; break;
         case "LOADING.." : document.querySelector("#loading_text").innerHTML = "LOADING..."; break;
@@ -107,7 +106,9 @@ function loadingText(relaod) {
     }
     if(reload) { setTimeout(() => {loadingText()}, 400); }
 }
-loadingText(true);
+
+let  reload = true;
+loadingText();
 
 
 /**
