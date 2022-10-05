@@ -6,6 +6,12 @@
     font-family: "Pixelade"; src: url("font/PIXELADE.TTF");
 }
 
+*, ::before, ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 blackscreen {
     position: fixed;
     top: 0;
@@ -19,10 +25,8 @@ blackscreen {
 
 body {
     margin: 0;
-    width: 100vw;
-    height: 100vh;
-    min-height: 900px;
-    min-width: 1200px;
+    width: 100%;
+    min-height: 100vh;
     display: flex;
     background-image: url("../img/background.gif");
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -62,10 +66,11 @@ sidebar {
     justify-content: center;
     padding: 30px;
     box-sizing: border-box;
-    width: 440px;
+    width: 25%;
     flex-shrink: 0;
     background-color: #8787874a;
     font-size: 20px;
+    height: 100vh;
 }
 
 sidebar > p {
@@ -78,7 +83,7 @@ sidebar > p {
     border: 2px solid #6E2C00;
     border-radius: 6px;
     padding: 10px;
-    box-sizing: border-box;
+    margin-bottom: 15px;
 }
 
 sidebar > img {
@@ -111,7 +116,7 @@ button:hover {
 content {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 75%;
     justify-content: center;
     align-items: center;
 }

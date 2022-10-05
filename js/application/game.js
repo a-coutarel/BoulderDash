@@ -116,8 +116,8 @@ loadingText();
  */
 window.addEventListener("load", () => {
 
-    document.querySelector("loading_screen").style.visibility = "hidden";
     document.querySelector("blackscreen").style.visibility = "hidden";
+    $("loading_screen").delay(400).fadeOut('slow');
     reload = false;
 
     soundPlayer.setMusic(m_game);
