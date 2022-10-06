@@ -61,6 +61,11 @@ footer {
 footer > p {
     color: #fff;
     font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+p > a {
+    color: #fff;
 }
 
 #audio-control {
