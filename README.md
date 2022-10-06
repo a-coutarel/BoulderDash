@@ -19,6 +19,6 @@
 • Lancer le projet directement depuis GitHub : https://a-coutarel.github.io/BoulderDash/
 
 
-⚠ IMPORTANT ⚠
+⚠ ATTENTION ⚠
 Le bouton permettant de relancer une partie n'est visible que si une sauvegarde existe.
 Toute modification des maps (ajout, supression, modification de l'odre) entraine une perte de la sauvegarde...
