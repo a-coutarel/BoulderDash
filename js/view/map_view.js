@@ -76,9 +76,9 @@ export class MapView {
                 map.appendChild(cell).className = "grid-item";
             }
         }
-        document.querySelector("#nb_diams_present").innerText = data.rDiamond;
-        document.querySelector("#nb_diams_collected").innerText = data.cDiamond;
-        document.querySelector("#nb_deplacements").innerText = data.moveCount;
+        document.querySelector("#nb_diams_present").innerText = "Nombre de diamants présents : " + data.rDiamond;
+        document.querySelector("#nb_diams_collected").innerText = "Nombre de diamants collectés : " + data.cDiamond;
+        document.querySelector("#nb_deplacements").innerText = "Nombre de déplacements : " + data.moveCount;
     }
 
     /**

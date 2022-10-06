@@ -64,7 +64,7 @@ sidebar {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 30px;
+    padding: 0 30px;
     box-sizing: border-box;
     width: 25%;
     flex-shrink: 0;
@@ -75,37 +75,42 @@ sidebar {
 
 sidebar > p {
     font-family: Pixelade, Arial, Helvetica, sans-serif;
-    font-size: 31px;
+    font-size: 1.5vw;
     line-height: 25px;
-    text-align: center;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.7);
     border: 2px solid #6E2C00;
     border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1vh 0;
 }
 
 sidebar > img {
-    margin-bottom: 30px;
+    width: 20vw;
+    margin: 0 auto;
+    margin-bottom: 2vh;
 }
 
 #buttons {
-    margin-top: 60px;
+    margin-top: 8vh;
 }
 
 button {
-    padding-bottom: 8px;
+    padding-bottom: 0.5vh;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    margin-bottom: 2vh;
+    font-size: 1vw;
     width: 100%;
     color: white;
-    font-size: large;
     font-family: Pixeled, Arial, Helvetica, sans-serif;
     text-transform: uppercase;
     background-color: rgba(0, 0, 0, 0.7);
     border: 2px outset #fff;
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 button:hover {
