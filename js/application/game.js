@@ -116,7 +116,6 @@ loadingText();
  */
 window.addEventListener("load", () => {
 
-    document.querySelector("blackscreen").style.visibility = "hidden";
     $("loading_screen").delay(400).fadeOut('slow');
     reload = false;
 

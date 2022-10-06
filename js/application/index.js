@@ -70,6 +70,8 @@ document.getElementById("volume").addEventListener("click", () => {
  * play or not the background music
  */
 window.addEventListener("load", () => {
+    $("preloader").fadeOut('slow');
+
     soundPlayer.setMusic(m_home);
     soundPlayer.playOrNot();
 });

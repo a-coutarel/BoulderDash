@@ -257,6 +257,7 @@ document.querySelector("#volume").addEventListener("click", () => { soundPlayer.
  * when the page is completely loaded
  */
 window.addEventListener("load", () => {
+    $("preloader").fadeOut('slow');
     
     soundPlayer.setMusic(m_levels_management);
     soundPlayer.playOrNot();
